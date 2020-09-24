@@ -70,6 +70,8 @@ public:
 	// Returns our best guess at the "real" name for this file (will attempt to perform MAME name translation)
 	std::string getDisplayName() const;
 
+	std::string getMameName() const;
+
 	// As above, but also remove parenthesis
 	std::string getCleanName() const;
 
