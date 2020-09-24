@@ -57,6 +57,11 @@ public:
 
 	bool init();
 	void deinit();
+#if defined(_WIN32)
+	bool initWithoutRendar();
+	void deinitWithoutRendar();
+	void renderBlackScreen();
+#endif
 
 	void normalizeNextUpdate();
 

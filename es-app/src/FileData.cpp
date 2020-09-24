@@ -16,6 +16,10 @@
 #include "Window.h"
 #include <assert.h>
 
+#if defined(_WIN32)
+#include <SDL_events.h>
+#endif
+
 FileData::FileData(FileType type, const std::string& path, SystemEnvironmentData* envData, SystemData* system)
 	: mType(type), mPath(path), mSystem(system), mEnvData(envData), mSourceFileData(NULL), mParent(NULL), metadata(type == GAME ? GAME_METADATA : FOLDER_METADATA) // metadata is REALLY set in the constructor!
 {
@@ -266,13 +270,24 @@ void FileData::sort(const SortType& type)
 	sort(*type.comparisonFunction, type.ascending);
 }
 
+#if defined(_WIN32)
+static DWORD WINAPI launchGameThread(LPVOID lpParameter)
+{
+	return runSystemCommand(*(std::string*)lpParameter);
+}
+#endif
+
 void FileData::launchGame(Window* window)
 {
 	LOG(LogInfo) << "Attempting to launch game...";
 
 	AudioManager::getInstance()->deinit();
 	VolumeControl::getInstance()->deinit();
+#if defined(_WIN32)
+	window->deinitWithoutRendar();
+#else
 	window->deinit();
+#endif
 
 	std::string command = mEnvData->mLaunchCommand;
 
@@ -293,7 +308,22 @@ void FileData::launchGame(Window* window)
 	Scripting::fireEvent("game-start", rom, basename);
 
 	LOG(LogInfo) << "	" << command;
+#if defined(_WIN32)
+	HANDLE hThread;
+	DWORD threadId, exitCode;
+
+	hThread = CreateThread(NULL, 0, launchGameThread, &command, 0, &threadId);
+	do{
+		SDL_Event event;
+		while(SDL_PollEvent(&event))
+			;
+		window->renderBlackScreen();
+	}while(WaitForSingleObject(hThread, 333) == WAIT_TIMEOUT);
+	GetExitCodeThread(hThread, &exitCode);
+	CloseHandle(hThread);
+#else
 	int exitCode = runSystemCommand(command);
+#endif
 
 	if(exitCode != 0)
 	{
@@ -302,7 +332,11 @@ void FileData::launchGame(Window* window)
 
 	Scripting::fireEvent("game-end");
 
+#if defined(_WIN32)
+	window->initWithoutRendar();
+#else
 	window->init();
+#endif
 	VolumeControl::getInstance()->init();
 	window->normalizeNextUpdate();
 

@@ -108,6 +108,59 @@ void Window::deinit()
 	Renderer::deinit();
 }
 
+#if defined(_WIN32)
+bool Window::initWithoutRendar()
+{
+	SDL_MaximizeWindow(Renderer::getSDLWindow());
+	// if(!Renderer::init())
+	// {
+	// 	LOG(LogError) << "Renderer failed to initialize!";
+	// 	return false;
+	// }
+
+	InputManager::getInstance()->init();
+
+	ResourceManager::getInstance()->reloadAll();
+
+	//keep a reference to the default fonts, so they don't keep getting destroyed/recreated
+	if(mDefaultFonts.empty())
+	{
+		mDefaultFonts.push_back(Font::get(FONT_SIZE_SMALL));
+		mDefaultFonts.push_back(Font::get(FONT_SIZE_MEDIUM));
+		mDefaultFonts.push_back(Font::get(FONT_SIZE_LARGE));
+	}
+
+	mBackgroundOverlay->setImage(":/scroll_gradient.png");
+	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
+
+	// update our help because font sizes probably changed
+	if(peekGui())
+		peekGui()->updateHelpPrompts();
+
+	return true;
+}
+
+void Window::deinitWithoutRendar()
+{
+	// Hide all GUI elements on uninitialisation - this disable
+	for(auto i = mGuiStack.cbegin(); i != mGuiStack.cend(); i++)
+	{
+		(*i)->onHide();
+	}
+	InputManager::getInstance()->deinit();
+	ResourceManager::getInstance()->unloadAll();
+	// Renderer::deinit();
+}
+
+void Window::renderBlackScreen()
+{
+	Transform4x4f trans = Transform4x4f::Identity();
+	Renderer::setMatrix(trans);
+	Renderer::drawRect(0.0f, 0.0f, Renderer::getScreenWidth(), Renderer::getScreenHeight(), 0x000000ff, 0x000000ff);
+	Renderer::swapBuffers();
+}
+#endif
+
 void Window::textInput(const char* text)
 {
 	if(peekGui())
