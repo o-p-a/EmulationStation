@@ -26,12 +26,10 @@ namespace Scripting
         for(std::list<std::string>::const_iterator dirIt = scriptDirList.cbegin(); dirIt != scriptDirList.cend(); ++dirIt) {
             std::list<std::string> scripts = Utils::FileSystem::getDirContent(*dirIt);
             for (std::list<std::string>::const_iterator it = scripts.cbegin(); it != scripts.cend(); ++it) {
-#ifndef WIN32 // osx / linux
                 if (!Utils::FileSystem::isExecutable(*it)) {
                     LOG(LogWarning) << *it << " is not executable. Did you 'chmod u+x'?. Skipping this script.";
                     continue;
                 }
-#endif
                 std::string script = *it;
                 if (arg1.length() > 0) {
                     script += " \"" + arg1 + "\"";

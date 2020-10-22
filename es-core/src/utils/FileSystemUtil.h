@@ -39,9 +39,7 @@ namespace Utils
 		bool        isDirectory        (const std::string& _path);
 		bool        isSymlink          (const std::string& _path);
 		bool        isHidden           (const std::string& _path);
-#ifndef WIN32 // osx / linux
 		bool        isExecutable       (const std::string& _path);
-#endif
 #if defined(_WIN32)
 		std::wstring convertToWideString(const std::string string);
 #endif

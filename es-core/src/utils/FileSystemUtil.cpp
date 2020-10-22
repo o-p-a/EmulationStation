@@ -7,6 +7,7 @@
 
 #if defined(_WIN32)
 // because windows...
+#include "utils/StringUtil.h"
 #include <direct.h>
 #include <Windows.h>
 #define getcwd _getcwd
@@ -715,8 +716,19 @@ namespace Utils
 			return false;
 
 		} // isHidden
-#ifndef WIN32 // osx / linux
 		bool isExecutable(const std::string& _path) {
+#if defined(_WIN32)
+			std::string ext;
+			getenv("PATHEXT", ext);
+			Utils::String::stringVector pathext = Utils::String::delimitedStringToVector(ext, ";");
+
+			ext = getExtension(_path);
+			for(auto it = pathext.cbegin(); it != pathext.cend(); it++){
+				if(stricmp(ext.c_str(), it->c_str()) == 0)
+					return true;
+			}
+			return false;
+#else // osx / linux
 			struct stat64 st;
 			if(stat64(_path.c_str(), &st) == 0){
 				mode_t perm = st.st_mode;
@@ -727,8 +739,8 @@ namespace Utils
 				}
 			}
 			return false;
-		} // isExecutable
 #endif
+		} // isExecutable
 
 	} // FileSystem::
 
