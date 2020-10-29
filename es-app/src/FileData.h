@@ -73,6 +73,8 @@ public:
 	// As above, but also remove parenthesis
 	std::string getCleanName() const;
 
+	std::string getMameName() const;
+
 	void launchGame(Window* window);
 
 	typedef bool ComparisonFunction(const FileData* a, const FileData* b);

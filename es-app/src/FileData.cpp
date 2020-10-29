@@ -46,6 +46,14 @@ std::string FileData::getDisplayName() const
 	return stem;
 }
 
+std::string FileData::getMameName() const
+{
+	if(mSystem && mSystem->hasPlatformId(PlatformIds::ARCADE) || mSystem->hasPlatformId(PlatformIds::NEOGEO))
+		return Utils::FileSystem::getStem(mPath);
+
+	return "";
+}
+
 std::string FileData::getCleanName() const
 {
 	return Utils::String::removeParenthesis(this->getDisplayName());
@@ -69,6 +77,12 @@ const std::string FileData::getThumbnailPath() const
 				if(thumbnail.empty())
 				{
 					std::string path = mEnvData->mStartPath + "/images/" + getDisplayName() + "-image" + extList[i];
+					if(Utils::FileSystem::exists(path))
+						thumbnail = path;
+				}
+				if(thumbnail.empty() && !getMameName().empty())
+				{
+					std::string path = mEnvData->mStartPath + "/images/" + getMameName() + "-image" + extList[i];
 					if(Utils::FileSystem::exists(path))
 						thumbnail = path;
 				}
@@ -122,6 +136,11 @@ const std::string FileData::getVideoPath() const
 		std::string path = mEnvData->mStartPath + "/images/" + getDisplayName() + "-video.mp4";
 		if(Utils::FileSystem::exists(path))
 			video = path;
+		else if(!getMameName().empty()){
+			path = mEnvData->mStartPath + "/images/" + getMameName() + "-video.mp4";
+			if(Utils::FileSystem::exists(path))
+				video = path;
+		}
 	}
 
 	return video;
@@ -140,6 +159,12 @@ const std::string FileData::getMarqueePath() const
 			if(marquee.empty())
 			{
 				std::string path = mEnvData->mStartPath + "/images/" + getDisplayName() + "-marquee" + extList[i];
+				if(Utils::FileSystem::exists(path))
+					marquee = path;
+			}
+			if(marquee.empty() && !getMameName().empty())
+			{
+				std::string path = mEnvData->mStartPath + "/images/" + getMameName() + "-marquee" + extList[i];
 				if(Utils::FileSystem::exists(path))
 					marquee = path;
 			}
@@ -162,6 +187,12 @@ const std::string FileData::getImagePath() const
 			if(image.empty())
 			{
 				std::string path = mEnvData->mStartPath + "/images/" + getDisplayName() + "-image" + extList[i];
+				if(Utils::FileSystem::exists(path))
+					image = path;
+			}
+			if(image.empty() && !getMameName().empty())
+			{
+				std::string path = mEnvData->mStartPath + "/images/" + getMameName() + "-image" + extList[i];
 				if(Utils::FileSystem::exists(path))
 					image = path;
 			}
