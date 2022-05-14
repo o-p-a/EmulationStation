@@ -5,13 +5,13 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <map>
+#include <mutex>
 
 #if defined(_WIN32)
 // because windows...
 #include "utils/StringUtil.h"
 #include <direct.h>
 #include <Windows.h>
-#include <mutex>
 #define getcwd _getcwd
 #define snprintf _snprintf
 #define stat _stat
@@ -29,15 +29,14 @@ namespace Utils
 {
 	namespace FileSystem
 	{
-		static std::string homePath = "";
-		static std::string exePath  = "";
-		static std::map<std::string, bool> mPathExistsIndex = std::map<std::string, bool>();
+		static std::recursive_mutex        mutex           = {};
+		static std::string                 homePath        = "";
+		static std::string                 exePath         = "";
+		static std::map<std::string, bool> pathExistsIndex = std::map<std::string, bool>();
 
 //////////////////////////////////////////////////////////////////////////
 
 #if defined(_WIN32)
-		std::mutex mFileMutex; // Avoids enumerating N folders at the same time in threaded loadings
-
 		static std::string convertFromWideString(const std::wstring _wstring)
 		{
 			const int   numBytes = WideCharToMultiByte(CP_UTF8, 0, _wstring.c_str(), (int)_wstring.length(), nullptr, 0, nullptr, nullptr);
@@ -94,11 +93,11 @@ namespace Utils
 			{
 
 #if defined(_WIN32)
-				std::unique_lock<std::mutex> lock(mFileMutex);
+				const std::unique_lock<std::recursive_mutex> lock(mutex);
 
-				WIN32_FIND_DATAW  findData;
-				const std::string wildcard = path + "/*";
-				const HANDLE      hFind    = FindFirstFileW(convertToWideString(wildcard).c_str(), &findData);
+				WIN32_FIND_DATAW                             findData;
+				const std::string                            wildcard = path + "/*";
+				const HANDLE                                 hFind    = FindFirstFileW(convertToWideString(wildcard).c_str(), &findData);
 
 				if(hFind != INVALID_HANDLE_VALUE)
 				{
@@ -533,10 +532,10 @@ namespace Utils
 
 //////////////////////////////////////////////////////////////////////////
 
-		std::string resolveRelativePath(const std::string& _path, const std::string& _relativeTo, const bool _allowHome)
+		std::string resolveRelativePath(const std::string& _path, const std::string& _relativeTo, const bool _allowHome, const bool _skipDirectoryCheck)
 		{
 			const std::string path       = getGenericPath(_path);
-			const std::string relativeTo = isDirectory(_relativeTo) ? getGenericPath(_relativeTo) : getParent(_relativeTo);
+			const std::string relativeTo = (_skipDirectoryCheck || isDirectory(_relativeTo)) ? getGenericPath(_relativeTo) : getParent(_relativeTo);
 
 			// nothing to resolve
 			if(!path.length())
@@ -550,17 +549,21 @@ namespace Utils
 			if(_allowHome && (path[0] == '~') && (path[1] == '/'))
 				return (getHomePath() + &(path[1]));
 
-			// nothing to resolve
-			return path;
+			// absolute path
+			if(path[0] == '/')
+				return path;
+
+			// concatenate paths
+			return (relativeTo + '/' + path);
 
 		} // resolveRelativePath
 
 //////////////////////////////////////////////////////////////////////////
 
-		std::string createRelativePath(const std::string& _path, const std::string& _relativeTo, const bool _allowHome)
+		std::string createRelativePath(const std::string& _path, const std::string& _relativeTo, const bool _allowHome, const bool _skipDirectoryCheck)
 		{
 			bool        contains = false;
-			std::string path     = removeCommonPath(_path, _relativeTo, contains);
+			std::string path     = removeCommonPath(_path, _relativeTo, contains, _skipDirectoryCheck);
 
 			// success
 			if(contains)
@@ -568,7 +571,7 @@ namespace Utils
 
 			if(_allowHome)
 			{
-				path = removeCommonPath(_path, getHomePath(), contains);
+				path = removeCommonPath(_path, getHomePath(), contains, true);
 
 				// success
 				if(contains)
@@ -582,10 +585,10 @@ namespace Utils
 
 //////////////////////////////////////////////////////////////////////////
 
-		std::string removeCommonPath(const std::string& _path, const std::string& _common, bool& _contains)
+		std::string removeCommonPath(const std::string& _path, const std::string& _common, bool& _contains, const bool _skipDirectoryCheck)
 		{
 			const std::string path   = getGenericPath(_path);
-			const std::string common = isDirectory(_common) ? getGenericPath(_common) : getParent(_common);
+			const std::string common = (_skipDirectoryCheck || isDirectory(_common)) ? getGenericPath(_common) : getParent(_common);
 
 			// check if path contains common
 			if(path.find(common) == 0)
@@ -644,17 +647,18 @@ namespace Utils
 
 		bool removeFile(const std::string& _path)
 		{
-			const std::string path = getGenericPath(_path);
+			const std::unique_lock<std::recursive_mutex> lock(mutex);
+			const std::string                            path = getGenericPath(_path);
 
 			// don't remove if it doesn't exists
 			if(!exists(path))
 				return true;
 
 			bool removed = (unlink(path.c_str()) == 0);
-			
+
 			// if removed, let's remove it from the index
 			if (removed)
-				mPathExistsIndex[_path] = false;
+				pathExistsIndex[_path] = false;
 
 			// try to remove file
 			return removed;
@@ -691,15 +695,17 @@ namespace Utils
 
 		bool exists(const std::string& _path)
 		{
-			if (mPathExistsIndex.find(_path) == mPathExistsIndex.cend())
+			const std::unique_lock<std::recursive_mutex> lock(mutex);
+
+			if(pathExistsIndex.find(_path) == pathExistsIndex.cend())
 			{
 				const std::string path = getGenericPath(_path);
 				struct stat64 info;
 				// check if stat64 succeeded
-				mPathExistsIndex[_path] = (stat64(path.c_str(), &info) == 0);
+				pathExistsIndex[_path] = (stat64(path.c_str(), &info) == 0);
 			}
 
-			return mPathExistsIndex.at(_path);
+			return pathExistsIndex.at(_path);
 
 		} // exists
 
@@ -816,16 +822,17 @@ namespace Utils
 #else // !_WIN32
 			const std::string path = getGenericPath(_path);
 
-			// regular files and executables but not setuid, setgid, shared text (mode 0755)
-			const mode_t  mask = S_IFREG | S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+			// regular files and executables, but not setuid, setgid, shared text
+			const mode_t mask = S_IFREG;
+			const mode_t mask_exec = S_IXUSR | S_IXGRP | S_IXOTH;
 			struct stat64 info;
 
 			// check if stat64 succeeded
 			if(stat64(path.c_str(), &info) != 0)
 				return false;
 
-			// check for mask attributes only
-			return ((info.st_mode & mask) == info.st_mode);
+			// check for mask attributes
+			return (info.st_mode & mask) == mask && (info.st_mode & mask_exec) != 0;
 
 #endif // !_WIN32
 		} // isExecutable

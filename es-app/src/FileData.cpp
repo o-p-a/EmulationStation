@@ -290,7 +290,7 @@ void FileData::launchGame(Window* window)
 	command = Utils::String::replace(command, "%ES_HOME%", es_home);
 	command = Utils::String::replace(command, "%ES_CFG%", es_cfg);
 
-	Scripting::fireEvent("game-start", rom, basename);
+	Scripting::fireEvent("game-start", rom, basename, name);
 
 	LOG(LogInfo) << "	" << command;
 	int exitCode = runSystemCommand(command);
