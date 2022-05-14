@@ -94,7 +94,6 @@ namespace Utils
 
 #if defined(_WIN32)
 				const std::unique_lock<std::recursive_mutex> lock(mutex);
-
 				WIN32_FIND_DATAW                             findData;
 				const std::string                            wildcard = path + "/*";
 				const HANDLE                                 hFind    = FindFirstFileW(convertToWideString(wildcard).c_str(), &findData);
