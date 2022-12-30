@@ -274,7 +274,7 @@ void FileData::launchGame(Window* window)
 	AudioManager::getInstance()->deinit();
 	VolumeControl::getInstance()->deinit();
 	InputManager::getInstance()->deinit();
-	window->deinit();
+	window->suspend();
 
 	std::string command = mEnvData->mLaunchCommand;
 
@@ -305,7 +305,7 @@ void FileData::launchGame(Window* window)
 
 	Scripting::fireEvent("game-end");
 
-	window->init();
+	window->resume();
 	InputManager::getInstance()->init();
 	VolumeControl::getInstance()->init();
 	window->normalizeNextUpdate();

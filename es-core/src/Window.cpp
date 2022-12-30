@@ -77,6 +77,11 @@ bool Window::init()
 		return false;
 	}
 
+	return resume();
+}
+
+bool Window::resume()
+{
 	ResourceManager::getInstance()->reloadAll();
 
 	//keep a reference to the default fonts, so they don't keep getting destroyed/recreated
@@ -99,13 +104,18 @@ bool Window::init()
 
 void Window::deinit()
 {
+	suspend();
+	Renderer::deinit();
+}
+
+void Window::suspend()
+{
 	// Hide all GUI elements on uninitialisation - this disable
 	for(auto i = mGuiStack.cbegin(); i != mGuiStack.cend(); i++)
 	{
 		(*i)->onHide();
 	}
 	ResourceManager::getInstance()->unloadAll();
-	Renderer::deinit();
 }
 
 void Window::textInput(const char* text)
