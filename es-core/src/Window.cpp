@@ -103,12 +103,12 @@ bool Window::_init()
 }
 
 #ifdef WIN32
-bool Window::resusme()
+bool Window::resume()
 {
 	return _init();
 }
 #else
-bool Window::resusme()
+bool Window::resume()
 {
 	return init();
 }

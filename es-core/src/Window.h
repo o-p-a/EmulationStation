@@ -79,6 +79,8 @@ public:
 	void renderScreenSaver();
 
 private:
+	bool _init();
+	void _deinit();
 	void onSleep();
 	void onWake();
 	bool inputDuringScreensaver(InputConfig* config, Input input);
