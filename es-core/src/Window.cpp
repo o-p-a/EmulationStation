@@ -131,14 +131,14 @@ void Window::deinit()
 }
 
 #ifdef WIN32
-bool Window::suspend()
+void Window::suspend()
 {
-	return _deinit();
+	_deinit();
 }
 #else
-bool Window::suspend()
+void Window::suspend()
 {
-	return deinit();
+	deinit();
 }
 #endif
 
