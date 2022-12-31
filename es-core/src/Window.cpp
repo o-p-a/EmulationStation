@@ -77,10 +77,10 @@ bool Window::init()
 		return false;
 	}
 
-	return resume();
+	return _init();
 }
 
-bool Window::resume()
+bool Window::_init()
 {
 	ResourceManager::getInstance()->reloadAll();
 
@@ -102,13 +102,19 @@ bool Window::resume()
 	return true;
 }
 
-void Window::deinit()
+#ifdef WIN32
+bool Window::resusme()
 {
-	suspend();
-	Renderer::deinit();
+	return _init();
 }
+#else
+bool Window::resusme()
+{
+	return init();
+}
+#endif
 
-void Window::suspend()
+void Window::_deinit()
 {
 	// Hide all GUI elements on uninitialisation - this disable
 	for(auto i = mGuiStack.cbegin(); i != mGuiStack.cend(); i++)
@@ -117,6 +123,24 @@ void Window::suspend()
 	}
 	ResourceManager::getInstance()->unloadAll();
 }
+
+void Window::deinit()
+{
+	_deinit();
+	Renderer::deinit();
+}
+
+#ifdef WIN32
+bool Window::suspend()
+{
+	return _deinit();
+}
+#else
+bool Window::suspend()
+{
+	return deinit();
+}
+#endif
 
 void Window::textInput(const char* text)
 {
