@@ -6,7 +6,7 @@
 #include "platform.h"
 #include "Scripting.h"
 #include "Window.h"
-#include <pugixml/src/pugixml.hpp>
+#include <pugixml.hpp>
 #include <SDL.h>
 #include <iostream>
 #include <assert.h>
@@ -100,6 +100,11 @@ void InputManager::addJoystickByDeviceIndex(int id)
 
 	// create the InputConfig
 	mInputConfigs[joyId] = new InputConfig(joyId, SDL_JoystickName(joy), guid);
+
+	// add Vendor and Product IDs
+	mInputConfigs[joyId]->setVendorId(SDL_JoystickGetVendor(joy));
+	mInputConfigs[joyId]->setProductId(SDL_JoystickGetProduct(joy));
+
 	if(!loadInputConfig(mInputConfigs[joyId]))
 	{
 		LOG(LogInfo) << "Added unconfigured joystick '" << SDL_JoystickName(joy) << "' (GUID: " << guid << ", instance ID: " << joyId << ", device index: " << id << ").";
@@ -293,11 +298,7 @@ bool InputManager::loadInputConfig(InputConfig* config)
 		return false;
 
 	pugi::xml_document doc;
-#if defined(_WIN32)
-	pugi::xml_parse_result res = doc.load_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 	pugi::xml_parse_result res = doc.load_file(path.c_str());
-#endif
 
 	if(!res)
 	{
@@ -351,11 +352,7 @@ void InputManager::writeDeviceConfig(InputConfig* config)
 	if(Utils::FileSystem::exists(path))
 	{
 		// merge files
-#if defined(_WIN32)
-		pugi::xml_parse_result result = doc.load_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
-#endif
 		if(!result)
 		{
 			LOG(LogError) << "Error parsing input config: " << result.description();
@@ -399,11 +396,7 @@ void InputManager::writeDeviceConfig(InputConfig* config)
 		root = doc.append_child("inputList");
 
 	config->writeToXML(root);
-#if defined(_WIN32)
-	doc.save_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 	doc.save_file(path.c_str());
-#endif
 
 	Scripting::fireEvent("config-changed");
 	Scripting::fireEvent("controls-changed");
@@ -421,11 +414,7 @@ void InputManager::doOnFinish()
 
 	if(Utils::FileSystem::exists(path))
 	{
-#if defined(_WIN32)
-		pugi::xml_parse_result result = doc.load_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
-#endif
 		if(!result)
 		{
 			LOG(LogError) << "Error parsing input config: " << result.description();

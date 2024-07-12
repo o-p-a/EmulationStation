@@ -26,25 +26,15 @@ void Log::setReportingLevel(LogLevel level)
 
 void Log::init()
 {
-#if defined(_WIN32)
-	_wunlink(Utils::FileSystem::convertToWideString(getLogPath() + ".bak").c_str());
-	_wrename(Utils::FileSystem::convertToWideString(getLogPath()).c_str(),
-	 		Utils::FileSystem::convertToWideString(getLogPath() + ".bak").c_str());
-#else
 	remove((getLogPath() + ".bak").c_str());
 	// rename previous log file
 	rename(getLogPath().c_str(), (getLogPath() + ".bak").c_str());
-#endif
 	return;
 }
 
 void Log::open()
 {
-#if defined(_WIN32)
-	file = _wfopen(Utils::FileSystem::convertToWideString(getLogPath()).c_str(), L"w");
-#else
 	file = fopen(getLogPath().c_str(), "w");
-#endif
 }
 
 std::ostringstream& Log::get(LogLevel level)
@@ -63,6 +53,7 @@ void Log::flush()
 
 void Log::close()
 {
+	if(file == NULL) return;
 	fclose(file);
 	file = NULL;
 }

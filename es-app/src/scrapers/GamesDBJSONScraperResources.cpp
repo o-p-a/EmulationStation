@@ -144,11 +144,7 @@ bool TheGamesDBJSONRequestResources::saveResource(HttpReq* req, std::unordered_m
 
 	ensureScrapersResourcesDir();
 
-#if defined(_WIN32)
-	std::ofstream fout(Utils::FileSystem::convertToWideString(file_name));
-#else
 	std::ofstream fout(file_name);
-#endif
 	fout << req->getContent();
 	fout.close();
 	loadResource(resource, resource_name, file_name);
@@ -170,11 +166,7 @@ int TheGamesDBJSONRequestResources::loadResource(
 {
 
 
-#if defined(_WIN32)
-	std::ifstream fin(Utils::FileSystem::convertToWideString(file_name));
-#else
 	std::ifstream fin(file_name);
-#endif
 	if (!fin.good())
 	{
 		return 1;

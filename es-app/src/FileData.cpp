@@ -250,21 +250,30 @@ void FileData::removeChild(FileData* file)
 
 void FileData::sort(ComparisonFunction& comparator, bool ascending)
 {
-	std::stable_sort(mChildren.begin(), mChildren.end(), comparator);
-
-	for(auto it = mChildren.cbegin(); it != mChildren.cend(); it++)
+	if (ascending)
 	{
-		if((*it)->getChildren().size() > 0)
-			(*it)->sort(comparator, ascending);
+		std::stable_sort(mChildren.begin(), mChildren.end(), comparator);
+		for(auto it = mChildren.cbegin(); it != mChildren.cend(); it++)
+		{
+			if((*it)->getChildren().size() > 0)
+				(*it)->sort(comparator, ascending);
+		}
 	}
-
-	if(!ascending)
-		std::reverse(mChildren.begin(), mChildren.end());
+	else
+	{
+		std::stable_sort(mChildren.rbegin(), mChildren.rend(), comparator);
+		for(auto it = mChildren.rbegin(); it != mChildren.rend(); it++)
+		{
+			if((*it)->getChildren().size() > 0)
+				(*it)->sort(comparator, ascending);
+		}
+	}
 }
 
 void FileData::sort(const SortType& type)
 {
 	sort(*type.comparisonFunction, type.ascending);
+	mSortDesc = type.description;
 }
 
 void FileData::launchGame(Window* window)
@@ -274,7 +283,7 @@ void FileData::launchGame(Window* window)
 	AudioManager::getInstance()->deinit();
 	VolumeControl::getInstance()->deinit();
 	InputManager::getInstance()->deinit();
-	window->suspend();
+	window->deinit();
 
 	std::string command = mEnvData->mLaunchCommand;
 
@@ -282,16 +291,10 @@ void FileData::launchGame(Window* window)
 	const std::string basename = Utils::FileSystem::getStem(getPath());
 	const std::string rom_raw  = Utils::FileSystem::getPreferredPath(getPath());
 	const std::string name     = getName();
-	const std::string rom_dir  = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(getPath()));
-	const std::string es_home  = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath()));
-	const std::string es_cfg   = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
 
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
 	command = Utils::String::replace(command, "%ROM_RAW%", rom_raw);
-	command = Utils::String::replace(command, "%ROM_DIR%", rom_dir);
-	command = Utils::String::replace(command, "%ES_HOME%", es_home);
-	command = Utils::String::replace(command, "%ES_CFG%", es_cfg);
 
 	Scripting::fireEvent("game-start", rom, basename, name);
 
@@ -305,7 +308,7 @@ void FileData::launchGame(Window* window)
 
 	Scripting::fireEvent("game-end");
 
-	window->resume();
+	window->init();
 	InputManager::getInstance()->init();
 	VolumeControl::getInstance()->init();
 	window->normalizeNextUpdate();
@@ -383,6 +386,6 @@ FileData::SortType getSortTypeFromString(std::string desc) {
 			return sort;
 		}
 	}
-	// if not found default to name, ascending
+	// if not found default to "name, ascending"
 	return FileSorts::SortTypes.at(0);
 }

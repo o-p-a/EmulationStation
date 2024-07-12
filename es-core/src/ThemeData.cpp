@@ -7,7 +7,7 @@
 #include "Log.h"
 #include "platform.h"
 #include "Settings.h"
-#include <pugixml/src/pugixml.hpp>
+#include <pugixml.hpp>
 #include <algorithm>
 
 std::vector<std::string> ThemeData::sSupportedViews { { "system" }, { "basic" }, { "detailed" }, { "grid" }, { "video" } };
@@ -241,11 +241,7 @@ void ThemeData::loadFile(std::map<std::string, std::string> sysDataMap, const st
 	mVariables.insert(sysDataMap.cbegin(), sysDataMap.cend());
 
 	pugi::xml_document doc;
-#if defined(_WIN32)
-	pugi::xml_parse_result res = doc.load_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 	pugi::xml_parse_result res = doc.load_file(path.c_str());
-#endif
 	if(!res)
 		throw error << "XML parsing error: \n    " << res.description();
 
@@ -301,11 +297,7 @@ void ThemeData::parseIncludes(const pugi::xml_node& root)
 		mPaths.push_back(path);
 
 		pugi::xml_document includeDoc;
-#if defined(_WIN32)
-		pugi::xml_parse_result result = includeDoc.load_file(Utils::FileSystem::convertToWideString(path).c_str());
-#else
 		pugi::xml_parse_result result = includeDoc.load_file(path.c_str());
-#endif
 		if(!result)
 			throw error << "Error parsing file: \n    " << result.description();
 

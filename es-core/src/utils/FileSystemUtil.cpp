@@ -9,13 +9,13 @@
 
 #if defined(_WIN32)
 // because windows...
-#include "utils/StringUtil.h"
 #include <direct.h>
 #include <Windows.h>
 #define getcwd _getcwd
+#define mkdir(x,y) _mkdir(x)
 #define snprintf _snprintf
-#define stat _stat
 #define stat64 _stat64
+#define unlink _unlink
 #define S_ISREG(x) (((x) & S_IFMT) == S_IFREG)
 #define S_ISDIR(x) (((x) & S_IFMT) == S_IFDIR)
 #else // _WIN32
@@ -47,38 +47,6 @@ namespace Utils
 			return std::string(string);
 
 		} // convertFromWideString
-		std::wstring convertToWideString(const std::string string)
-		{
-			int         numChars = MultiByteToWideChar(CP_UTF8, 0, string.c_str(), (int)string.length(), nullptr, 0);
-			std::wstring wstring;
-
-			wstring.resize(numChars);
-			MultiByteToWideChar(CP_UTF8, 0, string.c_str(), (int)string.length(), (wchar_t*)wstring.c_str(), numChars);
-
-			return std::wstring(wstring);
-
-		} // convertToWideString
-		static void getenv(const char* name, std::string &val)
-		{
-			wchar_t* r = ::_wgetenv(convertToWideString(name).c_str());
-			val = r ? convertFromWideString(r) : "";
-		} // getenv
-		static int stat(const char* pathname, struct stat* buf)
-		{
-			return _wstat(convertToWideString(pathname).c_str(), buf);
-		} // stat
-		static int stat64(const char* pathname, struct stat64* buf)
-		{
-			return _wstat64(convertToWideString(pathname).c_str(), buf);
-		} // stat64
-		static int unlink(const char* pathname)
-		{
-			return _wunlink(convertToWideString(pathname).c_str());
-		} // unlink
-		static int mkdir(const char *pathname, int)
-		{
-			return _wmkdir(convertToWideString(pathname).c_str());
-		} // mkdir
 #endif // _WIN32
 
 //////////////////////////////////////////////////////////////////////////
@@ -96,7 +64,7 @@ namespace Utils
 				const std::unique_lock<std::recursive_mutex> lock(mutex);
 				WIN32_FIND_DATAW                             findData;
 				const std::string                            wildcard = path + "/*";
-				const HANDLE                                 hFind    = FindFirstFileW(convertToWideString(wildcard).c_str(), &findData);
+				const HANDLE                                 hFind    = FindFirstFileW(std::wstring(wildcard.begin(), wildcard.end()).c_str(), &findData);
 
 				if(hFind != INVALID_HANDLE_VALUE)
 				{
@@ -204,32 +172,22 @@ namespace Utils
 			if(Utils::FileSystem::exists(getExePath() + "/.emulationstation/es_systems.cfg"))
 				homePath = getExePath();
 
-#if defined(_WIN32)
 			// check for HOME environment variable
 			if(!homePath.length())
 			{
-				std::string envHome;
-				getenv("HOME", envHome);
-				if(!envHome.empty())
+				const char* envHome = getenv("HOME");
+				if(envHome)
 					homePath = getGenericPath(envHome);
 			}
 
+#if defined(_WIN32)
 			// on Windows we need to check HOMEDRIVE and HOMEPATH
 			if(!homePath.length())
 			{
-				std::string envHomeDrive, envHomePath;
-				getenv("HOMEDRIVE", envHomeDrive);
-				getenv("HOMEPATH", envHomePath);
-				if(!envHomeDrive.empty() && !envHomePath.empty())
+				const char* envHomeDrive = getenv("HOMEDRIVE");
+				const char* envHomePath  = getenv("HOMEPATH");
+				if(envHomeDrive && envHomePath)
 					homePath = getGenericPath(std::string(envHomeDrive) + "/" + envHomePath);
-			}
-#else // _WIN32
-			// check for HOME environment variable
-			if(!homePath.length())
-			{
-				char* envHome = getenv("HOME");
-				if(envHome)
-					homePath = getGenericPath(envHome);
 			}
 #endif // _WIN32
 
@@ -261,11 +219,8 @@ namespace Utils
 
 #if defined(_WIN32)
 			std::wstring result(path_max, 0);
-			DWORD r;
-			if((r = GetModuleFileNameW(nullptr, (LPWSTR)result.data(), result.size())) != 0){
-				result.resize(r);
+			if(GetModuleFileNameW(nullptr, &result[0], path_max) != 0)
 				exePath = convertFromWideString(result);
-			}
 #else // _WIN32
 			std::string result(path_max, 0);
 			if(readlink("/proc/self/exe", &result[0], path_max) != -1)
@@ -610,17 +565,14 @@ namespace Utils
 			std::string       resolved;
 
 #if defined(_WIN32)
-			const HANDLE hFile = CreateFileW(convertToWideString(path).c_str(), FILE_READ_ATTRIBUTES, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
+			const HANDLE hFile = CreateFile(path.c_str(), FILE_READ_ATTRIBUTES, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
 
 			if(hFile != INVALID_HANDLE_VALUE)
 			{
-				std::wstring wresolved;
-				DWORD r;
-				wresolved.resize(GetFinalPathNameByHandleW(hFile, nullptr, 0, FILE_NAME_NORMALIZED));
-				if((r = GetFinalPathNameByHandleW(hFile, (LPWSTR)wresolved.data(), wresolved.size(), FILE_NAME_NORMALIZED)) > 0)
+				resolved.resize(GetFinalPathNameByHandle(hFile, nullptr, 0, FILE_NAME_NORMALIZED) + 1);
+				if(GetFinalPathNameByHandle(hFile, (LPSTR)resolved.data(), (DWORD)resolved.size(), FILE_NAME_NORMALIZED) > 0)
 				{
-					wresolved.resize(r);
-					resolved = convertFromWideString(wresolved);
+					resolved.resize(resolved.size() - 1);
 					resolved = getGenericPath(resolved);
 				}
 				CloseHandle(hFile);
@@ -654,7 +606,7 @@ namespace Utils
 				return true;
 
 			bool removed = (unlink(path.c_str()) == 0);
-
+			
 			// if removed, let's remove it from the index
 			if (removed)
 				pathExistsIndex[_path] = false;
@@ -769,7 +721,7 @@ namespace Utils
 
 #if defined(_WIN32)
 			// check for symlink attribute
-			const DWORD Attributes = GetFileAttributesW(convertToWideString(path).c_str());
+			const DWORD Attributes = GetFileAttributes(path.c_str());
 			if((Attributes != INVALID_FILE_ATTRIBUTES) && (Attributes & FILE_ATTRIBUTE_REPARSE_POINT))
 				return true;
 #else // _WIN32
@@ -796,7 +748,7 @@ namespace Utils
 
 #if defined(_WIN32)
 			// check for hidden attribute
-			const DWORD Attributes = GetFileAttributesW(convertToWideString(path).c_str());
+			const DWORD Attributes = GetFileAttributes(path.c_str());
 			if((Attributes != INVALID_FILE_ATTRIBUTES) && (Attributes & FILE_ATTRIBUTE_HIDDEN))
 				return true;
 #endif // _WIN32
@@ -812,20 +764,9 @@ namespace Utils
 
 //////////////////////////////////////////////////////////////////////////
 
+#if !defined(_WIN32)
 		bool isExecutable(const std::string& _path)
 		{
-#if defined(_WIN32)
-			std::string ext;
-			getenv("PATHEXT", ext);
-			Utils::String::stringVector pathext = Utils::String::delimitedStringToVector(ext, ";");
-
-			ext = getExtension(_path);
-			for(auto it = pathext.cbegin(); it != pathext.cend(); it++){
-				if(stricmp(ext.c_str(), it->c_str()) == 0)
-					return true;
-			}
-			return false;
-#else // !_WIN32
 			const std::string path = getGenericPath(_path);
 
 			// regular files and executables, but not setuid, setgid, shared text
@@ -840,8 +781,8 @@ namespace Utils
 			// check for mask attributes
 			return (info.st_mode & mask) == mask && (info.st_mode & mask_exec) != 0;
 
-#endif // !_WIN32
 		} // isExecutable
+#endif // !_WIN32
 
 	} // FileSystem::
 
