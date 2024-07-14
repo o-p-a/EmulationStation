@@ -318,8 +318,8 @@ void FileData::launchGame(Window* window)
 	window->init();
 	InputManager::getInstance()->init();
 	VolumeControl::getInstance()->init();
-	window->normalizeNextUpdate();
 #endif
+	window->normalizeNextUpdate();
 
 	//update number of times the game has been launched
 
