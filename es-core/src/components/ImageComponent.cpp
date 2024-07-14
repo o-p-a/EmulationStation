@@ -360,8 +360,8 @@ void ImageComponent::fadeIn(bool textureLoaded)
 			if (!mFading)
 			{
 				// Start with a zero opacity and flag it as fading
-				mFadeOpacity = 0;
-				mFading = true;
+				mFadeOpacity = 255;
+				mFading = false;
 				updateColors();
 			}
 		}
