@@ -135,4 +135,3 @@ jobs:
           name: EmulationStation
           path: |
             ${{github.workspace}}\Release\*.exe
-q
