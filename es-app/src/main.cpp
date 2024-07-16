@@ -417,8 +417,6 @@ int main(int argc, char* argv[])
 		SDL_Event event;
 		bool ps_standby = PowerSaver::getState() && (int) SDL_GetTicks() - ps_time > PowerSaver::getMode();
 
-LOG(LogInfo) << "PollEvent start";
-Log::flush();
 		if(ps_standby ? SDL_WaitEventTimeout(&event, PowerSaver::getTimeout()) : SDL_PollEvent(&event))
 		{
 			do
@@ -443,8 +441,6 @@ Log::flush();
 			// timeout as an event
 			ps_time = SDL_GetTicks();
 		}
-LOG(LogInfo) << "PollEvent end";
-Log::flush();
 
 		if(window.isSleeping())
 		{
@@ -461,8 +457,6 @@ Log::flush();
 		if(deltaTime < 0)
 			deltaTime = 1000;
 
-LOG(LogInfo) << "update";
-Log::flush();
 		window.update(deltaTime);
 LOG(LogInfo) << "render";
 Log::flush();
@@ -471,7 +465,6 @@ LOG(LogInfo) << "swapBuffers";
 Log::flush();
 		Renderer::swapBuffers();
 
-LOG(LogInfo) << "--------";
 		Log::flush();
 	}
 
