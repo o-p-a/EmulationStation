@@ -467,11 +467,11 @@ Log::flush();
 LOG(LogInfo) << "render";
 Log::flush();
 		window.render();
-OG(LogInfo) << "swapBuffers";
+LOG(LogInfo) << "swapBuffers";
 Log::flush();
 		Renderer::swapBuffers();
 
-OG(LogInfo) << "--------";
+LOG(LogInfo) << "--------";
 		Log::flush();
 	}
 
