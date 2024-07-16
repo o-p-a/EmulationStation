@@ -135,7 +135,4 @@ jobs:
           name: EmulationStation
           path: |
             ${{github.workspace}}\Release\*.exe
-            ${{github.workspace}}\Release\*.dll
-            ${{github.workspace}}\Release\resources\
-            ${{github.workspace}}\Release\plugins\
-            ${{github.workspace}}\Release\.emulationstation\
+q
