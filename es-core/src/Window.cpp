@@ -210,8 +210,6 @@ void Window::render()
 
 	mRenderedHelpPrompts = false;
 
-LOG(LogInfo) << "Window::render A";
-Log::flush();
 	// draw only bottom and top of GuiStack (if they are different)
 	if(mGuiStack.size())
 	{
@@ -221,51 +219,37 @@ Log::flush();
 LOG(LogInfo) << "Window::render bottom";
 Log::flush();
 		bottom->render(transform);
+LOG(LogInfo) << "Window::render --------";
+Log::flush();
 		if(bottom != top)
 		{
-LOG(LogInfo) << "Window::render mBackgroundOverlay";
-Log::flush();
 			mBackgroundOverlay->render(transform);
-LOG(LogInfo) << "Window::render top";
-Log::flush();
 			top->render(transform);
 		}
 	}
 
-LOG(LogInfo) << "Window::render B";
-Log::flush();
 	if(!mRenderedHelpPrompts)
 		mHelp->render(transform);
 
-LOG(LogInfo) << "Window::render C";
-Log::flush();
 	if(Settings::getInstance()->getBool("DrawFramerate") && mFrameDataText)
 	{
 		Renderer::setMatrix(Transform4x4f::Identity());
 		mDefaultFonts.at(1)->renderTextCache(mFrameDataText.get());
 	}
 
-LOG(LogInfo) << "Window::render D";
-Log::flush();
 	unsigned int screensaverTime = (unsigned int)Settings::getInstance()->getInt("ScreenSaverTime");
 	if(mTimeSinceLastInput >= screensaverTime && screensaverTime != 0)
 		startScreenSaver();
 
-LOG(LogInfo) << "Window::render E";
-Log::flush();
 	// Always call the screensaver render function regardless of whether the screensaver is active
 	// or not because it may perform a fade on transition
 	renderScreenSaver();
 
-LOG(LogInfo) << "Window::render F";
-Log::flush();
 	if(mInfoPopup)
 	{
 		mInfoPopup->render(transform);
 	}
 
-LOG(LogInfo) << "Window::render G";
-Log::flush();
 	if(mTimeSinceLastInput >= screensaverTime && screensaverTime != 0)
 	{
 		unsigned int systemSleepTime = (unsigned int)Settings::getInstance()->getInt("SystemSleepTime");
@@ -274,8 +258,6 @@ Log::flush();
 			onSleep();
 		}
 	}
-LOG(LogInfo) << "Window::render ---";
-Log::flush();
 }
 
 void Window::normalizeNextUpdate()
