@@ -73,15 +73,9 @@ LOG(LogInfo) << "GuiComponent::render end"; Log::flush();
 
 void GuiComponent::renderChildren(const Transform4x4f& transform) const
 {
-LOG(LogInfo) << "GuiComponent::renderChildren" << getChildCount();
-Log::flush();
 	for(unsigned int i = 0; i < getChildCount(); i++)
 	{
-LOG(LogInfo) << "GuiComponent::renderChildren[" << i << "] start";
-Log::flush();
 		getChild(i)->render(transform);
-LOG(LogInfo) << "GuiComponent::renderChildren end";
-Log::flush();
 	}
 }
 

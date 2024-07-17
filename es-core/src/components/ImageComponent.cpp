@@ -322,7 +322,6 @@ void ImageComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
-LOG(LogInfo) << "ImageComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 	Renderer::setMatrix(trans);
 
@@ -349,7 +348,6 @@ LOG(LogInfo) << "ImageComponent::render start"; Log::flush();
 	}
 
 	GuiComponent::renderChildren(trans);
-LOG(LogInfo) << "ImageComponent::render end"; Log::flush();
 }
 
 void ImageComponent::fadeIn(bool textureLoaded)

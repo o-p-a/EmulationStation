@@ -38,14 +38,12 @@ void AsyncReqComponent::update(int deltaTime)
 
 void AsyncReqComponent::render(const Transform4x4f& /*parentTrans*/)
 {
-LOG(LogInfo) << "AsyncReqComponent::render start"; Log::flush();
 	Transform4x4f trans = Transform4x4f::Identity();
 	trans = trans.translate(Vector3f(Renderer::getScreenWidth() / 2.0f, Renderer::getScreenHeight() / 2.0f, 0));
 	Renderer::setMatrix(trans);
 
 	Vector3f point(Math::cosf(mTime * 0.01f) * 12, Math::sinf(mTime * 0.01f) * 12, 0);
 	Renderer::drawRect(point.x(), point.y(), 8.0f, 8.0f, 0x0000FFFF, 0x0000FFFF);
-LOG(LogInfo) << "AsyncReqComponent::render end"; Log::flush();
 }
 
 std::vector<HelpPrompt> AsyncReqComponent::getHelpPrompts()

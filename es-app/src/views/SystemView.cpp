@@ -348,7 +348,6 @@ void SystemView::render(const Transform4x4f& parentTrans)
 	if(size() == 0)
 		return;  // nothing to render
 
-LOG(LogInfo) << "SystemView::render start"; Log::flush();
 	Transform4x4f trans = getTransform() * parentTrans;
 
 	auto systemInfoZIndex = mSystemInfo.getZIndex();
@@ -372,7 +371,6 @@ LOG(LogInfo) << "SystemView::render start"; Log::flush();
 	}
 
 	renderExtras(trans, minMax.second, INT16_MAX);
-LOG(LogInfo) << "SystemView::render end"; Log::flush();
 }
 
 std::vector<HelpPrompt> SystemView::getHelpPrompts()

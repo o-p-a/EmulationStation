@@ -18,7 +18,6 @@ void ScrollableContainer::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
-LOG(LogInfo) << "ScrollableContainer::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	Vector2i clipPos((int)trans.translation().x(), (int)trans.translation().y());
@@ -34,7 +33,6 @@ LOG(LogInfo) << "ScrollableContainer::render start"; Log::flush();
 	GuiComponent::renderChildren(trans);
 
 	Renderer::popClipRect();
-LOG(LogInfo) << "ScrollableContainer::render end"; Log::flush();
 }
 
 void ScrollableContainer::setAutoScroll(bool autoScroll)

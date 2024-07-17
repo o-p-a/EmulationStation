@@ -135,10 +135,8 @@ void HelpComponent::setOpacity(unsigned char opacity)
 
 void HelpComponent::render(const Transform4x4f& parentTrans)
 {
-LOG(LogInfo) << "HelpComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if(mGrid)
 		mGrid->render(trans);
-LOG(LogInfo) << "HelpComponent::render end"; Log::flush();
 }

@@ -39,12 +39,10 @@ GridTileComponent::GridTileComponent(Window* window) : GuiComponent(window), mBa
 
 void GridTileComponent::render(const Transform4x4f& parentTrans)
 {
-LOG(LogInfo) << "GridTileComponent::render start"; Log::flush();
 	Transform4x4f trans = getTransform() * parentTrans;
 
 	if (mVisible)
 		renderChildren(trans);
-LOG(LogInfo) << "GridTileComponent::render end"; Log::flush();
 }
 
 // Update all the tile properties to the new status (selected or default)

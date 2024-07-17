@@ -216,11 +216,7 @@ void Window::render()
 		auto& bottom = mGuiStack.front();
 		auto& top = mGuiStack.back();
 
-LOG(LogInfo) << "Window::render bottom";
-Log::flush();
 		bottom->render(transform);
-LOG(LogInfo) << "Window::render --------";
-Log::flush();
 		if(bottom != top)
 		{
 			mBackgroundOverlay->render(transform);

@@ -458,11 +458,7 @@ int main(int argc, char* argv[])
 			deltaTime = 1000;
 
 		window.update(deltaTime);
-LOG(LogInfo) << "render";
-Log::flush();
 		window.render();
-LOG(LogInfo) << "swapBuffers";
-Log::flush();
 		Renderer::swapBuffers();
 
 		Log::flush();

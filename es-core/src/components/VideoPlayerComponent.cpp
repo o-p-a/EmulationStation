@@ -33,12 +33,10 @@ void VideoPlayerComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
-LOG(LogInfo) << "VideoPlayerComponent::render start"; Log::flush();
 	VideoComponent::render(parentTrans);
 
 	if (!mIsPlaying || mPlayerPid == -1)
 		VideoComponent::renderSnapshot(parentTrans);
-LOG(LogInfo) << "VideoPlayerComponent::render end"; Log::flush();
 }
 
 void VideoPlayerComponent::setResize(float width, float height)
