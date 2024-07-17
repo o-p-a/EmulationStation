@@ -83,7 +83,9 @@ std::string DateTimeComponent::getDisplayString() const
 
 void DateTimeComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "DateTimeComponent::render start"; Log::flush();
 	TextComponent::render(parentTrans);
+LOG(LogInfo) << "DateTimeComponent::render end"; Log::flush();
 }
 
 

@@ -354,6 +354,7 @@ void ComponentGrid::update(int deltaTime)
 
 void ComponentGrid::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "ComponentGrid::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	renderChildren(trans);
@@ -365,6 +366,7 @@ void ComponentGrid::render(const Transform4x4f& parentTrans)
 		Renderer::bindTexture(0);
 		Renderer::drawLines(&mLines[0], (int)mLines.size());
 	}
+LOG(LogInfo) << "ComponentGrid::render end"; Log::flush();
 }
 
 void ComponentGrid::textInput(const char* text)

@@ -152,6 +152,7 @@ void VideoComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
+LOG(LogInfo) << "VideoComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 	GuiComponent::renderChildren(trans);
 
@@ -162,6 +163,7 @@ void VideoComponent::render(const Transform4x4f& parentTrans)
 
 	// Handle looping of the video
 	handleLooping();
+LOG(LogInfo) << "VideoComponent::render end"; Log::flush();
 }
 
 void VideoComponent::renderSnapshot(const Transform4x4f& parentTrans)

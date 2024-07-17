@@ -198,6 +198,7 @@ void ImageGridComponent<T>::update(int deltaTime)
 template<typename T>
 void ImageGridComponent<T>::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "ImageGridComponent::render start"; Log::flush();
 	Transform4x4f trans = getTransform() * parentTrans;
 	Transform4x4f tileTrans = trans;
 
@@ -243,6 +244,7 @@ void ImageGridComponent<T>::render(const Transform4x4f& parentTrans)
 	listRenderTitleOverlay(trans);
 
 	GuiComponent::renderChildren(trans);
+LOG(LogInfo) << "ImageGridComponent::render end"; Log::flush();
 }
 
 template<typename T>

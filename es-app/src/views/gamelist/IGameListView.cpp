@@ -42,6 +42,7 @@ HelpStyle IGameListView::getHelpStyle()
 
 void IGameListView::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "IGameListView::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	float scaleX = trans.r0().x();
@@ -53,4 +54,5 @@ void IGameListView::render(const Transform4x4f& parentTrans)
 	Renderer::pushClipRect(pos, size);
 	renderChildren(trans);
 	Renderer::popClipRect();
+LOG(LogInfo) << "IGameListView::render end"; Log::flush();
 }

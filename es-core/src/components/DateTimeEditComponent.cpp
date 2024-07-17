@@ -140,6 +140,7 @@ void DateTimeEditComponent::update(int deltaTime)
 
 void DateTimeEditComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "DateTimeEditComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if(mTextCache)
@@ -164,6 +165,7 @@ void DateTimeEditComponent::render(const Transform4x4f& parentTrans)
 			}
 		}
 	}
+LOG(LogInfo) << "DateTimeEditComponent::render end"; Log::flush();
 }
 
 void DateTimeEditComponent::setValue(const std::string& val)

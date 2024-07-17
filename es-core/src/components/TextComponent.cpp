@@ -97,6 +97,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
+LOG(LogInfo) << "TextComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if (mRenderBackground)
@@ -157,6 +158,7 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 		}
 		mFont->renderTextCache(mTextCache.get());
 	}
+LOG(LogInfo) << "TextComponent::render end"; Log::flush();
 }
 
 std::string TextComponent::calculateExtent(bool allow_wrapping)

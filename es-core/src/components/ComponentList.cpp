@@ -160,6 +160,7 @@ void ComponentList::render(const Transform4x4f& parentTrans)
 	if(!size())
 		return;
 
+LOG(LogInfo) << "ComponentList::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	// clip everything to be inside our bounds
@@ -226,6 +227,7 @@ void ComponentList::render(const Transform4x4f& parentTrans)
 	Renderer::drawRect(0.0f, y, mSize.x(), 1.0f, 0xC6C7C6FF, 0xC6C7C6FF);
 
 	Renderer::popClipRect();
+LOG(LogInfo) << "ComponentList::render end"; Log::flush();
 }
 
 float ComponentList::getRowHeight(const ComponentListRow& row) const

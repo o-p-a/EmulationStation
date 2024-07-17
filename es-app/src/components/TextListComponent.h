@@ -151,6 +151,7 @@ void TextListComponent<T>::render(const Transform4x4f& parentTrans)
 	if(size() == 0)
 		return;
 
+LOG(LogInfo) << "ScraperSearchComponent::render start"; Log::flush();
 	const float entrySize = Math::max(font->getHeight(1.0), (float)font->getSize()) * mLineSpacing;
 
 	// number of listentries that can fit on the screen
@@ -254,6 +255,7 @@ void TextListComponent<T>::render(const Transform4x4f& parentTrans)
 	listRenderTitleOverlay(trans);
 
 	GuiComponent::renderChildren(trans);
+LOG(LogInfo) << "ScraperSearchComponent::render end"; Log::flush();
 }
 
 

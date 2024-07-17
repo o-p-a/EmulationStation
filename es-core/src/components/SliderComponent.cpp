@@ -60,6 +60,7 @@ void SliderComponent::update(int deltaTime)
 
 void SliderComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "SliderComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 	Renderer::setMatrix(trans);
 
@@ -77,6 +78,7 @@ void SliderComponent::render(const Transform4x4f& parentTrans)
 	mKnob.render(trans);
 
 	GuiComponent::renderChildren(trans);
+LOG(LogInfo) << "SliderComponent::render end"; Log::flush();
 }
 
 void SliderComponent::setValue(float value)

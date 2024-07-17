@@ -4,6 +4,7 @@
 #include "components/NinePatchComponent.h"
 #include "components/TextComponent.h"
 #include <SDL_timer.h>
+#include "Log.h"
 
 GuiInfoPopup::GuiInfoPopup(Window* window, std::string message, int duration, int fadein, int fadeout) :
 	GuiComponent(window), mMessage(message), mDuration(duration), mFadein(fadein), mFadeout(fadeout), running(true)
@@ -64,6 +65,7 @@ GuiInfoPopup::~GuiInfoPopup()
 
 void GuiInfoPopup::render(const Transform4x4f& /*parentTrans*/)
 {
+LOG(LogInfo) << "GuiInfoPopup::render start"; Log::flush();
 	// we use identity as we want to render on a specific window position, not on the view
 	Transform4x4f trans = getTransform() * Transform4x4f::Identity();
 	if(running && updateState())
@@ -72,6 +74,7 @@ void GuiInfoPopup::render(const Transform4x4f& /*parentTrans*/)
 		Renderer::setMatrix(trans);
 		renderChildren(trans);
 	}
+LOG(LogInfo) << "GuiInfoPopup::render end"; Log::flush();
 }
 
 bool GuiInfoPopup::updateState()

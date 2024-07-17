@@ -28,11 +28,13 @@ bool SwitchComponent::input(InputConfig* config, Input input)
 
 void SwitchComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "SwitchComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	mImage.render(trans);
 
 	renderChildren(trans);
+LOG(LogInfo) << "SwitchComponent::render end"; Log::flush();
 }
 
 bool SwitchComponent::getState() const

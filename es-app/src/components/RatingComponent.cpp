@@ -2,6 +2,7 @@
 
 #include "resources/TextureResource.h"
 #include "ThemeData.h"
+#include "Log.h"
 
 RatingComponent::RatingComponent(Window* window) : GuiComponent(window), mColorShift(0xFFFFFFFF)
 {
@@ -106,6 +107,7 @@ void RatingComponent::render(const Transform4x4f& parentTrans)
 {
 	if (!isVisible())
 		return;
+LOG(LogInfo) << "RatingComponent::render start"; Log::flush();
 
 	Transform4x4f trans = parentTrans * getTransform();
 	Renderer::setMatrix(trans);
@@ -117,6 +119,7 @@ void RatingComponent::render(const Transform4x4f& parentTrans)
 	Renderer::drawTriangleStrips(&mVertices[0], 4);
 
 	renderChildren(trans);
+LOG(LogInfo) << "RatingComponent::render end"; Log::flush();
 }
 
 bool RatingComponent::input(InputConfig* config, Input input)

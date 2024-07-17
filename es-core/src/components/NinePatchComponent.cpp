@@ -95,6 +95,7 @@ void NinePatchComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
+LOG(LogInfo) << "NinePatchComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if(mTexture && mVertices != NULL)
@@ -106,6 +107,7 @@ void NinePatchComponent::render(const Transform4x4f& parentTrans)
 	}
 
 	renderChildren(trans);
+LOG(LogInfo) << "NinePatchComponent::render end"; Log::flush();
 }
 
 void NinePatchComponent::onSizeChanged()

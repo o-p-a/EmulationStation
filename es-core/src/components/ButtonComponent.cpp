@@ -85,6 +85,7 @@ void ButtonComponent::updateImage()
 
 void ButtonComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "ButtonComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	mBox.render(trans);
@@ -101,6 +102,7 @@ void ButtonComponent::render(const Transform4x4f& parentTrans)
 	}
 
 	renderChildren(trans);
+LOG(LogInfo) << "ButtonComponent::render end"; Log::flush();
 }
 
 unsigned int ButtonComponent::getCurTextColor() const

@@ -461,6 +461,7 @@ void ViewController::update(int deltaTime)
 
 void ViewController::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "ViewController::render start"; Log::flush();
 	Transform4x4f trans = mCamera * parentTrans;
 	Transform4x4f transInverse;
 	transInverse.invert(trans);
@@ -497,6 +498,7 @@ void ViewController::render(const Transform4x4f& parentTrans)
 		Renderer::setMatrix(parentTrans);
 		Renderer::drawRect(0.0f, 0.0f, Renderer::getScreenWidth(), Renderer::getScreenHeight(), fadeColor, fadeColor);
 	}
+LOG(LogInfo) << "ViewController::render end"; Log::flush();
 }
 
 void ViewController::preload()

@@ -241,6 +241,7 @@ void TextEditComponent::onCursorChanged()
 
 void TextEditComponent::render(const Transform4x4f& parentTrans)
 {
+LOG(LogInfo) << "TextEditComponent::render start"; Log::flush();
 	Transform4x4f trans = getTransform() * parentTrans;
 	renderChildren(trans);
 
@@ -279,6 +280,7 @@ void TextEditComponent::render(const Transform4x4f& parentTrans)
 		float cursorHeight = mFont->getHeight() * 0.8f;
 		Renderer::drawRect(cursorPos.x(), cursorPos.y() + (mFont->getHeight() - cursorHeight) / 2, 2.0f, cursorHeight, 0x000000FF, 0x000000FF);
 	}
+LOG(LogInfo) << "TextEditComponent::render end"; Log::flush();
 }
 
 bool TextEditComponent::isMultiline()

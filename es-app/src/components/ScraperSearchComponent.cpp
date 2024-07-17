@@ -354,6 +354,7 @@ void ScraperSearchComponent::render(const Transform4x4f& parentTrans)
 {
 	Transform4x4f trans = parentTrans * getTransform();
 
+LOG(LogInfo) << "ScraperSearchComponent::render start"; Log::flush();
 	renderChildren(trans);
 
 	if(mBlockAccept)
@@ -363,6 +364,7 @@ void ScraperSearchComponent::render(const Transform4x4f& parentTrans)
 
 		mBusyAnim.render(trans);
 	}
+LOG(LogInfo) << "ScraperSearchComponent::render end"; Log::flush();
 }
 
 void ScraperSearchComponent::returnResult(ScraperSearchResult result)

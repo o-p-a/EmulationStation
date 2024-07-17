@@ -137,6 +137,7 @@ void VideoVlcComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
+LOG(LogInfo) << "VideoVlcComponent::render start"; Log::flush();
 	VideoComponent::render(parentTrans);
 	Transform4x4f trans = parentTrans * getTransform();
 	GuiComponent::renderChildren(trans);
@@ -168,6 +169,7 @@ void VideoVlcComponent::render(const Transform4x4f& parentTrans)
 	{
 		VideoComponent::renderSnapshot(parentTrans);
 	}
+LOG(LogInfo) << "VideoVlcComponent::render end"; Log::flush();
 }
 
 void VideoVlcComponent::setupContext()

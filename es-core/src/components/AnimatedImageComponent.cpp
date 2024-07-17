@@ -81,6 +81,8 @@ void AnimatedImageComponent::update(int deltaTime)
 
 void AnimatedImageComponent::render(const Transform4x4f& trans)
 {
+LOG(LogInfo) << "AnimatedImageComponent::render start"; Log::flush();
 	if(mFrames.size())
 		mFrames.at(mCurrentFrame).first->render(getTransform() * trans);
+LOG(LogInfo) << "AnimatedImageComponent::render end"; Log::flush();
 }
