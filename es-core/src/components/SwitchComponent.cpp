@@ -1,6 +1,7 @@
 #include "SwitchComponent.h"
 
 #include "resources/Font.h"
+#include "Log.h"
 
 SwitchComponent::SwitchComponent(Window* window, bool state) : GuiComponent(window), mImage(window), mState(state)
 {

@@ -14,6 +14,7 @@ typedef SSIZE_T ssize_t;
 #endif
 #include <vlc/vlc.h>
 #include <SDL_mutex.h>
+#include "Log.h"
 
 libvlc_instance_t* VideoVlcComponent::mVLC = NULL;
 

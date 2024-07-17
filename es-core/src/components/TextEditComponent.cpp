@@ -2,6 +2,7 @@
 
 #include "resources/Font.h"
 #include "utils/StringUtil.h"
+#include "Log.h"
 
 #define TEXT_PADDING_HORIZ 10
 #define TEXT_PADDING_VERT 2
