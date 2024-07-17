@@ -50,9 +50,6 @@ int launchGameCommand(const std::string& cmd_utf8)
 		rcode = 0;
 	Uint32
 		wf;
-	int
-		width,
-		height;
 
 	wf = SDL_GetWindowFlags(Renderer::getSDLWindow());
 	SDL_SetWindowFullscreen(Renderer::getSDLWindow(), 0);
