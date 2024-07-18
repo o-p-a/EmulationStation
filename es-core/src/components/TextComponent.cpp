@@ -100,17 +100,14 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 LOG(LogInfo) << "TextComponent::render " << mText; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
-LOG(LogInfo) << "TextComponent::render A"; Log::flush();
 	if (mRenderBackground)
 	{
 		Renderer::setMatrix(trans);
 		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), mBgColor, mBgColor);
 	}
 
-LOG(LogInfo) << "TextComponent::render B"; Log::flush();
 	if(mTextCache)
 	{
-LOG(LogInfo) << "TextComponent::render C"; Log::flush();
 		const Vector2f& textSize = mTextCache->metrics.size;
 		float yOff = 0;
 		switch(mVerticalAlignment)
@@ -130,7 +127,6 @@ LOG(LogInfo) << "TextComponent::render C"; Log::flush();
 		}
 		Vector3f off(0, yOff, 0);
 
-LOG(LogInfo) << "TextComponent::render D"; Log::flush();
 		if(Settings::getInstance()->getBool("DebugText"))
 		{
 			// draw the "textbox" area, what we are aligned within
@@ -138,39 +134,30 @@ LOG(LogInfo) << "TextComponent::render D"; Log::flush();
 			Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0xFF000033, 0xFF000033);
 		}
 
-LOG(LogInfo) << "TextComponent::render E"; Log::flush();
 		trans.translate(off);
 		Renderer::setMatrix(trans);
 
-LOG(LogInfo) << "TextComponent::render F"; Log::flush();
 		// draw the text area, where the text actually is going
 		if(Settings::getInstance()->getBool("DebugText"))
 		{
 			switch(mHorizontalAlignment)
 			{
 			case ALIGN_LEFT:
-LOG(LogInfo) << "TextComponent::render G"; Log::flush();
 				Renderer::drawRect(0.0f, 0.0f, mTextCache->metrics.size.x(), mTextCache->metrics.size.y(), 0x00000033, 0x00000033);
 				break;
 			case ALIGN_CENTER:
-LOG(LogInfo) << "TextComponent::render H"; Log::flush();
 				Renderer::drawRect((mSize.x() - mTextCache->metrics.size.x()) / 2.0f, 0.0f, mTextCache->metrics.size.x(), mTextCache->metrics.size.y(), 0x00000033, 0x00000033);
 				break;
 			case ALIGN_RIGHT:
-LOG(LogInfo) << "TextComponent::render I"; Log::flush();
 				Renderer::drawRect(mSize.x() - mTextCache->metrics.size.x(), 0.0f, mTextCache->metrics.size.x(), mTextCache->metrics.size.y(), 0x00000033, 0x00000033);
 				break;
 			default:
-LOG(LogInfo) << "TextComponent::render J"; Log::flush();
 				LOG(LogError) << "Unknown horizontal alignment: " << mHorizontalAlignment;
 				break;
 			}
 		}
-LOG(LogInfo) << "TextComponent::render K"; Log::flush();
 		mFont->renderTextCache(mTextCache.get());
-LOG(LogInfo) << "TextComponent::render L"; Log::flush();
 	}
-LOG(LogInfo) << "TextComponent::render---"; Log::flush();
 }
 
 std::string TextComponent::calculateExtent(bool allow_wrapping)

@@ -405,8 +405,10 @@ void Font::renderTextCache(TextCache* cache)
 		return;
 	}
 
+LOG(LogInfo) << "Font::renderTextCache start"; Log::flush();
 	for(auto it = cache->vertexLists.cbegin(); it != cache->vertexLists.cend(); it++)
 	{
+LOG(LogInfo) << "textureIdPtr " << (void*)(*it->textureIdPtr); Log::flush();
 		assert(*it->textureIdPtr != 0);
 
 		auto vertexList = *it;
@@ -414,6 +416,7 @@ void Font::renderTextCache(TextCache* cache)
 		Renderer::bindTexture(*it->textureIdPtr);
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
 	}
+LOG(LogInfo) << "Font::renderTextCache end"; Log::flush();
 }
 
 Vector2f Font::sizeCodePoint(unsigned int character, float lineSpacing)
