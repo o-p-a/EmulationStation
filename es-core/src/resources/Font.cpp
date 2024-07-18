@@ -416,6 +416,7 @@ LOG(LogInfo) << "bindTexture"; Log::flush();
 		Renderer::bindTexture(*it->textureIdPtr);
 LOG(LogInfo) << "drawTriangleStrips"; Log::flush();
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
+break;
 	}
 LOG(LogInfo) << "Font::renderTextCache end"; Log::flush();
 }
