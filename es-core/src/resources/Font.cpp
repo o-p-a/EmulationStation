@@ -408,12 +408,13 @@ void Font::renderTextCache(TextCache* cache)
 LOG(LogInfo) << "Font::renderTextCache start"; Log::flush();
 	for(auto it = cache->vertexLists.cbegin(); it != cache->vertexLists.cend(); it++)
 	{
-LOG(LogInfo) << "textureIdPtr " << (void*)(*it->textureIdPtr); Log::flush();
 		assert(*it->textureIdPtr != 0);
 
 		auto vertexList = *it;
 
+LOG(LogInfo) << "bindTexture"; Log::flush();
 		Renderer::bindTexture(*it->textureIdPtr);
+LOG(LogInfo) << "drawTriangleStrips"; Log::flush();
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
 	}
 LOG(LogInfo) << "Font::renderTextCache end"; Log::flush();
