@@ -186,16 +186,20 @@ bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 
 void Font::FontTexture::initTexture()
 {
+LOG(LogInfo) << "Font::FontTexture::initTexture start"; Log::flush();
 	assert(textureId == 0);
 	textureId = Renderer::createTexture(Renderer::Texture::ALPHA, false, false, textureSize.x(), textureSize.y(), nullptr);
+LOG(LogInfo) << "Font::FontTexture::initTexture end " << textureId; Log::flush();
 }
 
 void Font::FontTexture::deinitTexture()
 {
 	if(textureId != 0)
 	{
+LOG(LogInfo) << "Font::FontTexture::deinitTexture start " << textureId; Log::flush();
 		Renderer::destroyTexture(textureId);
 		textureId = 0;
+LOG(LogInfo) << "Font::FontTexture::deinitTexture end"; Log::flush();
 	}
 }
 
@@ -371,6 +375,7 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 // completely recreate the texture data for all textures based on mGlyphs information
 void Font::rebuildTextures()
 {
+LOG(LogDebug) << "Font::rebuildTextures start"; Log::flush();
 	// recreate OpenGL textures
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
@@ -395,6 +400,7 @@ void Font::rebuildTextures()
 		// upload to texture
 		Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), glyphSlot->bitmap.buffer);
 	}
+LOG(LogDebug) << "Font::rebuildTextures end"; Log::flush();
 }
 
 void Font::renderTextCache(TextCache* cache)
@@ -405,19 +411,20 @@ void Font::renderTextCache(TextCache* cache)
 		return;
 	}
 
-LOG(LogInfo) << "Font::renderTextCache start " << cache->vertexLists.size(); Log::flush();
+if(cache->vertexLists.size() > 1){ Log::setReportingLevel(LogDebug); }
+LOG(LogDebug) << "Font::renderTextCache start " << cache->vertexLists.size(); Log::flush();
 	for(auto it = cache->vertexLists.cbegin(); it != cache->vertexLists.cend(); it++)
 	{
 		assert(*it->textureIdPtr != 0);
 
 		auto vertexList = *it;
 
-LOG(LogInfo) << "bindTexture"; Log::flush();
+LOG(LogDebug) << "bindTexture " << (unsigned int)(*it->textureIdPtr); Log::flush();
 		Renderer::bindTexture(*it->textureIdPtr);
-LOG(LogInfo) << "drawTriangleStrips"; Log::flush();
+LOG(LogDebug) << "drawTriangleStrips"; Log::flush();
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
 	}
-LOG(LogInfo) << "Font::renderTextCache end"; Log::flush();
+LOG(LogDebug) << "Font::renderTextCache end"; Log::flush();
 }
 
 Vector2f Font::sizeCodePoint(unsigned int character, float lineSpacing)
@@ -623,6 +630,7 @@ float Font::getNewlineStartOffset(const std::string& text, const unsigned int& c
 
 TextCache* Font::buildTextCache(const std::string& text, Vector2f offset, unsigned int color, float xLen, Alignment alignment, float lineSpacing)
 {
+LOG(LogDebug) << "Font::buildTextCache start " << text; Log::flush();
 	float x = offset[0] + (xLen != 0 ? getNewlineStartOffset(text, 0, xLen, alignment) : 0);
 
 	float yTop = getGlyph('S')->bearing.y();
@@ -696,6 +704,7 @@ TextCache* Font::buildTextCache(const std::string& text, Vector2f offset, unsign
 
 	clearFaceCache();
 
+LOG(LogDebug) << "Font::buildTextCache end"; Log::flush();
 	return cache;
 }
 
