@@ -135,10 +135,12 @@ std::shared_ptr<Font> Font::get(int size, const std::string& path)
 
 void Font::unloadTextures()
 {
+LOG(LogInfo) << "Font::unloadTextures start"; Log::flush();
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
 		it->deinitTexture();
 	}
+LOG(LogInfo) << "Font::unloadTextures end"; Log::flush();
 }
 
 Font::FontTexture::FontTexture()
@@ -151,7 +153,9 @@ Font::FontTexture::FontTexture()
 
 Font::FontTexture::~FontTexture()
 {
+LOG(LogInfo) << "Font::FontTexture::~FontTexture start"; Log::flush();
 	deinitTexture();
+LOG(LogInfo) << "Font::FontTexture::~FontTexture end"; Log::flush();
 }
 
 bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
