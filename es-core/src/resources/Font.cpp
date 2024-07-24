@@ -236,8 +236,10 @@ void Font::getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_ou
 	mTextures.push_back(FontTexture());
 	tex_out = &mTextures.back();
 	tex_out->initTexture();
+LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
 
 	bool ok = tex_out->findEmpty(glyphSize, cursor_out);
+LOG(LogInfo) << "cursor_out " << cursor_out.x() << ' ' << cursor_out.y(); Log::flush();
 	if(!ok)
 	{
 		LOG(LogError) << "Glyph too big to fit on a new texture (glyph size > " << tex_out->textureSize.x() << ", " << tex_out->textureSize.y() << ")!";
@@ -366,6 +368,7 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 		LOG(LogError) << "Could not create glyph for character " << id << " for font " << mPath << ", size " << mSize << " (no suitable texture found)!";
 		return NULL;
 	}
+LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->textureSize.x() << ' ' << tex->textureSize.x() << ' ' << cursor.x() << ' ' << cursor.y(); Log::flush();
 
 	// create glyph
 	Glyph& glyph = mGlyphMap[id];
