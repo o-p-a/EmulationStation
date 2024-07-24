@@ -74,6 +74,7 @@ size_t Font::getTotalMemUsage()
 
 Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 {
+LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
 	assert(mSize > 0);
 
 	mLoaded = true;
@@ -87,11 +88,14 @@ Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 		getGlyph(i);
 
 	clearFaceCache();
+LOG(LogInfo) << "Font::Font end"; Log::flush();
 }
 
 Font::~Font()
 {
+LOG(LogInfo) << "Font::~Font start " << mPath; Log::flush();
 	unload();
+LOG(LogInfo) << "Font::~Font end"; Log::flush();
 }
 
 void Font::reload()
