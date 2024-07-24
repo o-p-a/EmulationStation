@@ -99,16 +99,20 @@ void Font::reload()
 	if (mLoaded)
 		return;
 
+LOG(LogInfo) << "Font::reload start " << mPath; Log::flush();
 	rebuildTextures();
 	mLoaded = true;
+LOG(LogInfo) << "Font::reload end"; Log::flush();
 }
 
 bool Font::unload()
 {
 	if (mLoaded)
 	{
+LOG(LogInfo) << "Font::unload start " << mPath; Log::flush();
 		unloadTextures();
 		mLoaded = false;
+LOG(LogInfo) << "Font::unload end"; Log::flush();
 		return true;
 	}
 
@@ -127,12 +131,12 @@ std::shared_ptr<Font> Font::get(int size, const std::string& path)
 			return foundFont->second.lock();
 	}
 
-LOG(LogInfo) << "Font::get start " << path; Log::flush();
+LOG(LogInfo) << "Font::get start " << path << ' ' << canonicalPath << ' ' << size; Log::flush();
 	std::shared_ptr<Font> font = std::shared_ptr<Font>(new Font(def.second, def.first));
 	sFontMap[def] = std::weak_ptr<Font>(font);
 	ResourceManager::getInstance()->addReloadable(font);
-	return font;
 LOG(LogInfo) << "Font::get end"; Log::flush();
+	return font;
 }
 
 void Font::unloadTextures()
