@@ -2,6 +2,7 @@
 
 #include "utils/FileSystemUtil.h"
 #include <fstream>
+#include "Log.h"
 
 auto array_deleter = [](unsigned char* p) { delete[] p; };
 auto nop_deleter = [](unsigned char* /*p*/) { };
@@ -97,6 +98,7 @@ bool ResourceManager::fileExists(const std::string& path) const
 
 void ResourceManager::unloadAll()
 {
+LOG(LogInfo) << "ResourceManager::unloadAll start"; Log::flush();
 	auto iter = mReloadables.cbegin();
 	while(iter != mReloadables.cend())
 	{
@@ -110,10 +112,12 @@ void ResourceManager::unloadAll()
 		else
 			iter = mReloadables.erase(iter);
 	}
+LOG(LogInfo) << "ResourceManager::unloadAll end"; Log::flush();
 }
 
 void ResourceManager::reloadAll()
 {
+LOG(LogInfo) << "ResourceManager::reloadAll start"; Log::flush();
 	auto iter = mReloadables.cbegin();
 	while(iter != mReloadables.cend())
 	{
@@ -132,6 +136,7 @@ void ResourceManager::reloadAll()
 		else
 			iter = mReloadables.erase(iter);
 	}
+LOG(LogInfo) << "ResourceManager::reloadAll end"; Log::flush();
 }
 
 void ResourceManager::addReloadable(std::weak_ptr<IReloadable> reloadable)

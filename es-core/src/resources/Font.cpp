@@ -127,10 +127,12 @@ std::shared_ptr<Font> Font::get(int size, const std::string& path)
 			return foundFont->second.lock();
 	}
 
+LOG(LogInfo) << "Font::get start " << path; Log::flush();
 	std::shared_ptr<Font> font = std::shared_ptr<Font>(new Font(def.second, def.first));
 	sFontMap[def] = std::weak_ptr<Font>(font);
 	ResourceManager::getInstance()->addReloadable(font);
 	return font;
+LOG(LogInfo) << "Font::get end"; Log::flush();
 }
 
 void Font::unloadTextures()
@@ -145,10 +147,12 @@ LOG(LogInfo) << "Font::unloadTextures end"; Log::flush();
 
 Font::FontTexture::FontTexture()
 {
+LOG(LogInfo) << "Font::FontTexture::FontTexture start"; Log::flush();
 	textureId = 0;
 	textureSize = Vector2i(2048, 512);
 	writePos = Vector2i::Zero();
 	rowHeight = 0;
+LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 }
 
 Font::FontTexture::~FontTexture()
