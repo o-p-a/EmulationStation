@@ -242,7 +242,7 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 	// current textures are full,
 	// make a new one
 	{
-LOG(LogInfo) << "Font::getTextureForNewGlyph A1 " << mTextures.size(); Log::flush();
+LOG(LogInfo) << "Font::getTextureForNewGlyph A1 " << mTextures.capacity(); Log::flush();
 		FontTexture w;
 LOG(LogInfo) << "Font::getTextureForNewGlyph A2 " << mTextures.size(); Log::flush();
 		mTextures.push_back(w);
