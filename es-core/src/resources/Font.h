@@ -82,8 +82,11 @@ private:
 		int rowHeight;
 
 		FontTexture();
+		FontTexture(FontTexture&);
 		~FontTexture();
 		bool findEmpty(const Vector2i& size, Vector2i& cursor_out);
+
+		FontTexture& operator=(FontTexture&);
 
 		// you must call initTexture() after creating a FontTexture to get a textureId
 		void initTexture(); // initializes the OpenGL texture according to this FontTexture's settings, updating textureId
