@@ -173,6 +173,16 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start"; Log::flush
 LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) end"; Log::flush();
 }
 
+Font::FontTexture::FontTexture(const Font::FontTexture& src)
+{
+LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start"; Log::flush();
+	textureId = src.textureId;
+	textureSize = src.textureSize;
+	writePos = src.writePos;
+	rowHeight = src.rowHeight;
+LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) end"; Log::flush();
+}
+
 Font::FontTexture& Font::FontTexture::operator=(Font::FontTexture& src)
 {
 LOG(LogInfo) << "Font::FontTexture::operator= start"; Log::flush();
