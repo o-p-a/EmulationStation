@@ -164,6 +164,16 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture start"; Log::flush();
 LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 }
 
+Font::FontTexture::FontTexture(FontTexture&& src) noexcept
+{
+LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&&) start " << src.textureId; Log::flush();
+	textureId = src.textureId;
+	textureSize = src.textureSize;
+	writePos = src.writePos;
+	rowHeight = src.rowHeight;
+LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&&) end"; Log::flush();
+}
+/*
 Font::FontTexture::FontTexture(Font::FontTexture& src)
 {
 LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start " << src.textureId; Log::flush();
@@ -171,6 +181,8 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start " << src.tex
 	textureSize = src.textureSize;
 	writePos = src.writePos;
 	rowHeight = src.rowHeight;
+
+	src.textureId = 0;
 LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) end"; Log::flush();
 }
 
@@ -181,19 +193,11 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start " << s
 	textureSize = src.textureSize;
 	writePos = src.writePos;
 	rowHeight = src.rowHeight;
+
+	src.textureId = 0;
 LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) end"; Log::flush();
 }
-
-Font::FontTexture& Font::FontTexture::operator=(Font::FontTexture& src)
-{
-LOG(LogInfo) << "Font::FontTexture::operator= start " << src.textureId; Log::flush();
-	textureId = src.textureId;
-	textureSize = src.textureSize;
-	writePos = src.writePos;
-	rowHeight = src.rowHeight;
-LOG(LogInfo) << "Font::FontTexture::operator= end"; Log::flush();
-	return *this;
-}
+*/
 
 Font::FontTexture::~FontTexture()
 {
