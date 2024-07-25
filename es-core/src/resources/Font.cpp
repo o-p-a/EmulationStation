@@ -241,8 +241,11 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 
 	// current textures are full,
 	// make a new one
+LOG(LogInfo) << "Font::getTextureForNewGlyph A"; Log::flush();
 	mTextures.push_back(FontTexture());
+LOG(LogInfo) << "Font::getTextureForNewGlyph B"; Log::flush();
 	tex_out = &mTextures.back();
+LOG(LogInfo) << "Font::getTextureForNewGlyph C"; Log::flush();
 	tex_out->initTexture();
 LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
 
@@ -375,7 +378,7 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 		LOG(LogError) << "Could not create glyph for character " << id << " for font " << mPath << ", size " << mSize << " (no suitable texture found)!";
 		return NULL;
 	}
-LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->textureSize.x() << ' ' << tex->textureSize.x() << ' ' << cursor.x() << ' ' << cursor.y(); Log::flush();
+LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->textureSize.x() << ' ' << tex->textureSize.y() << ' ' << cursor.x() << ' ' << cursor.y(); Log::flush();
 
 	// create glyph
 	Glyph& glyph = mGlyphMap[id];
