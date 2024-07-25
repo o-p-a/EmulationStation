@@ -165,7 +165,7 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 
 Font::FontTexture::FontTexture(Font::FontTexture& src)
 {
-LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start " << src.textureId; Log::flush();
 	textureId = src.textureId;
 	textureSize = src.textureSize;
 	writePos = src.writePos;
@@ -175,7 +175,7 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) end"; Log::flush()
 
 Font::FontTexture::FontTexture(const Font::FontTexture& src)
 {
-LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start " << src.textureId; Log::flush();
 	textureId = src.textureId;
 	textureSize = src.textureSize;
 	writePos = src.writePos;
@@ -185,7 +185,7 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) end"; Log::f
 
 Font::FontTexture& Font::FontTexture::operator=(Font::FontTexture& src)
 {
-LOG(LogInfo) << "Font::FontTexture::operator= start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::operator= start " << src.textureId; Log::flush();
 	textureId = src.textureId;
 	textureSize = src.textureSize;
 	writePos = src.writePos;
@@ -196,7 +196,7 @@ LOG(LogInfo) << "Font::FontTexture::operator= end"; Log::flush();
 
 Font::FontTexture::~FontTexture()
 {
-LOG(LogInfo) << "Font::FontTexture::~FontTexture start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::~FontTexture start " << textureId; Log::flush();
 	deinitTexture();
 LOG(LogInfo) << "Font::FontTexture::~FontTexture end"; Log::flush();
 }
