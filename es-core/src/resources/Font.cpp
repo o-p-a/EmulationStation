@@ -191,6 +191,9 @@ LOG(LogInfo) << "size " << size.x() << ' ' << size.y(); Log::flush();
 	{
 		// nope, still won't fit
 LOG(LogInfo) << "Font::FontTexture::findEmpty false"; Log::flush();
+LOG(LogInfo) << "x " << writePos.x() << ' ' << size.x() << ' ' << textureSize.x(); Log::flush();
+LOG(LogInfo) << "y " << writePos.y() << ' ' << size.y() << ' ' << textureSize.y(); Log::flush();
+LOG(LogInfo) << "rowHeight " << rowHeight; Log::flush();
 		return false;
 	}
 
