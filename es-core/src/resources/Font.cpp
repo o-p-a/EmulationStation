@@ -173,14 +173,14 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start"; Log::flush
 LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) end"; Log::flush();
 }
 
-Font::FontTexture& operator=(Font::FontTexture& src)
+Font::FontTexture& Font::FontTexture::operator=(Font::FontTexture& src)
 {
-LOG(LogInfo) << "Font::FontTexture& operator= start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::operator= start"; Log::flush();
 	textureId = src.textureId;
 	textureSize = src.textureSize;
 	writePos = src.writePos;
 	rowHeight = src.rowHeight;
-LOG(LogInfo) << "Font::FontTexture& operator= end"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::operator= end"; Log::flush();
 	return *this;
 }
 
