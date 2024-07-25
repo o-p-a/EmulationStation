@@ -439,7 +439,7 @@ LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->
 // completely recreate the texture data for all textures based on mGlyphs information
 void Font::rebuildTextures()
 {
-LOG(LogDebug) << "Font::rebuildTextures start"; Log::flush();
+LOG(LogInfo) << "Font::rebuildTextures start"; Log::flush();
 	// recreate OpenGL textures
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
@@ -464,7 +464,7 @@ LOG(LogDebug) << "Font::rebuildTextures start"; Log::flush();
 		// upload to texture
 		Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), glyphSlot->bitmap.buffer);
 	}
-LOG(LogDebug) << "Font::rebuildTextures end"; Log::flush();
+LOG(LogInfo) << "Font::rebuildTextures end"; Log::flush();
 }
 
 void Font::renderTextCache(TextCache* cache)
@@ -694,7 +694,7 @@ float Font::getNewlineStartOffset(const std::string& text, const unsigned int& c
 
 TextCache* Font::buildTextCache(const std::string& text, Vector2f offset, unsigned int color, float xLen, Alignment alignment, float lineSpacing)
 {
-LOG(LogDebug) << "Font::buildTextCache start " << text; Log::flush();
+LOG(LogInfo) << "Font::buildTextCache start " << text; Log::flush();
 	float x = offset[0] + (xLen != 0 ? getNewlineStartOffset(text, 0, xLen, alignment) : 0);
 
 	float yTop = getGlyph('S')->bearing.y();
@@ -760,7 +760,7 @@ LOG(LogDebug) << "Font::buildTextCache start " << text; Log::flush();
 	unsigned int i = 0;
 	for(auto it = vertMap.cbegin(); it != vertMap.cend(); it++)
 	{
-		TextCache::VertexList& vertList = cache->vertexLists.at(i);
+		TextCache::VertexList& vertList = cache->vertexLists.at(i++);
 
 		vertList.textureIdPtr = &it->first->textureId;
 		vertList.verts = it->second;
@@ -768,7 +768,7 @@ LOG(LogDebug) << "Font::buildTextCache start " << text; Log::flush();
 
 	clearFaceCache();
 
-LOG(LogDebug) << "Font::buildTextCache end"; Log::flush();
+LOG(LogInfo) << "Font::buildTextCache end"; Log::flush();
 	return cache;
 }
 
@@ -779,11 +779,13 @@ TextCache* Font::buildTextCache(const std::string& text, float offsetX, float of
 
 void TextCache::setColor(unsigned int color)
 {
+LOG(LogInfo) << "TextCache::setColor start"; Log::flush();
 	const unsigned int convertedColor = Renderer::convertColor(color);
 
 	for(auto it = vertexLists.begin(); it != vertexLists.end(); it++)
 		for(auto it2 = it->verts.begin(); it2 != it->verts.end(); it2++)
 			it2->col = convertedColor;
+LOG(LogInfo) << "TextCache::setColor end"; Log::flush();
 }
 
 std::shared_ptr<Font> Font::getFromTheme(const ThemeData::ThemeElement* elem, unsigned int properties, const std::shared_ptr<Font>& orig)
