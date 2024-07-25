@@ -172,6 +172,8 @@ LOG(LogInfo) << "Font::FontTexture::~FontTexture end"; Log::flush();
 
 bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 {
+LOG(LogInfo) << "Font::FontTexture::findEmpty start"; Log::flush();
+LOG(LogInfo) << "size " << size.x() << ' ' << size.y(); Log::flush();
 	if(size.x() >= textureSize.x() || size.y() >= textureSize.y())
 		return false;
 
@@ -188,6 +190,7 @@ bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 		writePos.y() + size.y() >= textureSize.y())
 	{
 		// nope, still won't fit
+LOG(LogInfo) << "Font::FontTexture::findEmpty false"; Log::flush();
 		return false;
 	}
 
@@ -197,6 +200,7 @@ bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 	if(size.y() > rowHeight)
 		rowHeight = size.y();
 
+LOG(LogInfo) << "Font::FontTexture::findEmpty end"; Log::flush();
 	return true;
 }
 
@@ -221,6 +225,7 @@ LOG(LogInfo) << "Font::FontTexture::deinitTexture end"; Log::flush();
 
 void Font::getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_out, Vector2i& cursor_out)
 {
+LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphSize.y(); Log::flush();
 	if(mTextures.size())
 	{
 		// check if the most recent texture has space
@@ -239,7 +244,6 @@ void Font::getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_ou
 LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
 
 	bool ok = tex_out->findEmpty(glyphSize, cursor_out);
-LOG(LogInfo) << "cursor_out " << cursor_out.x() << ' ' << cursor_out.y(); Log::flush();
 	if(!ok)
 	{
 		LOG(LogError) << "Glyph too big to fit on a new texture (glyph size > " << tex_out->textureSize.x() << ", " << tex_out->textureSize.y() << ")!";
