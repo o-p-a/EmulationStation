@@ -241,11 +241,14 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 
 	// current textures are full,
 	// make a new one
-LOG(LogInfo) << "Font::getTextureForNewGlyph A " << mTextures.size(); Log::flush();
-	mTextures.push_back(FontTexture());
-LOG(LogInfo) << "Font::getTextureForNewGlyph B " << mTextures.size(); Log::flush();
+	{
+LOG(LogInfo) << "Font::getTextureForNewGlyph A1 " << mTextures.size(); Log::flush();
+		FontTexture w;
+LOG(LogInfo) << "Font::getTextureForNewGlyph A2 " << mTextures.size(); Log::flush();
+		mTextures.push_back(w);
+LOG(LogInfo) << "Font::getTextureForNewGlyph A3 " << mTextures.size(); Log::flush();
+	}
 	tex_out = &mTextures.back();
-LOG(LogInfo) << "Font::getTextureForNewGlyph C"; Log::flush();
 	tex_out->initTexture();
 LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
 
