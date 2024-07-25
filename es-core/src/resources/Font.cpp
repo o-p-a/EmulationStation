@@ -77,7 +77,7 @@ Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
 	assert(mSize > 0);
 
-	mTextures.reserve(10);
+//	mTextures.reserve(10);
 	mLoaded = true;
 	mMaxGlyphHeight = 0;
 
@@ -483,9 +483,7 @@ LOG(LogDebug) << "Font::renderTextCache start " << cache->vertexLists.size(); Lo
 
 		auto vertexList = *it;
 
-LOG(LogDebug) << "bindTexture " << (unsigned int)(*it->textureIdPtr); Log::flush();
 		Renderer::bindTexture(*it->textureIdPtr);
-LOG(LogDebug) << "drawTriangleStrips"; Log::flush();
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
 	}
 LOG(LogDebug) << "Font::renderTextCache end"; Log::flush();
@@ -694,7 +692,6 @@ float Font::getNewlineStartOffset(const std::string& text, const unsigned int& c
 
 TextCache* Font::buildTextCache(const std::string& text, Vector2f offset, unsigned int color, float xLen, Alignment alignment, float lineSpacing)
 {
-LOG(LogInfo) << "Font::buildTextCache start " << text; Log::flush();
 	float x = offset[0] + (xLen != 0 ? getNewlineStartOffset(text, 0, xLen, alignment) : 0);
 
 	float yTop = getGlyph('S')->bearing.y();
@@ -768,7 +765,6 @@ LOG(LogInfo) << "Font::buildTextCache start " << text; Log::flush();
 
 	clearFaceCache();
 
-LOG(LogInfo) << "Font::buildTextCache end"; Log::flush();
 	return cache;
 }
 
