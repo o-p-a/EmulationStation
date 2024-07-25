@@ -77,6 +77,7 @@ Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
 	assert(mSize > 0);
 
+	mTextures.reserve(10);
 	mLoaded = true;
 	mMaxGlyphHeight = 0;
 
