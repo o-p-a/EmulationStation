@@ -77,7 +77,7 @@ Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
 	assert(mSize > 0);
 
-//	mTextures.reserve(10);
+	mTextures.reserve(1);
 	mLoaded = true;
 	mMaxGlyphHeight = 0;
 
@@ -164,18 +164,6 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture start"; Log::flush();
 LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 }
 
-Font::FontTexture::FontTexture(const Font::FontTexture& src)
-{
-LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start " << src.textureId; Log::flush();
-	textureId = src.textureId;
-	textureSize = src.textureSize;
-	writePos = src.writePos;
-	rowHeight = src.rowHeight;
-
-	const_cast<FontTexture&>(src).textureId = 0;
-LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) end"; Log::flush();
-}
-
 Font::FontTexture::~FontTexture()
 {
 LOG(LogInfo) << "Font::FontTexture::~FontTexture start " << textureId; Log::flush();
@@ -246,6 +234,13 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 		// will this one work?
 		if(tex_out->findEmpty(glyphSize, cursor_out))
 			return; // yes
+	}
+
+	if(mTextures.size() + 1 >= mTextures.capacity())
+	{
+		LOG(LogError) << "Glyph too many to create a new texture!";
+		tex_out = NULL;
+		return;
 	}
 
 	// current textures are full,
