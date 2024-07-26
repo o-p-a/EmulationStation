@@ -236,7 +236,7 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 			return; // yes
 	}
 
-	if(mTextures.size() + 1 >= mTextures.capacity())
+	if(mTextures.size() >= mTextures.capacity())
 	{
 		LOG(LogError) << "Glyph too many to create a new texture!";
 		tex_out = NULL;
