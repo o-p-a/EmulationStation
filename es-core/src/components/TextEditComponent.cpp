@@ -2,7 +2,6 @@
 
 #include "resources/Font.h"
 #include "utils/StringUtil.h"
-#include "Log.h"
 
 #define TEXT_PADDING_HORIZ 10
 #define TEXT_PADDING_VERT 2
@@ -242,7 +241,6 @@ void TextEditComponent::onCursorChanged()
 
 void TextEditComponent::render(const Transform4x4f& parentTrans)
 {
-LOG(LogInfo) << "TextEditComponent::render start"; Log::flush();
 	Transform4x4f trans = getTransform() * parentTrans;
 	renderChildren(trans);
 
@@ -281,7 +279,6 @@ LOG(LogInfo) << "TextEditComponent::render start"; Log::flush();
 		float cursorHeight = mFont->getHeight() * 0.8f;
 		Renderer::drawRect(cursorPos.x(), cursorPos.y() + (mFont->getHeight() - cursorHeight) / 2, 2.0f, cursorHeight, 0x000000FF, 0x000000FF);
 	}
-LOG(LogInfo) << "TextEditComponent::render end"; Log::flush();
 }
 
 bool TextEditComponent::isMultiline()

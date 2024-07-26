@@ -1,7 +1,6 @@
 #include "components/ComponentGrid.h"
 
 #include "Settings.h"
-#include "Log.h"
 
 using namespace GridFlags;
 

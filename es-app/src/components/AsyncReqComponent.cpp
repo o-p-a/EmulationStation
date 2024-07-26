@@ -2,7 +2,6 @@
 
 #include "renderers/Renderer.h"
 #include "HttpReq.h"
-#include "Log.h"
 
 AsyncReqComponent::AsyncReqComponent(Window* window, std::shared_ptr<HttpReq> req, std::function<void(std::shared_ptr<HttpReq>)> onSuccess, std::function<void()> onCancel)
 	: GuiComponent(window),

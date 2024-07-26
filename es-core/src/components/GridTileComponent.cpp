@@ -3,7 +3,6 @@
 #include "animations/LambdaAnimation.h"
 #include "resources/TextureResource.h"
 #include "ThemeData.h"
-#include "Log.h"
 
 GridTileComponent::GridTileComponent(Window* window) : GuiComponent(window), mBackground(window, ":/frame.png")
 {

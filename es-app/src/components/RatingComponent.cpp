@@ -2,7 +2,6 @@
 
 #include "resources/TextureResource.h"
 #include "ThemeData.h"
-#include "Log.h"
 
 RatingComponent::RatingComponent(Window* window) : GuiComponent(window), mColorShift(0xFFFFFFFF)
 {

@@ -6,7 +6,6 @@
 #include "ThemeData.h"
 #include "Window.h"
 #include <SDL_timer.h>
-#include "Log.h"
 
 #define FADE_TIME_MS	200
 

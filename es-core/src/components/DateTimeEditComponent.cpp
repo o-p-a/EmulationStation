@@ -3,7 +3,6 @@
 #include "DateTimeComponent.h"
 #include "resources/Font.h"
 #include "utils/StringUtil.h"
-#include "Log.h"
 
 DateTimeEditComponent::DateTimeEditComponent(Window* window, DisplayMode dispMode) : GuiComponent(window),
 	mEditing(false), mEditIndex(0), mDisplayMode(dispMode), mRelativeUpdateAccumulator(0),
@@ -141,7 +140,6 @@ void DateTimeEditComponent::update(int deltaTime)
 
 void DateTimeEditComponent::render(const Transform4x4f& parentTrans)
 {
-LOG(LogInfo) << "DateTimeEditComponent::render start"; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if(mTextCache)
@@ -166,7 +164,6 @@ LOG(LogInfo) << "DateTimeEditComponent::render start"; Log::flush();
 			}
 		}
 	}
-LOG(LogInfo) << "DateTimeEditComponent::render end"; Log::flush();
 }
 
 void DateTimeEditComponent::setValue(const std::string& val)

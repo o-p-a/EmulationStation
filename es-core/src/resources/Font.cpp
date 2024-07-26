@@ -164,30 +164,6 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture start"; Log::flush();
 LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 }
 
-/*
-Font::FontTexture::FontTexture(FontTexture&& src) noexcept
-{
-LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&&) start " << src.textureId; Log::flush();
-	textureId = src.textureId;
-	textureSize = src.textureSize;
-	writePos = src.writePos;
-	rowHeight = src.rowHeight;
-LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&&) end"; Log::flush();
-}
-
-Font::FontTexture::FontTexture(Font::FontTexture& src)
-{
-LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) start " << src.textureId; Log::flush();
-	textureId = src.textureId;
-	textureSize = src.textureSize;
-	writePos = src.writePos;
-	rowHeight = src.rowHeight;
-
-	src.textureId = 0;
-LOG(LogInfo) << "Font::FontTexture::FontTexture(FontTexture&) end"; Log::flush();
-}
-*/
-
 Font::FontTexture::FontTexture(const Font::FontTexture& src)
 {
 LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start " << src.textureId; Log::flush();
@@ -210,7 +186,6 @@ LOG(LogInfo) << "Font::FontTexture::~FontTexture end"; Log::flush();
 bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 {
 LOG(LogInfo) << "Font::FontTexture::findEmpty start"; Log::flush();
-LOG(LogInfo) << "size " << size.x() << ' ' << size.y(); Log::flush();
 	if(size.x() >= textureSize.x() || size.y() >= textureSize.y())
 		return false;
 
@@ -228,9 +203,6 @@ LOG(LogInfo) << "size " << size.x() << ' ' << size.y(); Log::flush();
 	{
 		// nope, still won't fit
 LOG(LogInfo) << "Font::FontTexture::findEmpty false"; Log::flush();
-LOG(LogInfo) << "x " << writePos.x() << ' ' << size.x() << ' ' << textureSize.x(); Log::flush();
-LOG(LogInfo) << "y " << writePos.y() << ' ' << size.y() << ' ' << textureSize.y(); Log::flush();
-LOG(LogInfo) << "rowHeight " << rowHeight; Log::flush();
 		return false;
 	}
 
@@ -278,13 +250,7 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 
 	// current textures are full,
 	// make a new one
-	{
-LOG(LogInfo) << "Font::getTextureForNewGlyph A1 " << mTextures.capacity(); Log::flush();
-		FontTexture w;
-LOG(LogInfo) << "Font::getTextureForNewGlyph A2 " << mTextures.size(); Log::flush();
-		mTextures.push_back(w);
-LOG(LogInfo) << "Font::getTextureForNewGlyph A3 " << mTextures.size(); Log::flush();
-	}
+	mTextures.push_back(FontTexture());
 	tex_out = &mTextures.back();
 	tex_out->initTexture();
 LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
@@ -487,6 +453,7 @@ LOG(LogDebug) << "Font::renderTextCache start " << cache->vertexLists.size(); Lo
 		assert(*it->textureIdPtr != 0);
 
 		auto vertexList = *it;
+LOG(LogDebug) << "bindTexture " << (*it->textureIdPtr); Log::flush();
 
 		Renderer::bindTexture(*it->textureIdPtr);
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
@@ -780,13 +747,11 @@ TextCache* Font::buildTextCache(const std::string& text, float offsetX, float of
 
 void TextCache::setColor(unsigned int color)
 {
-LOG(LogInfo) << "TextCache::setColor start"; Log::flush();
 	const unsigned int convertedColor = Renderer::convertColor(color);
 
 	for(auto it = vertexLists.begin(); it != vertexLists.end(); it++)
 		for(auto it2 = it->verts.begin(); it2 != it->verts.end(); it2++)
 			it2->col = convertedColor;
-LOG(LogInfo) << "TextCache::setColor end"; Log::flush();
 }
 
 std::shared_ptr<Font> Font::getFromTheme(const ThemeData::ThemeElement* elem, unsigned int properties, const std::shared_ptr<Font>& orig)

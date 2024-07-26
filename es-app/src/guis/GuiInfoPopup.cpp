@@ -4,7 +4,6 @@
 #include "components/NinePatchComponent.h"
 #include "components/TextComponent.h"
 #include <SDL_timer.h>
-#include "Log.h"
 
 GuiInfoPopup::GuiInfoPopup(Window* window, std::string message, int duration, int fadein, int fadeout) :
 	GuiComponent(window), mMessage(message), mDuration(duration), mFadein(fadein), mFadeout(fadeout), running(true)

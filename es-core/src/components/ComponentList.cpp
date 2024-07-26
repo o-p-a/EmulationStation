@@ -1,5 +1,4 @@
 #include "components/ComponentList.h"
-#include "Log.h"
 
 #define TOTAL_HORIZONTAL_PADDING_PX 20
 
