@@ -196,7 +196,7 @@ LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) start " << s
 	writePos = src.writePos;
 	rowHeight = src.rowHeight;
 
-	const_cast<Font::FontTexture>(&src)->textureId = 0;
+	const_cast<FontTexture&>(src).textureId = 0;
 LOG(LogInfo) << "Font::FontTexture::FontTexture(const FontTexture&) end"; Log::flush();
 }
 
