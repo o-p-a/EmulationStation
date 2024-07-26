@@ -82,9 +82,7 @@ private:
 		int rowHeight;
 
 		FontTexture();
-		FontTexture(FontTexture&&) noexcept;
-//		FontTexture(FontTexture&);
-//		FontTexture(const FontTexture&);
+		FontTexture(const FontTexture&);
 		~FontTexture();
 		bool findEmpty(const Vector2i& size, Vector2i& cursor_out);
 
