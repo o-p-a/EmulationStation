@@ -52,7 +52,7 @@ void ErrorPrint()
 		NULL
 	);
 
-	LOG(LogInfo) << "ErrorPrint " << lpMsgBuf;
+	LOG(LogInfo) << "ErrorPrint " << (char*)lpMsgBuf;
 
 	LocalFree(lpMsgBuf);
 }

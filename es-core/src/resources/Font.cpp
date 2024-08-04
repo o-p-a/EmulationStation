@@ -216,7 +216,6 @@ LOG(LogInfo) << "Font::FontTexture::deinitTexture end";
 
 void Font::getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_out, Vector2i& cursor_out)
 {
-LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphSize.y();
 	if(mTextures.size())
 	{
 		// check if the most recent texture has space
@@ -239,7 +238,6 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 	mTextures.push_back(FontTexture());
 	tex_out = &mTextures.back();
 	tex_out->initTexture();
-LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId;
 
 	bool ok = tex_out->findEmpty(glyphSize, cursor_out);
 	if(!ok)
