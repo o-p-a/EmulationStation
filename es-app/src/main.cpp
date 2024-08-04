@@ -286,7 +286,7 @@ int main(int argc, char* argv[])
 
 	// only show the console on Windows if HideConsole is false
 #ifdef WIN32
-	setlocale(LC_ALL, ".UTF8");
+	setlocale(LC_ALL, "Japanese_Japan.UTF8");
 	// MSVC has a "SubSystem" option, with two primary options: "WINDOWS" and "CONSOLE".
 	// In "WINDOWS" mode, no console is automatically created for us.  This is good,
 	// because we can choose to only create the console window if the user explicitly
