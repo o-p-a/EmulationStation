@@ -41,18 +41,19 @@ namespace Utils
 void ErrorPrint()
 {
 	LPVOID lpMsgBuf;
+	DWORD le = GetLastError();
 
 	FormatMessage(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL,
-		GetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		le,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
 		(LPTSTR) &lpMsgBuf,
 		0,
 		NULL
 	);
 
-	LOG(LogInfo) << "ErrorPrint " << (char*)lpMsgBuf;
+	LOG(LogInfo) << "ErrorPrint " << le << ' ' << (char*)lpMsgBuf;
 
 	LocalFree(lpMsgBuf);
 }
