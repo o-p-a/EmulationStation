@@ -52,7 +52,7 @@ LOG(LogInfo) << "getDirContent start " << path; Log::flush();
 				const std::unique_lock<std::recursive_mutex> lock(mutex);
 				WIN32_FIND_DATA                              findData;
 				const std::string                            wildcard = path + "/*";
-				const HANDLE                                 hFind    = FindFirstFile(wildcard.c_str(), &findData);
+				const HANDLE                                 hFind    = FindFirstFileEx(wildcard.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, NULL, 0);
 
 				if(hFind != INVALID_HANDLE_VALUE)
 				{
