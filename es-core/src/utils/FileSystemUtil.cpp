@@ -93,8 +93,10 @@ LOG(LogInfo) << "full: " << fullName;
 							if(_recursive && isDirectory(fullName))
 								contentList.merge(getDirContent(fullName, true));
 						}
+
+						FindNextFile(hFind, &findData);
 					}
-					while(FindNextFile(hFind, &findData));
+					while(GetLastError() != ERROR_NO_MORE_FILES);
 ErrorPrint();
 
 					FindClose(hFind);
