@@ -38,26 +38,6 @@ namespace Utils
 
 //////////////////////////////////////////////////////////////////////////
 
-void ErrorPrint()
-{
-	LPVOID lpMsgBuf;
-	DWORD le = GetLastError();
-
-	FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
-		le,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
-		(LPTSTR) &lpMsgBuf,
-		0,
-		NULL
-	);
-
-	LOG(LogInfo) << "ErrorPrint " << le << ' ' << (char*)lpMsgBuf;
-
-	LocalFree(lpMsgBuf);
-}
-
 		stringList getDirContent(const std::string& _path, const bool _recursive)
 		{
 			const std::string path = getGenericPath(_path);
@@ -86,7 +66,6 @@ LOG(LogInfo) << "name: " << name;
 						if((name != ".") && (name != ".."))
 						{
 							const std::string fullName(getGenericPath(path + "/" + name));
-LOG(LogInfo) << "full: " << fullName;
 
 							contentList.push_back(fullName);
 
@@ -94,10 +73,10 @@ LOG(LogInfo) << "full: " << fullName;
 								contentList.merge(getDirContent(fullName, true));
 						}
 
-						FindNextFile(hFind, &findData);
+						;
+LOG(LogInfo) << "res: " << FindNextFile(hFind, &findData);
 					}
 					while(GetLastError() != ERROR_NO_MORE_FILES);
-ErrorPrint();
 
 					FindClose(hFind);
 				}
