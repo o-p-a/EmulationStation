@@ -74,7 +74,7 @@ size_t Font::getTotalMemUsage()
 
 Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 {
-LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
+LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath;
 	assert(mSize > 0);
 
 	mTextures.reserve(10);
@@ -89,14 +89,14 @@ LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath; Log::flush();
 		getGlyph(i);
 
 	clearFaceCache();
-LOG(LogInfo) << "Font::Font end"; Log::flush();
+LOG(LogInfo) << "Font::Font end";
 }
 
 Font::~Font()
 {
-LOG(LogInfo) << "Font::~Font start " << mPath; Log::flush();
+LOG(LogInfo) << "Font::~Font start " << mPath;
 	unload();
-LOG(LogInfo) << "Font::~Font end"; Log::flush();
+LOG(LogInfo) << "Font::~Font end";
 }
 
 void Font::reload()
@@ -104,20 +104,20 @@ void Font::reload()
 	if (mLoaded)
 		return;
 
-LOG(LogInfo) << "Font::reload start " << mPath; Log::flush();
+LOG(LogInfo) << "Font::reload start " << mPath;
 	rebuildTextures();
 	mLoaded = true;
-LOG(LogInfo) << "Font::reload end"; Log::flush();
+LOG(LogInfo) << "Font::reload end";
 }
 
 bool Font::unload()
 {
 	if (mLoaded)
 	{
-LOG(LogInfo) << "Font::unload start " << mPath; Log::flush();
+LOG(LogInfo) << "Font::unload start " << mPath;
 		unloadTextures();
 		mLoaded = false;
-LOG(LogInfo) << "Font::unload end"; Log::flush();
+LOG(LogInfo) << "Font::unload end";
 		return true;
 	}
 
@@ -136,44 +136,37 @@ std::shared_ptr<Font> Font::get(int size, const std::string& path)
 			return foundFont->second.lock();
 	}
 
-LOG(LogInfo) << "Font::get start " << path << ' ' << canonicalPath << ' ' << size; Log::flush();
 	std::shared_ptr<Font> font = std::shared_ptr<Font>(new Font(def.second, def.first));
 	sFontMap[def] = std::weak_ptr<Font>(font);
 	ResourceManager::getInstance()->addReloadable(font);
-LOG(LogInfo) << "Font::get end"; Log::flush();
 	return font;
 }
 
 void Font::unloadTextures()
 {
-LOG(LogInfo) << "Font::unloadTextures start"; Log::flush();
+LOG(LogInfo) << "Font::unloadTextures start";
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
 		it->deinitTexture();
 	}
-LOG(LogInfo) << "Font::unloadTextures end"; Log::flush();
+LOG(LogInfo) << "Font::unloadTextures end";
 }
 
 Font::FontTexture::FontTexture()
 {
-LOG(LogInfo) << "Font::FontTexture::FontTexture start"; Log::flush();
 	textureId = 0;
 	textureSize = Vector2i(2048, 512);
 	writePos = Vector2i::Zero();
 	rowHeight = 0;
-LOG(LogInfo) << "Font::FontTexture::FontTexture end"; Log::flush();
 }
 
 Font::FontTexture::~FontTexture()
 {
-LOG(LogInfo) << "Font::FontTexture::~FontTexture start " << textureId; Log::flush();
 	deinitTexture();
-LOG(LogInfo) << "Font::FontTexture::~FontTexture end"; Log::flush();
 }
 
 bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 {
-LOG(LogInfo) << "Font::FontTexture::findEmpty start"; Log::flush();
 	if(size.x() >= textureSize.x() || size.y() >= textureSize.y())
 		return false;
 
@@ -190,7 +183,6 @@ LOG(LogInfo) << "Font::FontTexture::findEmpty start"; Log::flush();
 		writePos.y() + size.y() >= textureSize.y())
 	{
 		// nope, still won't fit
-LOG(LogInfo) << "Font::FontTexture::findEmpty false"; Log::flush();
 		return false;
 	}
 
@@ -200,32 +192,31 @@ LOG(LogInfo) << "Font::FontTexture::findEmpty false"; Log::flush();
 	if(size.y() > rowHeight)
 		rowHeight = size.y();
 
-LOG(LogInfo) << "Font::FontTexture::findEmpty end"; Log::flush();
 	return true;
 }
 
 void Font::FontTexture::initTexture()
 {
-LOG(LogInfo) << "Font::FontTexture::initTexture start"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::initTexture start";
 	assert(textureId == 0);
 	textureId = Renderer::createTexture(Renderer::Texture::ALPHA, false, false, textureSize.x(), textureSize.y(), nullptr);
-LOG(LogInfo) << "Font::FontTexture::initTexture end " << textureId; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::initTexture end " << textureId;
 }
 
 void Font::FontTexture::deinitTexture()
 {
 	if(textureId != 0)
 	{
-LOG(LogInfo) << "Font::FontTexture::deinitTexture start " << textureId; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::deinitTexture start " << textureId;
 		Renderer::destroyTexture(textureId);
 		textureId = 0;
-LOG(LogInfo) << "Font::FontTexture::deinitTexture end"; Log::flush();
+LOG(LogInfo) << "Font::FontTexture::deinitTexture end";
 	}
 }
 
 void Font::getTextureForNewGlyph(const Vector2i& glyphSize, FontTexture*& tex_out, Vector2i& cursor_out)
 {
-LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphSize.y(); Log::flush();
+LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphSize.y();
 	if(mTextures.size())
 	{
 		// check if the most recent texture has space
@@ -248,7 +239,7 @@ LOG(LogInfo) << "Font::getTextureForNewGlyph " << glyphSize.x() << ' ' << glyphS
 	mTextures.push_back(FontTexture());
 	tex_out = &mTextures.back();
 	tex_out->initTexture();
-LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId; Log::flush();
+LOG(LogInfo) << "Font::getTextureForNewGlyph new texture created " << tex_out->textureId;
 
 	bool ok = tex_out->findEmpty(glyphSize, cursor_out);
 	if(!ok)
@@ -379,7 +370,6 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 		LOG(LogError) << "Could not create glyph for character " << id << " for font " << mPath << ", size " << mSize << " (no suitable texture found)!";
 		return NULL;
 	}
-LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->textureSize.x() << ' ' << tex->textureSize.y() << ' ' << cursor.x() << ' ' << cursor.y(); Log::flush();
 
 	// create glyph
 	Glyph& glyph = mGlyphMap[id];
@@ -405,7 +395,7 @@ LOG(LogInfo) << "Font::getGlyph " << id << ' ' << tex->textureId << ' ' << tex->
 // completely recreate the texture data for all textures based on mGlyphs information
 void Font::rebuildTextures()
 {
-LOG(LogInfo) << "Font::rebuildTextures start"; Log::flush();
+LOG(LogInfo) << "Font::rebuildTextures start";
 	// recreate OpenGL textures
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
@@ -430,7 +420,7 @@ LOG(LogInfo) << "Font::rebuildTextures start"; Log::flush();
 		// upload to texture
 		Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), glyphSlot->bitmap.buffer);
 	}
-LOG(LogInfo) << "Font::rebuildTextures end"; Log::flush();
+LOG(LogInfo) << "Font::rebuildTextures end";
 }
 
 void Font::renderTextCache(TextCache* cache)
@@ -441,19 +431,15 @@ void Font::renderTextCache(TextCache* cache)
 		return;
 	}
 
-if(cache->vertexLists.size() > 1){ Log::setReportingLevel(LogDebug); }
-LOG(LogDebug) << "Font::renderTextCache start " << cache->vertexLists.size(); Log::flush();
 	for(auto it = cache->vertexLists.cbegin(); it != cache->vertexLists.cend(); it++)
 	{
 		assert(*it->textureIdPtr != 0);
 
 		auto vertexList = *it;
-LOG(LogDebug) << "bindTexture " << (*it->textureIdPtr); Log::flush();
 
 		Renderer::bindTexture(*it->textureIdPtr);
 		Renderer::drawTriangleStrips(&it->verts[0], (int)it->verts.size());
 	}
-LOG(LogDebug) << "Font::renderTextCache end"; Log::flush();
 }
 
 Vector2f Font::sizeCodePoint(unsigned int character, float lineSpacing)

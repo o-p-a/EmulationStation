@@ -38,13 +38,32 @@ namespace Utils
 
 //////////////////////////////////////////////////////////////////////////
 
+void ErrorPrint()
+{
+	LPVOID lpMsgBuf;
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		GetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR) &lpMsgBuf,
+		0,
+		NULL
+	);
+
+	LOG(LogInfo) << "ErrorPrint " << lpMsgBuf;
+
+	LocalFree(lpMsgBuf);
+}
+
 		stringList getDirContent(const std::string& _path, const bool _recursive)
 		{
 			const std::string path = getGenericPath(_path);
 			stringList        contentList;
 
 			// only parse the directory, if it's a directory
-LOG(LogInfo) << "getDirContent start " << path; Log::flush();
+LOG(LogInfo) << "getDirContent start " << path;
 			if(isDirectory(path))
 			{
 
@@ -60,13 +79,13 @@ LOG(LogInfo) << "getDirContent start " << path; Log::flush();
 					do
 					{
 						const std::string name = findData.cFileName;
-LOG(LogInfo) << "name: " << name; Log::flush();
+LOG(LogInfo) << "name: " << name;
 
 						// ignore "." and ".."
 						if((name != ".") && (name != ".."))
 						{
 							const std::string fullName(getGenericPath(path + "/" + name));
-LOG(LogInfo) << "full: " << fullName; Log::flush();
+LOG(LogInfo) << "full: " << fullName;
 
 							contentList.push_back(fullName);
 
@@ -75,6 +94,7 @@ LOG(LogInfo) << "full: " << fullName; Log::flush();
 						}
 					}
 					while(FindNextFile(hFind, &findData));
+ErrorPrint();
 
 					FindClose(hFind);
 				}
@@ -111,7 +131,7 @@ LOG(LogInfo) << "full: " << fullName; Log::flush();
 			contentList.sort();
 
 			// return the content list
-LOG(LogInfo) << "getDirContent end "; Log::flush();
+LOG(LogInfo) << "getDirContent end ";
 			return contentList;
 
 		} // getDirContent
