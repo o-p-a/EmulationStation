@@ -52,7 +52,7 @@ LOG(LogInfo) << "getDirContent start " << path;
 				const std::unique_lock<std::recursive_mutex> lock(mutex);
 				WIN32_FIND_DATA                              findData;
 				const std::string                            wildcard = path + "/*";
-				const HANDLE                                 hFind    = FindFirstFileEx(wildcard.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, NULL, 0);
+				const HANDLE                                 hFind    = FindFirstFile(wildcard.c_str(), &findData);
 
 				if(hFind != INVALID_HANDLE_VALUE)
 				{
@@ -73,8 +73,7 @@ LOG(LogInfo) << "name: " << name;
 								contentList.merge(getDirContent(fullName, true));
 						}
 
-						;
-LOG(LogInfo) << "res: " << FindNextFile(hFind, &findData);
+						FindNextFile(hFind, &findData);
 					}
 					while(GetLastError() != ERROR_NO_MORE_FILES);
 
