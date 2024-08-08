@@ -1,7 +1,6 @@
 #define _FILE_OFFSET_BITS 64
 
 #include "utils/FileSystemUtil.h"
-#include "Log.h"
 
 #include <sys/stat.h>
 #include <string.h>
@@ -44,7 +43,6 @@ namespace Utils
 			stringList        contentList;
 
 			// only parse the directory, if it's a directory
-LOG(LogInfo) << "getDirContent start " << path;
 			if(isDirectory(path))
 			{
 
@@ -60,7 +58,6 @@ LOG(LogInfo) << "getDirContent start " << path;
 					do
 					{
 						const std::string name = findData.cFileName;
-LOG(LogInfo) << "name: " << name;
 
 						// ignore "." and ".."
 						if((name != ".") && (name != ".."))
@@ -112,7 +109,6 @@ LOG(LogInfo) << "name: " << name;
 			contentList.sort();
 
 			// return the content list
-LOG(LogInfo) << "getDirContent end ";
 			return contentList;
 
 		} // getDirContent

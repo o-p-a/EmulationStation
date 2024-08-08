@@ -64,11 +64,9 @@ void GuiComponent::render(const Transform4x4f& parentTrans)
 {
 	if (!isVisible())
 		return;
-LOG(LogInfo) << "GuiComponent::render start"; Log::flush();
 
 	Transform4x4f trans = parentTrans * getTransform();
 	renderChildren(trans);
-LOG(LogInfo) << "GuiComponent::render end"; Log::flush();
 }
 
 void GuiComponent::renderChildren(const Transform4x4f& transform) const

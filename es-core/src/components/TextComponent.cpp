@@ -97,7 +97,6 @@ void TextComponent::render(const Transform4x4f& parentTrans)
 	if (!isVisible())
 		return;
 
-LOG(LogInfo) << "TextComponent::render " << mText; Log::flush();
 	Transform4x4f trans = parentTrans * getTransform();
 
 	if (mRenderBackground)

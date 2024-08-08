@@ -74,7 +74,6 @@ size_t Font::getTotalMemUsage()
 
 Font::Font(int size, const std::string& path) : mSize(size), mPath(path)
 {
-LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath;
 	assert(mSize > 0);
 
 	mTextures.reserve(10);
@@ -89,14 +88,11 @@ LOG(LogInfo) << "Font::Font start " << size << ' ' << mPath;
 		getGlyph(i);
 
 	clearFaceCache();
-LOG(LogInfo) << "Font::Font end";
 }
 
 Font::~Font()
 {
-LOG(LogInfo) << "Font::~Font start " << mPath;
 	unload();
-LOG(LogInfo) << "Font::~Font end";
 }
 
 void Font::reload()
@@ -104,20 +100,16 @@ void Font::reload()
 	if (mLoaded)
 		return;
 
-LOG(LogInfo) << "Font::reload start " << mPath;
 	rebuildTextures();
 	mLoaded = true;
-LOG(LogInfo) << "Font::reload end";
 }
 
 bool Font::unload()
 {
 	if (mLoaded)
 	{
-LOG(LogInfo) << "Font::unload start " << mPath;
 		unloadTextures();
 		mLoaded = false;
-LOG(LogInfo) << "Font::unload end";
 		return true;
 	}
 
@@ -144,12 +136,10 @@ std::shared_ptr<Font> Font::get(int size, const std::string& path)
 
 void Font::unloadTextures()
 {
-LOG(LogInfo) << "Font::unloadTextures start";
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
 		it->deinitTexture();
 	}
-LOG(LogInfo) << "Font::unloadTextures end";
 }
 
 Font::FontTexture::FontTexture()
@@ -197,20 +187,16 @@ bool Font::FontTexture::findEmpty(const Vector2i& size, Vector2i& cursor_out)
 
 void Font::FontTexture::initTexture()
 {
-LOG(LogInfo) << "Font::FontTexture::initTexture start";
 	assert(textureId == 0);
 	textureId = Renderer::createTexture(Renderer::Texture::ALPHA, false, false, textureSize.x(), textureSize.y(), nullptr);
-LOG(LogInfo) << "Font::FontTexture::initTexture end " << textureId;
 }
 
 void Font::FontTexture::deinitTexture()
 {
 	if(textureId != 0)
 	{
-LOG(LogInfo) << "Font::FontTexture::deinitTexture start " << textureId;
 		Renderer::destroyTexture(textureId);
 		textureId = 0;
-LOG(LogInfo) << "Font::FontTexture::deinitTexture end";
 	}
 }
 
@@ -393,7 +379,6 @@ Font::Glyph* Font::getGlyph(unsigned int id)
 // completely recreate the texture data for all textures based on mGlyphs information
 void Font::rebuildTextures()
 {
-LOG(LogInfo) << "Font::rebuildTextures start";
 	// recreate OpenGL textures
 	for(auto it = mTextures.begin(); it != mTextures.end(); it++)
 	{
@@ -418,7 +403,6 @@ LOG(LogInfo) << "Font::rebuildTextures start";
 		// upload to texture
 		Renderer::updateTexture(tex->textureId, Renderer::Texture::ALPHA, cursor.x(), cursor.y(), glyphSize.x(), glyphSize.y(), glyphSlot->bitmap.buffer);
 	}
-LOG(LogInfo) << "Font::rebuildTextures end";
 }
 
 void Font::renderTextCache(TextCache* cache)
