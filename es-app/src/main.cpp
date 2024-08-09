@@ -60,9 +60,9 @@ bool parseArgs(int argc, char* argv[])
 				return false;
 			}
 
-			int monitorId = atoi(argv[i + 1]);
+			int monitor = atoi(argv[i + 1]);
 			i++; // skip the argument value
-			Settings::getInstance()->setInt("MonitorID", monitorId);
+			Settings::getInstance()->setInt("MonitorID", monitor);
 		}else if(strcmp(argv[i], "--resolution") == 0)
 		{
 			if(i >= argc - 2)
@@ -193,6 +193,7 @@ bool parseArgs(int argc, char* argv[])
 				"--screenoffset X Y             move the canvas by x,y pixels\n"
 				"--fullscreen-borderless        borderless fullscreen window\n"
 				"--windowed                     not fullscreen, should be used with --resolution\n"
+				"--monitor N                    monitor index (0-)\n"
 				"\nGame and settings visibility in ES and behaviour of ES:\n"
 				"--force-disable-filters        force the UI to ignore applied filters on\n"
 				"                               gamelist (p)\n"
