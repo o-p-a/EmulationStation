@@ -75,15 +75,10 @@ namespace Renderer
 
 		initialCursorState = (SDL_ShowCursor(0) != 0);
 
-		int displays = SDL_GetNumVideoDisplays();
-		for(int i = 0; i < displays; ++i){
-			SDL_Rect rc;
-			SDL_GetDisplayBounds(i, &rc);
-			LOG(LogInfo) << "Monitor #" << i << " x:" << rc.x << " y:" << rc.y << " w:" << rc.w << " h:" << rc.h;
-		}
+		int monitorId = Settings::getInstance()->getInt("MonitorID");
 
 		SDL_DisplayMode dispMode;
-		SDL_GetDesktopDisplayMode(0, &dispMode);
+		SDL_GetDesktopDisplayMode(monitorId, &dispMode);
 		windowWidth   = Settings::getInstance()->getInt("WindowWidth")   ? Settings::getInstance()->getInt("WindowWidth")   : dispMode.w;
 		windowHeight  = Settings::getInstance()->getInt("WindowHeight")  ? Settings::getInstance()->getInt("WindowHeight")  : dispMode.h;
 		screenWidth   = Settings::getInstance()->getInt("ScreenWidth")   ? Settings::getInstance()->getInt("ScreenWidth")   : windowWidth;
@@ -96,7 +91,7 @@ namespace Renderer
 
 		const unsigned int windowFlags = (Settings::getInstance()->getBool("Windowed") ? 0 : (Settings::getInstance()->getBool("FullscreenBorderless") ? SDL_WINDOW_BORDERLESS : SDL_WINDOW_FULLSCREEN)) | getWindowFlags();
 
-		if((sdlWindow = SDL_CreateWindow("EmulationStation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, windowFlags)) == nullptr)
+		if((sdlWindow = SDL_CreateWindow("EmulationStation", SDL_WINDOWPOS_UNDEFINED_DISPLAY(monitorId), SDL_WINDOWPOS_UNDEFINED_DISPLAY(monitorId), windowWidth, windowHeight, windowFlags)) == nullptr)
 		{
 			LOG(LogError) << "Error creating SDL window!\n\t" << SDL_GetError();
 			return false;
