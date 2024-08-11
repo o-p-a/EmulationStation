@@ -71,28 +71,36 @@ GuiComponent* Window::peekGui()
 
 bool Window::init()
 {
+LOG(LogInfo) << "Window::init() A"; Log::flush();
 	if(!Renderer::init())
 	{
 		LOG(LogError) << "Renderer failed to initialize!";
 		return false;
 	}
+LOG(LogInfo) << "Window::init() B"; Log::flush();
 
 	ResourceManager::getInstance()->reloadAll();
+LOG(LogInfo) << "Window::init() C"; Log::flush();
 
 	//keep a reference to the default fonts, so they don't keep getting destroyed/recreated
 	if(mDefaultFonts.empty())
 	{
+LOG(LogInfo) << "Window::init() D"; Log::flush();
 		mDefaultFonts.push_back(Font::get(FONT_SIZE_SMALL));
 		mDefaultFonts.push_back(Font::get(FONT_SIZE_MEDIUM));
 		mDefaultFonts.push_back(Font::get(FONT_SIZE_LARGE));
+LOG(LogInfo) << "Window::init() E"; Log::flush();
 	}
 
+LOG(LogInfo) << "Window::init() F"; Log::flush();
 	mBackgroundOverlay->setImage(":/scroll_gradient.png");
 	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
+LOG(LogInfo) << "Window::init() G"; Log::flush();
 
 	// update our help because font sizes probably changed
 	if(peekGui())
 		peekGui()->updateHelpPrompts();
+LOG(LogInfo) << "Window::init() H"; Log::flush();
 
 	return true;
 }
