@@ -227,10 +227,20 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
+	static string to_s(const Vector4f& v)
+	{
+		return '{' + to_string(v[0]) + ',' + to_string(v[1]) + ',' + to_string(v[2]) + ',' + to_string(v[3]) + '}';
+	}
+
+	static string to_s(const Transform4x4f& v)
+	{
+		return '[' + to_string(v.r0()) + ',' + to_string(v.r1()) + ',' + to_string(v.r2()) + ',' + to_string(v.r3()) + ']';
+	}
+
 	void setProjection(const Transform4x4f& _projection)
 	{
 LOG(LogInfo) << "Renderer_GL14::setProjection() start"; Log::flush();
-LOG(LogInfo) << " r0:" << _projection.r0 << " r1:" << _projection.r1 << " r2:" << _projection.r2 << " r3:" << _projection.r3; Log::flush();
+LOG(LogInfo) << to_s(_projection); Log::flush();
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
 		GL_CHECK_ERROR(glLoadMatrixf((GLfloat*)&_projection));
 

@@ -346,7 +346,6 @@ int main(int argc, char* argv[])
 	//always close the log on exit
 	atexit(&onExit);
 
-LOG(LogInfo) << "main() A"; Log::flush();
 	Window window;
 	SystemScreenSaver screensaver(&window);
 	PowerSaver::init();
@@ -354,7 +353,6 @@ LOG(LogInfo) << "main() A"; Log::flush();
 	CollectionSystemManager::init(&window);
 	MameNames::init();
 	window.pushGui(ViewController::get());
-LOG(LogInfo) << "main() B"; Log::flush();
 
 	bool splashScreen = Settings::getInstance()->getBool("SplashScreen");
 
