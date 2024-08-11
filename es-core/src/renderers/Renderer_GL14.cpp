@@ -11,12 +11,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-static std::string to_s(const Vector4f& v)
+static std::string to_string(const Vector4f& v)
 {
 	return '{' + std::to_string(v[0]) + ',' + std::to_string(v[1]) + ',' + std::to_string(v[2]) + ',' + std::to_string(v[3]) + '}';
 }
 
-static std::string to_s(const Transform4x4f& v)
+static std::string to_string(const Transform4x4f& v)
 {
 	return '[' + std::to_string(v.r0()) + ',' + std::to_string(v.r1()) + ',' + std::to_string(v.r2()) + ',' + std::to_string(v.r3()) + ']';
 }
@@ -241,7 +241,7 @@ namespace Renderer
 	void setProjection(const Transform4x4f& _projection)
 	{
 LOG(LogInfo) << "Renderer_GL14::setProjection() start"; Log::flush();
-LOG(LogInfo) << to_s(_projection); Log::flush();
+LOG(LogInfo) << to_string(_projection); Log::flush();
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
 		GL_CHECK_ERROR(glLoadMatrixf((GLfloat*)&_projection));
 
