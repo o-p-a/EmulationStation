@@ -10,14 +10,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-static string to_string(const Vector4f& v)
-{
-	return '{' + to_string(v[0]) + ',' + to_string(v[1]) + ',' + to_string(v[2]) + ',' + to_string(v[3]) + '}';
-}
+namespace std{
+	static string to_string(const Vector4f& v)
+	{
+		return '{' + to_string(v[0]) + ',' + to_string(v[1]) + ',' + to_string(v[2]) + ',' + to_string(v[3]) + '}';
+	}
 
-static string to_string(const Transform4x4f& v)
-{
-	return '[' + to_string(v.r0()) + ',' + to_string(v.r1()) + ',' + to_string(v.r2()) + ',' + to_string(v.r3()) + ']';
+	static string to_string(const Transform4x4f& v)
+	{
+		return '[' + to_string(v.r0()) + ',' + to_string(v.r1()) + ',' + to_string(v.r2()) + ',' + to_string(v.r3()) + ']';
+	}
 }
 
 namespace Renderer
@@ -250,7 +252,7 @@ namespace Renderer
 	void setProjection(const Transform4x4f& _projection)
 	{
 LOG(LogInfo) << "Renderer_GL21::setProjection() start"; Log::flush();
-LOG(LogInfo) << to_string(_projection); Log::flush();
+LOG(LogInfo) << std::to_string(_projection); Log::flush();
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
 		GL_CHECK_ERROR(glLoadMatrixf((GLfloat*)&_projection));
 
