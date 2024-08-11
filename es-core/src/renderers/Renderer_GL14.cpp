@@ -4,6 +4,7 @@
 #include "math/Transform4x4f.h"
 #include "Log.h"
 #include "Settings.h"
+#include <string>
 
 #include <SDL_opengl.h>
 #include <SDL.h>
