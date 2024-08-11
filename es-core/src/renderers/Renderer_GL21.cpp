@@ -229,9 +229,12 @@ namespace Renderer
 
 	void setProjection(const Transform4x4f& _projection)
 	{
+LOG(LogInfo) << "Renderer_GL21::setProjection() start"; Log::flush();
+LOG(LogInfo) << " r0:" << _projection.r0 << " r1:" << _projection.r1 << " r2:" << _projection.r2 << " r3:" << _projection.r3; Log::flush();
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
 		GL_CHECK_ERROR(glLoadMatrixf((GLfloat*)&_projection));
 
+LOG(LogInfo) << "Renderer::setProjection() end"; Log::flush();
 	} // setProjection
 
 //////////////////////////////////////////////////////////////////////////
@@ -250,9 +253,12 @@ namespace Renderer
 
 	void setViewport(const Rect& _viewport)
 	{
+LOG(LogInfo) << "Renderer_GL21::setViewport() start"; Log::flush();
+LOG(LogInfo) << " x:" << _viewport.x << " y:" << _viewport.y << " w:" << _viewport.w << " h:" << _viewport.h; Log::flush();
 		// glViewport starts at the bottom left of the window
 		GL_CHECK_ERROR(glViewport( _viewport.x, getWindowHeight() - _viewport.y - _viewport.h, _viewport.w, _viewport.h));
 
+LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 	} // setViewport
 
 //////////////////////////////////////////////////////////////////////////
@@ -297,9 +303,11 @@ namespace Renderer
 
 	void swapBuffers()
 	{
+LOG(LogInfo) << "Renderer_GL21::swapBuffers() start"; Log::flush();
 		SDL_GL_SwapWindow(getSDLWindow());
 		GL_CHECK_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
+LOG(LogInfo) << "Renderer::swapBuffers() end"; Log::flush();
 	} // swapBuffers
 
 } // Renderer::

@@ -67,13 +67,11 @@ namespace Renderer
 	{
 		LOG(LogInfo) << "Creating window...";
 
-LOG(LogInfo) << "Renderer::createWindow() A"; Log::flush();
 		if(SDL_Init(SDL_INIT_VIDEO) != 0)
 		{
 			LOG(LogError) << "Error initializing SDL!\n	" << SDL_GetError();
 			return false;
 		}
-LOG(LogInfo) << "Renderer::createWindow() B"; Log::flush();
 
 		initialCursorState = (SDL_ShowCursor(0) != 0);
 
@@ -84,14 +82,12 @@ LOG(LogInfo) << "Renderer::createWindow() B"; Log::flush();
 			LOG(LogInfo) << "Monitor #" << i << " x:" << rc.x << " y:" << rc.y << " w:" << rc.w << " h:" << rc.h; Log::flush();
 		}
 
-LOG(LogInfo) << "Renderer::createWindow() C"; Log::flush();
 		int displayIndex = Settings::getInstance()->getInt("MonitorID");
 
 		if(displayIndex < 0 || displayIndex >= SDL_GetNumVideoDisplays()){
 			displayIndex = 0;
 		}
 
-LOG(LogInfo) << "Renderer::createWindow() D"; Log::flush();
 		SDL_DisplayMode dispMode;
 		SDL_GetDesktopDisplayMode(displayIndex, &dispMode);
 		windowWidth   = Settings::getInstance()->getInt("WindowWidth")   ? Settings::getInstance()->getInt("WindowWidth")   : dispMode.w;
@@ -102,13 +98,10 @@ LOG(LogInfo) << "Renderer::createWindow() D"; Log::flush();
 		screenOffsetY = Settings::getInstance()->getInt("ScreenOffsetY") ? Settings::getInstance()->getInt("ScreenOffsetY") : 0;
 		screenRotate  = Settings::getInstance()->getInt("ScreenRotate")  ? Settings::getInstance()->getInt("ScreenRotate")  : 0;
 
-LOG(LogInfo) << "Renderer::createWindow() E"; Log::flush();
 		setupWindow();
 
-LOG(LogInfo) << "Renderer::createWindow() F"; Log::flush();
 		const unsigned int windowFlags = (Settings::getInstance()->getBool("Windowed") ? 0 : (Settings::getInstance()->getBool("FullscreenBorderless") ? SDL_WINDOW_BORDERLESS : SDL_WINDOW_FULLSCREEN)) | getWindowFlags();
 
-LOG(LogInfo) << "Renderer::createWindow() G"; Log::flush();
 		if((sdlWindow = SDL_CreateWindow("EmulationStation", SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), windowWidth, windowHeight, windowFlags)) == nullptr)
 		{
 			LOG(LogError) << "Error creating SDL window!\n\t" << SDL_GetError();
@@ -117,11 +110,9 @@ LOG(LogInfo) << "Renderer::createWindow() G"; Log::flush();
 
 		LOG(LogInfo) << "Created window successfully.";
 
-LOG(LogInfo) << "Renderer::createWindow() H"; Log::flush();
 		createContext();
 		setIcon();
 		setSwapInterval();
-LOG(LogInfo) << "Renderer::createWindow() I"; Log::flush();
 
 		return true;
 
@@ -149,17 +140,14 @@ LOG(LogInfo) << "Renderer::createWindow() I"; Log::flush();
 LOG(LogInfo) << "Renderer::init() A"; Log::flush();
 		if(!createWindow())
 			return false;
-LOG(LogInfo) << "Renderer::init() B"; Log::flush();
 
 		Transform4x4f projection = Transform4x4f::Identity();
 		Rect          viewport   = Rect(0, 0, 0, 0);
 
-LOG(LogInfo) << "Renderer::init() C"; Log::flush();
 		switch(screenRotate)
 		{
 			case 0:
 			{
-LOG(LogInfo) << "Renderer::init() D"; Log::flush();
 				viewport.x = screenOffsetX;
 				viewport.y = screenOffsetY;
 				viewport.w = screenWidth;
@@ -171,7 +159,6 @@ LOG(LogInfo) << "Renderer::init() D"; Log::flush();
 
 			case 1:
 			{
-LOG(LogInfo) << "Renderer::init() E"; Log::flush();
 				viewport.x = windowWidth - screenOffsetY - screenHeight;
 				viewport.y = screenOffsetX;
 				viewport.w = screenHeight;
@@ -185,7 +172,6 @@ LOG(LogInfo) << "Renderer::init() E"; Log::flush();
 
 			case 2:
 			{
-LOG(LogInfo) << "Renderer::init() F"; Log::flush();
 				viewport.x = windowWidth  - screenOffsetX - screenWidth;
 				viewport.y = windowHeight - screenOffsetY - screenHeight;
 				viewport.w = screenWidth;
@@ -199,7 +185,6 @@ LOG(LogInfo) << "Renderer::init() F"; Log::flush();
 
 			case 3:
 			{
-LOG(LogInfo) << "Renderer::init() G"; Log::flush();
 				viewport.x = screenOffsetY;
 				viewport.y = windowHeight - screenOffsetX - screenWidth;
 				viewport.w = screenHeight;
@@ -214,7 +199,9 @@ LOG(LogInfo) << "Renderer::init() G"; Log::flush();
 LOG(LogInfo) << "Renderer::init() H"; Log::flush();
 
 		setViewport(viewport);
+LOG(LogInfo) << "Renderer::init() H1"; Log::flush();
 		setProjection(projection);
+LOG(LogInfo) << "Renderer::init() H2"; Log::flush();
 		swapBuffers();
 LOG(LogInfo) << "Renderer::init() I"; Log::flush();
 
