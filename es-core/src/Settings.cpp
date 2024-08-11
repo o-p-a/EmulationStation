@@ -172,7 +172,6 @@ void Settings::setDefaults()
 	mBoolMap["ForceKid"] = false;
 	mBoolMap["ForceDisableFilters"] = false;
 
-	mIntMap["MonitorID"] = 0;
 	mIntMap["WindowWidth"]   = 0;
 	mIntMap["WindowHeight"]  = 0;
 	mIntMap["ScreenWidth"]   = 0;
@@ -180,6 +179,7 @@ void Settings::setDefaults()
 	mIntMap["ScreenOffsetX"] = 0;
 	mIntMap["ScreenOffsetY"] = 0;
 	mIntMap["ScreenRotate"]  = 0;
+	mIntMap["MonitorID"] = 0;
 
 	mBoolMap["UseFullscreenPaging"] = false;
 

@@ -75,6 +75,13 @@ namespace Renderer
 
 		initialCursorState = (SDL_ShowCursor(0) != 0);
 
+		int displays = SDL_GetNumVideoDisplays();
+		for(int i = 0; i < displays; ++i){
+			SDL_Rect rc;
+			SDL_GetDisplayBounds(i, &rc);
+			LOG(LogInfo) << "Monitor #" << i << " x:" << rc.x << " y:" << rc.y << " w:" << rc.w << " h:" << rc.h;
+		}
+
 		int displayIndex = Settings::getInstance()->getInt("MonitorID");
 
 		if(displayIndex < 0 || displayIndex >= SDL_GetNumVideoDisplays()){
