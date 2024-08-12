@@ -319,6 +319,11 @@ LOG(LogInfo) << "SDL_GL_GetSwapInterval " << SDL_GL_GetSwapInterval(); Log::flus
 	void swapBuffers()
 	{
 LOG(LogInfo) << "Renderer_GL14::swapBuffers() start"; Log::flush();
+
+		for(GLenum errorCode = glGetError(); errorCode != GL_NO_ERROR; errorCode = glGetError()){
+			LOG(LogError) << "GL error: " << " failed with error code: " << errorCode;
+		}
+
 		SDL_Window *w = getSDLWindow();
 LOG(LogInfo) << "Renderer_GL14::swapBuffers() A"; Log::flush();
 		SDL_GL_SwapWindow(w);
