@@ -26,7 +26,7 @@ namespace std{
 namespace Renderer
 {
 
-#if defined(_DEBUG)
+#if defined(_DEBUG) || 1
 #define GL_CHECK_ERROR(Function) (Function, _GLCheckError(#Function))
 
 	static void _GLCheckError(const char* _funcName)
@@ -134,6 +134,7 @@ namespace Renderer
 		LOG(LogInfo) << "GL renderer: " << renderer;
 		LOG(LogInfo) << "GL version:  " << version;
 		LOG(LogInfo) << "Checking available OpenGL extensions...";
+LOG(LogInfo) << "extensions: " << extensions;
 		LOG(LogInfo) << " ARB_texture_non_power_of_two: " << (extensions.find("ARB_texture_non_power_of_two") != std::string::npos ? "ok" : "MISSING");
 
 		const uint8_t data[4] = {255, 255, 255, 255};
@@ -310,6 +311,7 @@ LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 		else
 			SDL_GL_SetSwapInterval(0);
 
+LOG(LogInfo) << "wglGetSwapIntervalEXT " << wglGetSwapIntervalEXT(); Log::flush();
 	} // setSwapInterval
 
 //////////////////////////////////////////////////////////////////////////
