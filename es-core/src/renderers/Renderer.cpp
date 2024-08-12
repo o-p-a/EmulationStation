@@ -204,7 +204,7 @@ LOG(LogInfo) << "Renderer::init() H1"; Log::flush();
 LOG(LogInfo) << "Renderer::init() H2"; Log::flush();
 SDL_Event event;
 while(SDL_PollEvent(&event));
-Sleep(1);
+SDL_Delay(1);
 		swapBuffers();
 while(SDL_PollEvent(&event));
 LOG(LogInfo) << "Renderer::init() I"; Log::flush();
