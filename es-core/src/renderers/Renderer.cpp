@@ -202,7 +202,11 @@ LOG(LogInfo) << "Renderer::init() H"; Log::flush();
 LOG(LogInfo) << "Renderer::init() H1"; Log::flush();
 		setProjection(projection);
 LOG(LogInfo) << "Renderer::init() H2"; Log::flush();
+SDL_Event event;
+while(SDL_PollEvent(&event));
+sleep(1);
 		swapBuffers();
+while(SDL_PollEvent(&event));
 LOG(LogInfo) << "Renderer::init() I"; Log::flush();
 
 		return true;
