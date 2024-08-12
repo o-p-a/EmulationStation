@@ -311,7 +311,7 @@ LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 		else
 			SDL_GL_SetSwapInterval(0);
 
-LOG(LogInfo) << "wglGetSwapIntervalEXT " << wglGetSwapIntervalEXT(); Log::flush();
+LOG(LogInfo) << "SDL_GL_GetSwapInterval " << SDL_GL_GetSwapInterval(); Log::flush();
 	} // setSwapInterval
 
 //////////////////////////////////////////////////////////////////////////
