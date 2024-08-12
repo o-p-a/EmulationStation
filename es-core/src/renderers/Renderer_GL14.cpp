@@ -317,7 +317,10 @@ LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 	void swapBuffers()
 	{
 LOG(LogInfo) << "Renderer_GL14::swapBuffers() start"; Log::flush();
-		SDL_GL_SwapWindow(getSDLWindow());
+		getSDLWindow *w = getSDLWindow();
+LOG(LogInfo) << "Renderer_GL14::swapBuffers() A"; Log::flush();
+		SDL_GL_SwapWindow(w);
+LOG(LogInfo) << "Renderer_GL14::swapBuffers() B"; Log::flush();
 		GL_CHECK_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 LOG(LogInfo) << "Renderer::swapBuffers() end"; Log::flush();
