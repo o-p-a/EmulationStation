@@ -205,6 +205,8 @@ LOG(LogInfo) << "Renderer::init() H2"; Log::flush();
 SDL_Event event;
 while(SDL_PollEvent(&event));
 SDL_Delay(1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+LOG(LogInfo) << "Renderer::init() H3"; Log::flush();
 		swapBuffers();
 while(SDL_PollEvent(&event));
 LOG(LogInfo) << "Renderer::init() I"; Log::flush();
