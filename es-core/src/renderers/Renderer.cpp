@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Settings.h"
 
+#include <SDL_opengl.h>
 #include <SDL.h>
 #include <stack>
 
