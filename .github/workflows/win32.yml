@@ -99,6 +99,7 @@ jobs:
           -DVLC_LIBRARIES=%VLC_LIBRARIES%
           -DVLC_VERSION=%VLC_VERSION%
           -DCMAKE_EXE_LINKER_FLAGS=/SAFESEH:NO
+          -DUSE_GL21=ON
 
       # Use CMake to build project
       - name: Build EmulationStation
