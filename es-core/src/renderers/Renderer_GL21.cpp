@@ -227,16 +227,6 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
-	static string to_s(const Vector4f& v)
-	{
-		return '{' + to_string(v[0]) + ',' + to_string(v[1]) + ',' + to_string(v[2]) + ',' + to_string(v[3]) + '}';
-	}
-
-	static string to_s(const Transform4x4f& v)
-	{
-		return '[' + to_string(v.r0()) + ',' + to_string(v.r1()) + ',' + to_string(v.r2()) + ',' + to_string(v.r3()) + ']';
-	}
-
 	void setProjection(const Transform4x4f& _projection)
 	{
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
