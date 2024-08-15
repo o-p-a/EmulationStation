@@ -28,6 +28,19 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
+	static void sb(string label)
+	{
+		LOG(LogInfo) << "sb " << label << " start"; Log::flush();
+		for(GLenum errorCode = glGetError(); errorCode != GL_NO_ERROR; errorCode = glGetError()){
+			LOG(LogError) << "GL error: " << " failed with error code: " << errorCode;
+		}
+		SDL_GL_SwapWindow(getSDLWindow());
+		for(GLenum errorCode = glGetError(); errorCode != GL_NO_ERROR; errorCode = glGetError()){
+			LOG(LogError) << "GL error: " << " failed with error code: " << errorCode;
+		}
+		LOG(LogInfo) << "sb end"; Log::flush();
+	}
+
 	static void setIcon()
 	{
 		size_t                     width   = 0;
@@ -141,6 +154,7 @@ namespace Renderer
 LOG(LogInfo) << "Renderer::init() A"; Log::flush();
 		if(!createWindow())
 			return false;
+sb("A");
 
 		Transform4x4f projection = Transform4x4f::Identity();
 		Rect          viewport   = Rect(0, 0, 0, 0);
@@ -198,17 +212,23 @@ LOG(LogInfo) << "Renderer::init() A"; Log::flush();
 			break;
 		}
 LOG(LogInfo) << "Renderer::init() H"; Log::flush();
+sb("B");
 
 		setViewport(viewport);
+sb("C");
 LOG(LogInfo) << "Renderer::init() H1"; Log::flush();
 		setProjection(projection);
+sb("D");
 LOG(LogInfo) << "Renderer::init() H2"; Log::flush();
 SDL_Event event;
 while(SDL_PollEvent(&event));
 SDL_Delay(1);
+sb("E");
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+sb("F");
 LOG(LogInfo) << "Renderer::init() H3"; Log::flush();
 		swapBuffers();
+sb("G");
 while(SDL_PollEvent(&event));
 LOG(LogInfo) << "Renderer::init() I"; Log::flush();
 
