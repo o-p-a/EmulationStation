@@ -28,7 +28,7 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
-	static void sb(string label)
+	static void sb(char *label)
 	{
 		LOG(LogInfo) << "sb " << label << " start"; Log::flush();
 		for(GLenum errorCode = glGetError(); errorCode != GL_NO_ERROR; errorCode = glGetError()){
