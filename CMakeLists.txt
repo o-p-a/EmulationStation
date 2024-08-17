@@ -96,12 +96,7 @@ else()
     endif()
 endif()
 
-find_package(Freetype REQUIRED)
-find_package(FreeImage REQUIRED)
 find_package(SDL2 REQUIRED)
-find_package(CURL REQUIRED)
-find_package(VLC REQUIRED)
-find_package(RapidJSON REQUIRED)
 
 #add libCEC support
 if(CEC)
@@ -281,6 +276,4 @@ set(LIBRARY_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
 #-------------------------------------------------------------------------------
 # add each component
 
-add_subdirectory("external")
 add_subdirectory("es-core")
-add_subdirectory("es-app")
