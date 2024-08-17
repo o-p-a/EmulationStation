@@ -45,8 +45,7 @@ jobs:
           set "VCPKG=%VCPKG:\=/%"
           echo VCPKG=%VCPKG%>> %GITHUB_ENV%
           echo SDL2_INCLUDE_DIR=%VCPKG%/include/SDL2>> %GITHUB_ENV%
-          echo SDL2_LIBRARY=%VCPKG%/lib/SDL2-static.lib>> %GITHUB_ENV%
-          echo SDL2MAIN_LIBRAY=%VCPKG%/lib/manual-link/SDL2main.lib>> %GITHUB_ENV%
+          echo SDL2_LIBRARIES=%VCPKG%/lib/manual-link/SDL2main.lib %VCPKG%/lib/SDL2-static.lib>> %GITHUB_ENV%
 
       # Use CMake to create Visual Studio project in build folder
       - name: Create Visual Studio project
@@ -55,9 +54,7 @@ jobs:
           -B build
           -A %Platform%
           -DSDL2_INCLUDE_DIR=%SDL2_INCLUDE_DIR%
-          -DSDL2_LIBRARY=%SDL2_LIBRARY%
-          -DSDL2MAIN_LIBRAY=%SDL2MAIN_LIBRAY%
-          -DCMAKE_EXE_LINKER_FLAGS=/SAFESEH:NO
+          -DSDL2_LIBRARIES=%SDL2_LIBRARIES%
 
       - name: dir
         working-directory: C:/vcpkg/installed/x86-windows-static-md
