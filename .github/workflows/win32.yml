@@ -42,6 +42,7 @@ jobs:
           set VCPKG=%VCPKG_INSTALLATION_ROOT%/installed/x86-windows-static-md
           set "VCPKG=%VCPKG:\=/%"
           echo VCPKG=%VCPKG%>> %GITHUB_ENV%
+          echo SDL2_PATH=%VCPKG%>> %GITHUB_ENV%
 
       # Use CMake to create Visual Studio project in build folder
       - name: Create Visual Studio project
@@ -49,6 +50,7 @@ jobs:
         run: cmake ${{github.workspace}}
           -B build
           -A %Platform%
+          -DSDL2_PATH=%SDL2_PATH%
 
       # Use CMake to build project
       - name: Build EmulationStation
