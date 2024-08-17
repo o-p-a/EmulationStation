@@ -57,6 +57,10 @@ jobs:
           -DSDL2MAIN_LIBRAY=%SDL2MAIN_LIBRAY%
           -DCMAKE_EXE_LINKER_FLAGS=/SAFESEH:NO
 
+      - name: dir
+        working-directory: C:/vcpkg/installed/x86-windows-static-md
+        run: dir /s
+
       # Use CMake to build project
       - name: Build EmulationStation
         working-directory: ${{runner.workspace}}
