@@ -61,58 +61,7 @@ set(ES_HEADERS
 )
 
 set(ES_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileData.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileSorts.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/MetaData.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/PlatformId.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/ScraperCmdLine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/SystemData.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/VolumeControl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Gamelist.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileFilterIndex.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/SystemScreenSaver.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CollectionSystemManager.cpp
-
-    # GuiComponents
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/AsyncReqComponent.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/RatingComponent.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/ScraperSearchComponent.cpp
-
-    # Guis
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiFastSelect.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiMetaDataEd.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiGameScraper.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiGamelistOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiScreensaverOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiGeneralScreensaverOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiVideoScreensaverOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSlideshowScreensaverOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiMenu.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSettings.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiScraperMulti.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiScraperStart.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiGamelistFilter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiCollectionSystemsOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRandomCollectionOptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInfoPopup.cpp
-
-    # Scrapers
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/Scraper.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraper.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraperResources.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/ScreenScraper.cpp
-
-    # Views
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/BasicGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/DetailedGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/IGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/ISimpleGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/GridGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/gamelist/VideoGameListView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/SystemView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/ViewController.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/views/UIModeController.cpp
 )
 
 #-------------------------------------------------------------------------------

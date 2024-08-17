@@ -276,4 +276,4 @@ set(LIBRARY_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
 #-------------------------------------------------------------------------------
 # add each component
 
-add_subdirectory("es-core")
+add_subdirectory("es-app")
