@@ -10,6 +10,8 @@
 #include <time.h>
 #include <Windows.h>
 
+#include "renderer"
+
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -51,13 +53,13 @@ int main(int argc, char* argv[])
 
 	SDL_DisplayMode dispMode;
 	SDL_GetDesktopDisplayMode(displayIndex, &dispMode);
-	windowWidth   = Settings::getInstance()->getInt("WindowWidth")   ? Settings::getInstance()->getInt("WindowWidth")   : dispMode.w;
-	windowHeight  = Settings::getInstance()->getInt("WindowHeight")  ? Settings::getInstance()->getInt("WindowHeight")  : dispMode.h;
-	screenWidth   = Settings::getInstance()->getInt("ScreenWidth")   ? Settings::getInstance()->getInt("ScreenWidth")   : windowWidth;
-	screenHeight  = Settings::getInstance()->getInt("ScreenHeight")  ? Settings::getInstance()->getInt("ScreenHeight")  : windowHeight;
-	screenOffsetX = Settings::getInstance()->getInt("ScreenOffsetX") ? Settings::getInstance()->getInt("ScreenOffsetX") : 0;
-	screenOffsetY = Settings::getInstance()->getInt("ScreenOffsetY") ? Settings::getInstance()->getInt("ScreenOffsetY") : 0;
-	screenRotate  = Settings::getInstance()->getInt("ScreenRotate")  ? Settings::getInstance()->getInt("ScreenRotate")  : 0;
+	windowWidth   = dispMode.w;
+	windowHeight  = dispMode.h;
+	screenWidth   = windowWidth;
+	screenHeight  = windowHeight;
+	screenOffsetX = 0;
+	screenOffsetY = 0;
+	screenRotate  = 0;
 
 	cout << "Renderer::setupWindow() start" << endl;
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,  SDL_GL_CONTEXT_PROFILE_CORE);
@@ -83,8 +85,8 @@ int main(int argc, char* argv[])
 	cout << "Created window successfully." << endl;
 
 	cout << "Renderer::createContext() start" << endl;
-	sdlContext = SDL_GL_CreateContext(getSDLWindow());
-	SDL_GL_MakeCurrent(getSDLWindow(), sdlContext);
+	sdlContext = SDL_GL_CreateContext(sdlWindow);
+	SDL_GL_MakeCurrent(sdlWindow, sdlContext);
 
 	const std::string vendor     = glGetString(GL_VENDOR)     ? (const char*)glGetString(GL_VENDOR)     : "";
 	const std::string renderer   = glGetString(GL_RENDERER)   ? (const char*)glGetString(GL_RENDERER)   : "";
@@ -98,16 +100,16 @@ int main(int argc, char* argv[])
 	cout << " ARB_texture_non_power_of_two: " << (extensions.find("ARB_texture_non_power_of_two") != std::string::npos ? "ok" : "MISSING") << endl;
 
 	const uint8_t data[4] = {255, 255, 255, 255};
-	whiteTexture = createTexture(Texture::RGBA, false, true, 1, 1, data);
+	// whiteTexture = createTexture(Texture::RGBA, false, true, 1, 1, data);
 
-	GL_CHECK_ERROR(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-	GL_CHECK_ERROR(glEnable(GL_TEXTURE_2D));
-	GL_CHECK_ERROR(glEnable(GL_BLEND));
-	GL_CHECK_ERROR(glPixelStorei(GL_PACK_ALIGNMENT, 1));
-	GL_CHECK_ERROR(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-	GL_CHECK_ERROR(glEnableClientState(GL_VERTEX_ARRAY));
-	GL_CHECK_ERROR(glEnableClientState(GL_TEXTURE_COORD_ARRAY));
-	GL_CHECK_ERROR(glEnableClientState(GL_COLOR_ARRAY));
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
 	cout << "Renderer::createContext() end" << endl;
 	// setIcon();
 	cout << "Renderer::setSwapInterval() start" << endl;
