@@ -211,13 +211,7 @@ endif()
 #define libraries and directories
 
 set(COMMON_LIBRARIES
-    ${FREETYPE_LIBRARIES}
-    ${FreeImage_LIBRARIES}
     ${SDL2_LIBRARIES}
-    ${CURL_LIBRARIES}
-    ${VLC_LIBRARIES}
-    pugixml
-    nanosvg
 )
 
 #add libCEC_LIBRARIES

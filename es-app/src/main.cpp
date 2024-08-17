@@ -14,5 +14,10 @@ int main(int argc, char* argv[])
 {
 	std::locale::global(std::locale("C"));
 
+	cout << "main() start" << endl;
+
+
+	cout << "main() end" << endl;
+
 	return 0;
 }
