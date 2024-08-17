@@ -10,7 +10,7 @@
 #include <time.h>
 #include <Windows.h>
 
-#include "renderer"
+#include "renderers/Renderer.h"
 
 using namespace std;
 
