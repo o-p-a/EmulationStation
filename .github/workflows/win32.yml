@@ -1,7 +1,9 @@
 name: Build ES for Win32
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - sdl-test
 
 jobs:
   build:
@@ -43,7 +45,7 @@ jobs:
           set "VCPKG=%VCPKG:\=/%"
           echo VCPKG=%VCPKG%>> %GITHUB_ENV%
           echo SDL2_INCLUDE_DIR=%VCPKG%/include/SDL2>> %GITHUB_ENV%
-          echo SDL2_LIBRARY=%VCPKG%/lib/SDL2.lib>> %GITHUB_ENV%
+          echo SDL2_LIBRARY=%VCPKG%/lib/SDL2-static.lib>> %GITHUB_ENV%
           echo SDL2MAIN_LIBRAY=%VCPKG%/lib/manual-link/SDL2main.lib>> %GITHUB_ENV%
 
       # Use CMake to create Visual Studio project in build folder
