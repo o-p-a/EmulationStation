@@ -77,7 +77,7 @@ endif()
 # define target
 include_directories(${COMMON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_executable(emulationstation ${ES_SOURCES} ${ES_HEADERS})
-target_link_libraries(emulationstation ${COMMON_LIBRARIES})
+target_link_libraries(emulationstation C:\vcpkg\installed\x86-windows-static-md\lib\manual-link\SDL2main.lib ${COMMON_LIBRARIES})
 
 # special properties for Windows builds
 if(MSVC)
