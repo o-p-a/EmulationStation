@@ -1,9 +1,7 @@
 name: Build ES for Win32
 
 on:
-  push:
-    branches:
-      - sdl-test
+  workflow_dispatch:
 
 jobs:
   build:
