@@ -2,6 +2,7 @@
 //http://www.aloshi.com
 
 #include <SDL.h>
+#include <SDL_opengl.h>
 #include <SDL_events.h>
 #include <SDL_main.h>
 #include <SDL_timer.h>
