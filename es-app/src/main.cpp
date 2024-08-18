@@ -14,20 +14,30 @@
 
 using namespace std;
 
+SDL_Window* sdlWindow = nullptr;
+SDL_GLContext sdlContext = nullptr;
+int windowWidth = 0;
+int windowHeight = 0;
+int screenWidth = 0;
+int screenHeight = 0;
+int screenOffsetX = 0;
+int screenOffsetY = 0;
+int screenRotate = 0;
+bool initialCursorState = 1;
+GLuint whiteTexture = 0;
+
+void swapBuffers()
+{
+	cout << "Renderer::swapBuffers() start" << endl;
+
+	SDL_GL_SwapWindow(getSDLWindow());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	cout << "Renderer::swapBuffers() end" << endl;
+}
+
 int main(int argc, char* argv[])
 {
-	static SDL_Window* sdlWindow = nullptr;
-	static SDL_GLContext sdlContext = nullptr;
-	static int windowWidth = 0;
-	static int windowHeight = 0;
-	static int screenWidth = 0;
-	static int screenHeight = 0;
-	static int screenOffsetX = 0;
-	static int screenOffsetY = 0;
-	static int screenRotate = 0;
-	bool initialCursorState = 1;
-	static GLuint whiteTexture = 0;
-
 	std::locale::global(std::locale("C"));
 
 	cout << "main() start" << endl;
@@ -42,6 +52,13 @@ int main(int argc, char* argv[])
 	}
 
 	initialCursorState = (SDL_ShowCursor(0) != 0);
+
+	int displays = SDL_GetNumVideoDisplays();
+	for(int i = 0; i < displays; ++i){
+		SDL_Rect rc;
+		SDL_GetDisplayBounds(i, &rc);
+		cout << "Monitor #" << i << " x:" << rc.x << " y:" << rc.y << " w:" << rc.w << " h:" << rc.h << endl;
+	}
 
 	int displayIndex = 0;
 
@@ -119,7 +136,42 @@ int main(int argc, char* argv[])
 
 	cout << "Renderer::createWindow() end" << endl;
 
+	cout << "Renderer::setViewport() start" << endl;
+	//setViewport(viewport);
+	cout << "Renderer::setViewport() end" << endl;
+
+	cout << "Renderer::setProjection() start" << endl;
+	//setProjection(projection);
+	cout << "Renderer::setProjection() end" << endl;
+
+	swapBuffers();
+
 	cout << "Renderer::init() end" << endl;
+
+	////////
+
+	SDL_Event
+		event;
+	bool
+		quit = false;
+
+	while(!quit){
+		while(SDL_PollEvent(&event)){
+			if(event.type == SDL_KEYDOWN){
+				switch(event.key.keysym.sym){
+				case SDLK_ESCAPE:
+					quit = true;
+					break;
+				}
+			}else if(event.type == SDL_QUIT){
+				quit = true;
+			}
+		}
+
+		swapBuffers();
+	}
+
+	////////
 
 	cout << "Renderer::destroyWindow() start" << endl;
 
