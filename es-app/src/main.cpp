@@ -32,6 +32,11 @@ inline SDL_Window* getSDLWindow()
 	return sdlWindow;
 }
 
+float rn()
+{
+	return ((rand() / 32767.0) - 0.5) / 10.0;
+}
+
 void swapBuffers()
 {
 	cout << "Renderer::swapBuffers() start" << endl;
@@ -68,7 +73,7 @@ int main(int argc, char* argv[])
 
 	int displayIndex = 0;
 
-	if(argc > 1){
+	if(argc >= 1){
 		displayIndex = atoi(argv[1]);
 	}
 
@@ -183,10 +188,10 @@ int main(int argc, char* argv[])
 		switch(frame++){
 		case 0:
 			glBegin(GL_QUADS);
-			glVertex2f(-0.5f, -0.5f);
-			glVertex2f(0.5f, -0.5f);
-			glVertex2f(0.5f, 0.5f);
-			glVertex2f(-0.5f, 0.5f);
+			glVertex2f(-0.5f + rn(), -0.5f + rn());
+			glVertex2f(0.5f + rn(), -0.5f + rn());
+			glVertex2f(0.5f + rn(), 0.5f + rn());
+			glVertex2f(-0.5f + rn(), 0.5f + rn());
 			glEnd();
 			break;
 		case 1:
