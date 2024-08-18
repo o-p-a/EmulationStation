@@ -45,7 +45,8 @@ void swapBuffers()
 	cout << "Renderer::swapBuffers() start" << endl;
 
 	// SDL_GL_SwapWindow(getSDLWindow());
-	wglSwapLayerBuffers(syswminfo.info.win.hdc, WGL_SWAP_MAIN_PLANE);
+	// wglSwapLayerBuffers(syswminfo.info.win.hdc, WGL_SWAP_MAIN_PLANE);
+	SwapBuffers(syswminfo.info.win.hdc);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	cout << "Renderer::swapBuffers() end" << endl;
