@@ -6,6 +6,7 @@
 #include <SDL_events.h>
 #include <SDL_main.h>
 #include <SDL_timer.h>
+#include <SDL_syswm.h>
 #include <iostream>
 #include <time.h>
 #include <Windows.h>
@@ -27,6 +28,7 @@ int screenOffsetY = 0;
 int screenRotate = 0;
 bool initialCursorState = 1;
 GLuint whiteTexture = 0;
+SDL_SysWMinfo syswminfo;
 
 inline SDL_Window* getSDLWindow()
 {
@@ -42,7 +44,8 @@ void swapBuffers()
 {
 	cout << "Renderer::swapBuffers() start" << endl;
 
-	SDL_GL_SwapWindow(getSDLWindow());
+	// SDL_GL_SwapWindow(getSDLWindow());
+	wglSwapLayerBuffers(syswminfo.hdc, WGL_SWAP_MAIN_PLANE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	cout << "Renderer::swapBuffers() end" << endl;
@@ -109,7 +112,7 @@ int main(int argc, char* argv[])
 
 	const unsigned int windowFlags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL;
 
-	sdlWindow2 = SDL_CreateWindow("dummy", SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), 800, 600, SDL_WINDOW_OPENGL);
+	// sdlWindow2 = SDL_CreateWindow("dummy", SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), 800, 600, SDL_WINDOW_OPENGL);
 
 	if((sdlWindow = SDL_CreateWindow("EmulationStation", SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), windowWidth, windowHeight, windowFlags)) == nullptr)
 	{
@@ -118,6 +121,9 @@ int main(int argc, char* argv[])
 	}
 
 	cout << "Created window successfully." << endl;
+
+	SDL_VERSION(&syswminfo.version);
+	SDL_GetWindowWMInfo(sdlWindow, &syswminfo);
 
 	cout << "Renderer::createContext() start" << endl;
 	sdlContext = SDL_GL_CreateContext(sdlWindow);
@@ -205,7 +211,7 @@ int main(int argc, char* argv[])
 	cout << "Renderer::destroyContext() end" << endl;
 
 	SDL_DestroyWindow(sdlWindow);
-	SDL_DestroyWindow(sdlWindow2);
+	// SDL_DestroyWindow(sdlWindow2);
 	SDL_ShowCursor(initialCursorState);
 	SDL_Quit();
 	cout << "Renderer::destroyWindow() end" << endl;
