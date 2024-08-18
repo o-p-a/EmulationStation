@@ -101,9 +101,9 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,           8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,         8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,          8);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,        24);
+	// SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,        24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,       1);
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	// SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	cout << "Renderer::setupWindow() end" << endl;
 
 	const unsigned int windowFlags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL;
@@ -120,30 +120,19 @@ int main(int argc, char* argv[])
 	sdlContext = SDL_GL_CreateContext(sdlWindow);
 	SDL_GL_MakeCurrent(sdlWindow, sdlContext);
 
-	const std::string vendor     = glGetString(GL_VENDOR)     ? (const char*)glGetString(GL_VENDOR)     : "";
-	const std::string renderer   = glGetString(GL_RENDERER)   ? (const char*)glGetString(GL_RENDERER)   : "";
-	const std::string version    = glGetString(GL_VERSION)    ? (const char*)glGetString(GL_VERSION)    : "";
-	const std::string extensions = glGetString(GL_EXTENSIONS) ? (const char*)glGetString(GL_EXTENSIONS) : "";
-
-	cout << "GL vendor:   " << vendor << endl;
-	cout << "GL renderer: " << renderer << endl;
-	cout << "GL version:  " << version << endl;
-	cout << "Checking available OpenGL extensions..." << endl;
-	cout << " ARB_texture_non_power_of_two: " << (extensions.find("ARB_texture_non_power_of_two") != std::string::npos ? "ok" : "MISSING") << endl;
-
-	const uint8_t data[4] = {255, 255, 255, 255};
+	// const uint8_t data[4] = {255, 255, 255, 255};
 	// whiteTexture = createTexture(Texture::RGBA, false, true, 1, 1, data);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+	// glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	// glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	// glEnableClientState(GL_VERTEX_ARRAY);
+	// glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	// glEnableClientState(GL_COLOR_ARRAY);
 	cout << "Renderer::createContext() end" << endl;
-	// setIcon();
+
 	cout << "Renderer::setSwapInterval() start" << endl;
 	if(SDL_GL_SetSwapInterval(1) != 0)
 		cout << "Tried to enable vsync, but failed! (" << SDL_GetError() << ")" << endl;
@@ -151,13 +140,13 @@ int main(int argc, char* argv[])
 
 	cout << "Renderer::createWindow() end" << endl;
 
-	cout << "Renderer::setViewport() start" << endl;
-	//setViewport(viewport);
-	cout << "Renderer::setViewport() end" << endl;
+	// cout << "Renderer::setViewport() start" << endl;
+	// //setViewport(viewport);
+	// cout << "Renderer::setViewport() end" << endl;
 
-	cout << "Renderer::setProjection() start" << endl;
-	//setProjection(projection);
-	cout << "Renderer::setProjection() end" << endl;
+	// cout << "Renderer::setProjection() start" << endl;
+	// //setProjection(projection);
+	// cout << "Renderer::setProjection() end" << endl;
 
 	swapBuffers();
 
