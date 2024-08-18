@@ -16,6 +16,7 @@
 using namespace std;
 
 SDL_Window* sdlWindow = nullptr;
+SDL_Window* sdlWindow2 = nullptr;
 SDL_GLContext sdlContext = nullptr;
 int windowWidth = 0;
 int windowHeight = 0;
@@ -107,6 +108,8 @@ int main(int argc, char* argv[])
 	cout << "Renderer::setupWindow() end" << endl;
 
 	const unsigned int windowFlags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL;
+
+	sdlWindow2 = SDL_CreateWindow("dummy", SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), 800, 600, SDL_WINDOW_OPENGL);
 
 	if((sdlWindow = SDL_CreateWindow("EmulationStation", SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIndex), windowWidth, windowHeight, windowFlags)) == nullptr)
 	{
@@ -202,6 +205,7 @@ int main(int argc, char* argv[])
 	cout << "Renderer::destroyContext() end" << endl;
 
 	SDL_DestroyWindow(sdlWindow);
+	SDL_DestroyWindow(sdlWindow2);
 	SDL_ShowCursor(initialCursorState);
 	SDL_Quit();
 	cout << "Renderer::destroyWindow() end" << endl;
