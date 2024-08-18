@@ -26,6 +26,11 @@ int screenRotate = 0;
 bool initialCursorState = 1;
 GLuint whiteTexture = 0;
 
+inline SDL_Window* getSDLWindow()
+{
+	return sdlWindow;
+}
+
 void swapBuffers()
 {
 	cout << "Renderer::swapBuffers() start" << endl;
