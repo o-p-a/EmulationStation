@@ -7,9 +7,9 @@
 #include <SDL_main.h>
 #include <SDL_timer.h>
 #include <iostream>
-#include <stdlib>
 #include <time.h>
 #include <Windows.h>
+#include <stdlib.h>
 
 #include "renderers/Renderer.h"
 
