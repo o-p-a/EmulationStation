@@ -7,6 +7,7 @@
 #include <SDL_main.h>
 #include <SDL_timer.h>
 #include <iostream>
+#include <stdlib>
 #include <time.h>
 #include <Windows.h>
 
@@ -66,6 +67,10 @@ int main(int argc, char* argv[])
 	}
 
 	int displayIndex = 0;
+
+	if(argc > 1){
+		displayIndex = atoi(argv[1]);
+	}
 
 	if(displayIndex < 0 || displayIndex >= SDL_GetNumVideoDisplays()){
 		displayIndex = 0;
@@ -157,6 +162,8 @@ int main(int argc, char* argv[])
 
 	SDL_Event
 		event;
+	int
+		frame = 0;
 	bool
 		quit = false;
 
@@ -173,12 +180,21 @@ int main(int argc, char* argv[])
 			}
 		}
 
-        glBegin(GL_QUADS);
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f(0.5f, -0.5f);
-		glVertex2f(0.5f, 0.5f);
-		glVertex2f(-0.5f, 0.5f);
-        glEnd();
+		switch(frame++){
+		case 0:
+			glBegin(GL_QUADS);
+			glVertex2f(-0.5f, -0.5f);
+			glVertex2f(0.5f, -0.5f);
+			glVertex2f(0.5f, 0.5f);
+			glVertex2f(-0.5f, 0.5f);
+			glEnd();
+			break;
+		case 1:
+			// NOP
+			break;
+		default:
+			frame = 0;
+		}
 
 		swapBuffers();
 	}
