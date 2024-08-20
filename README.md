@@ -274,7 +274,9 @@ The following "tags" are replaced by ES in launch commands:
 
 `%ROM_DIR%`	- Replaced with the dirname (except "/base.ext") of the selected ROM. Use this when you need to chdir to the directory where the ROM.
 
-`%ES_CFG%`	- Replaced with the directory path of the EmulationStation configuration file contains (i.e. your .emulationstation directory). If .emulationstation is symlink, the link will resolved.
+`%CFG_DIR%`	- Replaced with the directory path of the EmulationStation configuration file contains (i.e. your .emulationstation directory).
+
+`%INSTALL_DIR%`	- Replaced with the directory path of the EmulationStation executable file contains.
 
 See [SYSTEMS.md](SYSTEMS.md) for some live examples in EmulationStation.
 
