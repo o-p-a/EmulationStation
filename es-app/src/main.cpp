@@ -364,6 +364,8 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 
+		AudioManager::getInstance()->init();
+
 		if (splashScreen)
 		{
 			std::string progressText = "Loading system config...";
