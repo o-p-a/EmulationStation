@@ -17,6 +17,7 @@
 #include "Settings.h"
 #include "SystemData.h"
 #include "SystemScreenSaver.h"
+#include "AudioManager.h"
 #include <SDL_events.h>
 #include <SDL_main.h>
 #include <SDL_timer.h>
