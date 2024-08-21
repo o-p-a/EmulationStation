@@ -358,20 +358,17 @@ int main(int argc, char* argv[])
 
 	if(!scrape_cmdline)
 	{
-LOG(LogInfo) << "main() C"; Log::flush();
 		if(!window.init())
 		{
 			LOG(LogError) << "Window failed to initialize!";
 			return 1;
 		}
 
-LOG(LogInfo) << "main() D"; Log::flush();
 		if (splashScreen)
 		{
 			std::string progressText = "Loading system config...";
 			window.renderLoadingScreen(progressText);
 		}
-LOG(LogInfo) << "main() E"; Log::flush();
 	}
 
 	const char* errorMsg = NULL;
@@ -396,48 +393,37 @@ LOG(LogInfo) << "main() E"; Log::flush();
 			}));
 	}
 
-LOG(LogInfo) << "main() F"; Log::flush();
 	//run the command line scraper then quit
 	if(scrape_cmdline)
 	{
 		return run_scraper_cmdline();
 	}
 
-LOG(LogInfo) << "main() G"; Log::flush();
 	// preload what we can right away instead of waiting for the user to select it
 	// this makes for no delays when accessing content, but a longer startup time
 	ViewController::get()->preload();
 
-LOG(LogInfo) << "main() H"; Log::flush();
 	if(splashScreen)
 		window.renderLoadingScreen("Done.");
 
-LOG(LogInfo) << "main() I"; Log::flush();
 	InputManager::getInstance()->init();
 
-LOG(LogInfo) << "main() J"; Log::flush();
 	//choose which GUI to open depending on if an input configuration already exists
 	if(errorMsg == NULL)
 	{
-LOG(LogInfo) << "main() K"; Log::flush();
 		if(Utils::FileSystem::exists(InputManager::getConfigPath()) && InputManager::getInstance()->getNumConfiguredDevices() > 0)
 		{
-LOG(LogInfo) << "main() L"; Log::flush();
 			ViewController::get()->goToStart();
 		}else{
-LOG(LogInfo) << "main() M"; Log::flush();
 			window.pushGui(new GuiDetectDevice(&window, true, [] { ViewController::get()->goToStart(); }));
 		}
-LOG(LogInfo) << "main() N"; Log::flush();
 	}
 
-LOG(LogInfo) << "main() O"; Log::flush();
 	int lastTime = SDL_GetTicks();
 	int ps_time = SDL_GetTicks();
 
 	bool running = true;
 
-LOG(LogInfo) << "main() Enter event loop"; Log::flush();
 	while(running)
 	{
 		SDL_Event event;
@@ -487,7 +473,6 @@ LOG(LogInfo) << "main() Enter event loop"; Log::flush();
 		window.render();
 		Renderer::swapBuffers();
 
-LOG(LogInfo) << "deltaTime" << deltaTime;
 		Log::flush();
 	}
 

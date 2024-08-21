@@ -4,29 +4,16 @@
 #include "math/Transform4x4f.h"
 #include "Log.h"
 #include "Settings.h"
-#include <string>
 
 #include <SDL_opengl.h>
 #include <SDL.h>
 
 //////////////////////////////////////////////////////////////////////////
 
-namespace std{
-	static string to_string(const Vector4f& v)
-	{
-		return '{' + to_string(v[0]) + ',' + to_string(v[1]) + ',' + to_string(v[2]) + ',' + to_string(v[3]) + '}';
-	}
-
-	static string to_string(const Transform4x4f& v)
-	{
-		return '[' + to_string(v.r0()) + ',' + to_string(v.r1()) + ',' + to_string(v.r2()) + ',' + to_string(v.r3()) + ']';
-	}
-}
-
 namespace Renderer
 {
 
-#if defined(_DEBUG) || 1
+#if defined(_DEBUG)
 #define GL_CHECK_ERROR(Function) (Function, _GLCheckError(#Function))
 
 	static void _GLCheckError(const char* _funcName)
@@ -134,7 +121,6 @@ namespace Renderer
 		LOG(LogInfo) << "GL renderer: " << renderer;
 		LOG(LogInfo) << "GL version:  " << version;
 		LOG(LogInfo) << "Checking available OpenGL extensions...";
-LOG(LogInfo) << "extensions: " << extensions;
 		LOG(LogInfo) << " ARB_texture_non_power_of_two: " << (extensions.find("ARB_texture_non_power_of_two") != std::string::npos ? "ok" : "MISSING");
 
 		const uint8_t data[4] = {255, 255, 255, 255};
@@ -243,12 +229,9 @@ LOG(LogInfo) << "extensions: " << extensions;
 
 	void setProjection(const Transform4x4f& _projection)
 	{
-LOG(LogInfo) << "Renderer_GL14::setProjection() start"; Log::flush();
-LOG(LogInfo) << std::to_string(_projection); Log::flush();
 		GL_CHECK_ERROR(glMatrixMode(GL_PROJECTION));
 		GL_CHECK_ERROR(glLoadMatrixf((GLfloat*)&_projection));
 
-LOG(LogInfo) << "Renderer::setProjection() end"; Log::flush();
 	} // setProjection
 
 //////////////////////////////////////////////////////////////////////////
@@ -267,12 +250,9 @@ LOG(LogInfo) << "Renderer::setProjection() end"; Log::flush();
 
 	void setViewport(const Rect& _viewport)
 	{
-LOG(LogInfo) << "Renderer_GL14::setViewport() start"; Log::flush();
-LOG(LogInfo) << " x:" << _viewport.x << " y:" << _viewport.y << " w:" << _viewport.w << " h:" << _viewport.h; Log::flush();
 		// glViewport starts at the bottom left of the window
 		GL_CHECK_ERROR(glViewport( _viewport.x, getWindowHeight() - _viewport.y - _viewport.h, _viewport.w, _viewport.h));
 
-LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 	} // setViewport
 
 //////////////////////////////////////////////////////////////////////////
@@ -305,33 +285,21 @@ LOG(LogInfo) << "Renderer::setViewport() end"; Log::flush();
 			// SDL_GL_SetSwapInterval returns 0 on success, -1 on error.
 			// if vsync is requested, try normal vsync; if that doesn't work, try late swap tearing
 			// if that doesn't work, report an error
-//			if(SDL_GL_SetSwapInterval(1) != 0 && SDL_GL_SetSwapInterval(-1) != 0)
-			if(SDL_GL_SetSwapInterval(1) != 0)
+			if(SDL_GL_SetSwapInterval(1) != 0 && SDL_GL_SetSwapInterval(-1) != 0)
 				LOG(LogWarning) << "Tried to enable vsync, but failed! (" << SDL_GetError() << ")";
 		}
 		else
 			SDL_GL_SetSwapInterval(0);
 
-LOG(LogInfo) << "SDL_GL_GetSwapInterval " << SDL_GL_GetSwapInterval(); Log::flush();
 	} // setSwapInterval
 
 //////////////////////////////////////////////////////////////////////////
 
 	void swapBuffers()
 	{
-LOG(LogInfo) << "Renderer_GL14::swapBuffers() start"; Log::flush();
-
-		for(GLenum errorCode = glGetError(); errorCode != GL_NO_ERROR; errorCode = glGetError()){
-			LOG(LogError) << "GL error: " << " failed with error code: " << errorCode;
-		}
-
-		SDL_Window *w = getSDLWindow();
-LOG(LogInfo) << "Renderer_GL14::swapBuffers() A"; Log::flush();
-		SDL_GL_SwapWindow(w);
-LOG(LogInfo) << "Renderer_GL14::swapBuffers() B"; Log::flush();
+		SDL_GL_SwapWindow(getSDLWindow());
 		GL_CHECK_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-LOG(LogInfo) << "Renderer::swapBuffers() end"; Log::flush();
 	} // swapBuffers
 
 } // Renderer::
