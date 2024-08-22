@@ -320,6 +320,7 @@ void FileData::launchGame(Window* window)
 	window->init();
 	InputManager::getInstance()->init();
 	VolumeControl::getInstance()->init();
+	AudioManager::getInstance()->init();
 #endif
 	window->normalizeNextUpdate();
 
