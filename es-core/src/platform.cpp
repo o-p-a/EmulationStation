@@ -65,12 +65,9 @@ int launchGameCommand(const std::string& cmd_utf8)
 	if(!CreateProcess(NULL, (LPSTR)cmd_utf8.c_str(), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
 		return 9009;
 
-	while(true){
-		if(WaitForSingleObject(pi.hProcess, 200) == 0)
-			break;
+	while(WaitForSingleObject(pi.hProcess, 200) == WAIT_TIMEOUT)
 		while(SDL_PollEvent(&event))
 			; // NOP
-	}
 
 	GetExitCodeProcess(pi.hProcess, &rcode);
 	CloseHandle(pi.hProcess);
