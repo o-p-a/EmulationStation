@@ -2,9 +2,7 @@
 
 #include <SDL_events.h>
 #ifdef WIN32
-#include <codecvt>
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <Windows.h>
 #include "renderers/Renderer.h"
 #else
@@ -55,7 +53,6 @@ int launchGameCommand(const std::string& cmd_utf8)
 	SDL_SetWindowFullscreen(Renderer::getSDLWindow(), 0);
 	SDL_SetWindowBordered(Renderer::getSDLWindow(), SDL_TRUE);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Renderer::swapBuffers();
 
 	memset(&si, 0, sizeof si);
