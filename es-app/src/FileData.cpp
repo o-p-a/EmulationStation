@@ -280,10 +280,10 @@ void FileData::launchGame(Window* window)
 {
 	LOG(LogInfo) << "Attempting to launch game...";
 
-#ifndef _WIN32
 	AudioManager::getInstance()->deinit();
 	VolumeControl::getInstance()->deinit();
 	InputManager::getInstance()->deinit();
+#ifndef _WIN32
 	window->deinit();
 #endif
 
@@ -312,9 +312,9 @@ void FileData::launchGame(Window* window)
 
 #ifndef _WIN32
 	window->init();
+#endif
 	InputManager::getInstance()->init();
 	VolumeControl::getInstance()->init();
-#endif
 	window->normalizeNextUpdate();
 
 	//update number of times the game has been launched
