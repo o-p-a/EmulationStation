@@ -365,7 +365,7 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 
-		AudioManager::getInstance()->init();
+		AudioManager::getInstance();
 
 		if (splashScreen)
 		{
