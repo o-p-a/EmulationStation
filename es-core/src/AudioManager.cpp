@@ -111,7 +111,6 @@ LOG(LogInfo) << "AudioManager::deinit() start " << sInstance;
 	//completely tear down SDL audio. else SDL hogs audio resources and emulators might fail to start...
 	SDL_CloseAudio();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-	sInstance = NULL;
 LOG(LogInfo) << "AudioManager::deinit() end";
 }
 
