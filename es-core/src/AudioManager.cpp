@@ -72,7 +72,7 @@ std::shared_ptr<AudioManager> & AudioManager::getInstance()
 
 void AudioManager::init()
 {
-LOG(LogInfo) << "AudioManager::init() start " << (void*)sInstance;
+LOG(LogInfo) << "AudioManager::init() start " << sInstance;
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
 	{
 		LOG(LogError) << "Error initializing SDL audio!\n" << SDL_GetError();
@@ -105,7 +105,7 @@ LOG(LogInfo) << "AudioManager::init() end";
 
 void AudioManager::deinit()
 {
-LOG(LogInfo) << "AudioManager::deinit() start " << (void*)sInstance;
+LOG(LogInfo) << "AudioManager::deinit() start " << sInstance;
 	//stop all playback
 	stop();
 	//completely tear down SDL audio. else SDL hogs audio resources and emulators might fail to start...
