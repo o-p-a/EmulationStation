@@ -17,8 +17,6 @@ class AudioManager
 	static void mixAudio(void *unused, Uint8 *stream, int len);
 
 	AudioManager() {};
-	AudioManager(const AudioManager&) {};
-	AudioManager& operator=(const AudioManager&) {};
 	~AudioManager() {};
 
 public:

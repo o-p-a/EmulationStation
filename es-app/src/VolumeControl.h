@@ -36,15 +36,10 @@ class VolumeControl
 	IAudioEndpointVolume * endpointVolume;
 #endif
 
-	int originalVolume;
-	int internalVolume;
-
 	static VolumeControl* sInstance;
 
 	VolumeControl();
-	VolumeControl(const VolumeControl&) {};
-	VolumeControl& operator=(const VolumeControl&) {};
-	~VolumeControl();
+	~VolumeControl() {};
 
 public:
 	static VolumeControl* getInstance();
