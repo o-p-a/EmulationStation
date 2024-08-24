@@ -33,11 +33,14 @@ InputManager* InputManager::mInstance = NULL;
 
 InputManager::InputManager() : mKeyboardInputConfig(NULL)
 {
+LOG(LogInfo) << "InputManager::InputManager()";
 }
 
 InputManager::~InputManager()
 {
+LOG(LogInfo) << "InputManager::~InputManager() start";
 	deinit();
+LOG(LogInfo) << "InputManager::~InputManager() end";
 }
 
 InputManager* InputManager::getInstance()
@@ -50,6 +53,7 @@ InputManager* InputManager::getInstance()
 
 void InputManager::init()
 {
+LOG(LogInfo) << "InputManager::init() start";
 	if(initialized())
 		deinit();
 
@@ -80,6 +84,7 @@ void InputManager::init()
 	CECInput::init();
 	mCECInputConfig = new InputConfig(DEVICE_CEC, "CEC", CEC_GUID_STRING);
 	loadInputConfig(mCECInputConfig);
+LOG(LogInfo) << "InputManager::init() end";
 }
 
 void InputManager::addJoystickByDeviceIndex(int id)
@@ -141,6 +146,7 @@ void InputManager::removeJoystickByJoystickID(SDL_JoystickID joyId)
 
 void InputManager::deinit()
 {
+LOG(LogInfo) << "InputManager::init() start";
 	if(!initialized())
 		return;
 
@@ -178,6 +184,7 @@ void InputManager::deinit()
 
 	SDL_JoystickEventState(SDL_DISABLE);
 	SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+LOG(LogInfo) << "InputManager::init() end";
 }
 
 int InputManager::getNumJoysticks() { return (int)mJoysticks.size(); }
