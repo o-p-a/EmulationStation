@@ -365,8 +365,6 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 
-		AudioManager::getInstance();
-
 		if (splashScreen)
 		{
 			std::string progressText = "Loading system config...";
@@ -410,6 +408,8 @@ int main(int argc, char* argv[])
 		window.renderLoadingScreen("Done.");
 
 	InputManager::getInstance()->init();
+	VolumeControl::getInstance()->init();
+	AudioManager::getInstance()->init();;
 
 	//choose which GUI to open depending on if an input configuration already exists
 	if(errorMsg == NULL)
@@ -482,6 +482,8 @@ int main(int argc, char* argv[])
 	while(window.peekGui() != ViewController::get())
 		delete window.peekGui();
 
+	AudioManager::getInstance()->deinit();
+	VolumeControl::getInstance()->deinit();
 	InputManager::getInstance()->deinit();
 	window.deinit();
 

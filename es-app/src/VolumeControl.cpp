@@ -16,7 +16,7 @@
 	const char * VolumeControl::mixerCard = "default";
 #endif
 
-std::weak_ptr<VolumeControl> VolumeControl::sInstance;
+VolumeControl* VolumeControl::sInstance;
 
 VolumeControl::VolumeControl()
 	: originalVolume(0), internalVolume(0)
@@ -29,37 +29,11 @@ VolumeControl::VolumeControl()
 #endif
 {
 LOG(LogInfo) << "VolumeControl::VolumeControl() start";
-	init();
+	// init();
 
 	//get original volume levels for system
-	originalVolume = getVolume();
+	// originalVolume = getVolume();
 LOG(LogInfo) << "VolumeControl::VolumeControl() end";
-}
-
-VolumeControl::VolumeControl(const VolumeControl & right):
-	originalVolume(0), internalVolume(0)
-#if defined (__APPLE__)
-	#error TODO: Not implemented for MacOS yet!!!
-#elif defined(__linux__)
-	, mixerIndex(0), mixerHandle(nullptr), mixerElem(nullptr), mixerSelemId(nullptr)
-#elif defined(WIN32) || defined(_WIN32)
-	, mixerHandle(nullptr), endpointVolume(nullptr)
-#endif
-{
-LOG(LogInfo) << "VolumeControl::VolumeControl(right) start";
-	sInstance = right.sInstance;
-LOG(LogInfo) << "VolumeControl::VolumeControl(right) end";
-}
-
-VolumeControl & VolumeControl::operator=(const VolumeControl & right)
-{
-LOG(LogInfo) << "VolumeControl::operator=(right) start";
-	if (this != &right) {
-		sInstance = right.sInstance;
-	}
-
-	return *this;
-LOG(LogInfo) << "VolumeControl::operator=(right) end";
 }
 
 VolumeControl::~VolumeControl()
@@ -68,19 +42,17 @@ LOG(LogInfo) << "VolumeControl::~VolumeControl() start";
 	//set original volume levels for system
 	//setVolume(originalVolume);
 
-	deinit();
+	// deinit();
 LOG(LogInfo) << "VolumeControl::~VolumeControl() end";
 }
 
-std::shared_ptr<VolumeControl> & VolumeControl::getInstance()
+VolumeControl* VolumeControl::getInstance()
 {
 	//check if an VolumeControl instance is already created, if not create one
-	static std::shared_ptr<VolumeControl> sharedInstance = sInstance.lock();
-	if (sharedInstance == nullptr) {
-		sharedInstance.reset(new VolumeControl);
-		sInstance = sharedInstance;
-	}
-	return sharedInstance;
+	if (sInstance == nullptr)
+		sInstance = new VolumeControl;
+
+	return sInstance;
 }
 
 void VolumeControl::init()
@@ -88,7 +60,7 @@ void VolumeControl::init()
 LOG(LogInfo) << "VolumeControl::init() start";
 	//initialize audio mixer interface
 #if defined (__APPLE__)
-                                                                                               	#error TODO: Not implemented for MacOS yet!!!
+	#error TODO: Not implemented for MacOS yet!!!
 #elif defined(__linux__)
 	//try to open mixer device
 	if (mixerHandle == nullptr)

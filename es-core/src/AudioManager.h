@@ -12,14 +12,17 @@ class AudioManager
 {
 	static SDL_AudioSpec sAudioFormat;
 	static std::vector<std::shared_ptr<Sound>> sSoundVector;
-	static std::shared_ptr<AudioManager> sInstance;
+	static AudioManager* sInstance;
 
 	static void mixAudio(void *unused, Uint8 *stream, int len);
 
-	AudioManager();
+	AudioManager() {};
+	AudioManager(const AudioManager&) {};
+	AudioManager& operator=(const AudioManager&) {};
+	~AudioManager() {};
 
 public:
-	static std::shared_ptr<AudioManager> & getInstance();
+	static AudioManager* getInstance();
 
 	void init();
 	void deinit();
@@ -29,8 +32,6 @@ public:
 
 	void play();
 	void stop();
-
-	virtual ~AudioManager();
 };
 
 #endif // ES_CORE_AUDIO_MANAGER_H

@@ -9,7 +9,6 @@ std::vector<std::shared_ptr<Sound>> AudioManager::sSoundVector;
 SDL_AudioSpec AudioManager::sAudioFormat;
 std::shared_ptr<AudioManager> AudioManager::sInstance;
 
-
 void AudioManager::mixAudio(void* /*unused*/, Uint8 *stream, int len)
 {
 	bool stillPlaying = false;
@@ -51,22 +50,12 @@ void AudioManager::mixAudio(void* /*unused*/, Uint8 *stream, int len)
 	}
 }
 
-AudioManager::AudioManager()
-{
-	init();
-}
-
-AudioManager::~AudioManager()
-{
-	deinit();
-}
-
-std::shared_ptr<AudioManager> & AudioManager::getInstance()
+AudioManager* AudioManager::getInstance()
 {
 	//check if an AudioManager instance is already created, if not create one
-	if (sInstance == nullptr && Settings::getInstance()->getBool("EnableSounds")) {
-		sInstance = std::shared_ptr<AudioManager>(new AudioManager);
-	}
+	if (sInstance == nullptr && Settings::getInstance()->getBool("EnableSounds"))
+		sInstance = new AudioManager;
+
 	return sInstance;
 }
 

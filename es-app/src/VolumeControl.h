@@ -39,22 +39,21 @@ class VolumeControl
 	int originalVolume;
 	int internalVolume;
 
-	static std::weak_ptr<VolumeControl> sInstance;
+	static VolumeControl* sInstance;
 
 	VolumeControl();
-	VolumeControl(const VolumeControl & right);
-    VolumeControl & operator=(const VolumeControl & right);
+	VolumeControl(const VolumeControl&) {};
+	VolumeControl& operator=(const VolumeControl&) {};
+	~VolumeControl();
 
 public:
-	static std::shared_ptr<VolumeControl> & getInstance();
+	static VolumeControl* getInstance();
 
 	void init();
 	void deinit();
 
 	int getVolume() const;
 	void setVolume(int volume);
-
-	~VolumeControl();
 };
 
 #endif // ES_APP_VOLUME_CONTROL_H
