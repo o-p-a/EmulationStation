@@ -8,16 +8,15 @@
 #endif
 
 #if defined(__linux__)
-    #if defined(_RPI_) || defined(_VERO4K_)
-        const char * VolumeControl::mixerName = "PCM";
-    #else
-    	const char * VolumeControl::mixerName = "Master";
-    #endif
-    const char * VolumeControl::mixerCard = "default";
+	#if defined(_RPI_) || defined(_VERO4K_)
+		const char * VolumeControl::mixerName = "PCM";
+	#else
+		const char * VolumeControl::mixerName = "Master";
+	#endif
+	const char * VolumeControl::mixerCard = "default";
 #endif
 
 std::weak_ptr<VolumeControl> VolumeControl::sInstance;
-
 
 VolumeControl::VolumeControl()
 	: originalVolume(0), internalVolume(0)
@@ -29,10 +28,12 @@ VolumeControl::VolumeControl()
 	, mixerHandle(nullptr), endpointVolume(nullptr)
 #endif
 {
+LOG(LogInfo) << "VolumeControl::VolumeControl() start";
 	init();
 
 	//get original volume levels for system
 	originalVolume = getVolume();
+LOG(LogInfo) << "VolumeControl::VolumeControl() end";
 }
 
 VolumeControl::VolumeControl(const VolumeControl & right):
@@ -45,25 +46,30 @@ VolumeControl::VolumeControl(const VolumeControl & right):
 	, mixerHandle(nullptr), endpointVolume(nullptr)
 #endif
 {
-	(void)right;
+LOG(LogInfo) << "VolumeControl::VolumeControl(right) start";
 	sInstance = right.sInstance;
+LOG(LogInfo) << "VolumeControl::VolumeControl(right) end";
 }
 
 VolumeControl & VolumeControl::operator=(const VolumeControl & right)
 {
+LOG(LogInfo) << "VolumeControl::operator=(right) start";
 	if (this != &right) {
 		sInstance = right.sInstance;
 	}
 
 	return *this;
+LOG(LogInfo) << "VolumeControl::operator=(right) end";
 }
 
 VolumeControl::~VolumeControl()
 {
+LOG(LogInfo) << "VolumeControl::~VolumeControl() start";
 	//set original volume levels for system
 	//setVolume(originalVolume);
 
 	deinit();
+LOG(LogInfo) << "VolumeControl::~VolumeControl() end";
 }
 
 std::shared_ptr<VolumeControl> & VolumeControl::getInstance()
@@ -79,9 +85,10 @@ std::shared_ptr<VolumeControl> & VolumeControl::getInstance()
 
 void VolumeControl::init()
 {
+LOG(LogInfo) << "VolumeControl::init() start";
 	//initialize audio mixer interface
 #if defined (__APPLE__)
-	#error TODO: Not implemented for MacOS yet!!!
+                                                                                               	#error TODO: Not implemented for MacOS yet!!!
 #elif defined(__linux__)
 	//try to open mixer device
 	if (mixerHandle == nullptr)
@@ -152,8 +159,8 @@ void VolumeControl::init()
 	}
 #elif defined(WIN32) || defined(_WIN32)
 	//get windows version information
-	OSVERSIONINFOEXA osVer = {sizeof(OSVERSIONINFO)};
-	::GetVersionExA(reinterpret_cast<LPOSVERSIONINFOA>(&osVer));
+	OSVERSIONINFOEX osVer = {sizeof(OSVERSIONINFOEX)};
+	::GetVersionEx(&osVer);
 	//check windows version
 	if(osVer.dwMajorVersion < 6)
 	{
@@ -236,10 +243,12 @@ void VolumeControl::init()
 		}
 	}
 #endif
+LOG(LogInfo) << "VolumeControl::init() end";
 }
 
 void VolumeControl::deinit()
 {
+LOG(LogInfo) << "VolumeControl::deinit() start";
 	//deinitialize audio mixer interface
 #if defined (__APPLE__)
 	#error TODO: Not implemented for MacOS yet!!!
@@ -262,6 +271,7 @@ void VolumeControl::deinit()
 		CoUninitialize();
 	}
 #endif
+LOG(LogInfo) << "VolumeControl::deinit() end";
 }
 
 int VolumeControl::getVolume() const
