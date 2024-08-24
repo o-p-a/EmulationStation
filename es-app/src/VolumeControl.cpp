@@ -328,7 +328,7 @@ int VolumeControl::getVolume() const
 		if (endpointVolume->GetMasterVolumeLevelScalar(&floatVolume) == S_OK)
 		{
 			volume = (int)Math::round(floatVolume * 100.0f);
-			LOG(Acquired) << " getting volume as " << volume << " (from float " << floatVolume << ")";
+			LOG(LogDebug) << " getting volume as " << volume << " (from float " << floatVolume << ")";
 		}
 		else
 		{
