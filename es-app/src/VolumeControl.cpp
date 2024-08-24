@@ -159,7 +159,7 @@ LOG(LogInfo) << "VolumeControl::init() start";
 	}
 #elif defined(WIN32) || defined(_WIN32)
 	//get windows version information
-	OSVERSIONINFOEX osVer = {sizeof(OSVERSIONINFOEX)};
+	OSVERSIONINFO osVer = {sizeof(OSVERSIONINFO)};
 	::GetVersionEx(&osVer);
 	//check windows version
 	if(osVer.dwMajorVersion < 6)
