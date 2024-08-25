@@ -89,6 +89,7 @@ LOG(LogInfo) << "InputManager::init() end";
 
 void InputManager::addJoystickByDeviceIndex(int id)
 {
+LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() start " << id;
 	assert(id > -1);
 	assert(id < SDL_NumJoysticks());
 
@@ -98,6 +99,9 @@ void InputManager::addJoystickByDeviceIndex(int id)
 
 	// add it to our list so we can close it again later
 	SDL_JoystickID joyId = SDL_JoystickInstanceID(joy);
+LOG(LogInfo) << "joyId: " << joyId;
+LOG(LogInfo) << "joy: " << joy;
+LOG(LogInfo) << "mJoysticks[joyId]: " << mJoysticks[joyId];
 	mJoysticks[joyId] = joy;
 
 	char guid[65];
@@ -121,6 +125,7 @@ void InputManager::addJoystickByDeviceIndex(int id)
 	int numAxes = SDL_JoystickNumAxes(joy);
 	mPrevAxisValues[joyId] = new int[numAxes];
 	std::fill(mPrevAxisValues[joyId], mPrevAxisValues[joyId] + numAxes, 0); //initialize array to 0
+LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() end";
 }
 
 void InputManager::removeJoystickByJoystickID(SDL_JoystickID joyId)
@@ -146,7 +151,7 @@ void InputManager::removeJoystickByJoystickID(SDL_JoystickID joyId)
 
 void InputManager::deinit()
 {
-LOG(LogInfo) << "InputManager::init() start";
+LOG(LogInfo) << "InputManager::deinit() start";
 	if(!initialized())
 		return;
 
@@ -184,7 +189,7 @@ LOG(LogInfo) << "InputManager::init() start";
 
 	SDL_JoystickEventState(SDL_DISABLE);
 	SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-LOG(LogInfo) << "InputManager::init() end";
+LOG(LogInfo) << "InputManager::deinit() end";
 }
 
 int InputManager::getNumJoysticks() { return (int)mJoysticks.size(); }
