@@ -101,7 +101,10 @@ LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() start " << id;
 	SDL_JoystickID joyId = SDL_JoystickInstanceID(joy);
 LOG(LogInfo) << "joyId: " << joyId;
 LOG(LogInfo) << "joy: " << joy;
+if(mJoysticks.count(joyId) > 0)
 LOG(LogInfo) << "mJoysticks[joyId]: " << mJoysticks[joyId];
+else
+LOG(LogInfo) << "mJoysticks[joyId]: empty";
 
 	if(mJoysticks.count(joyId) > 0)
 		return; // already added
