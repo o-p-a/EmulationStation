@@ -102,6 +102,10 @@ LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() start " << id;
 LOG(LogInfo) << "joyId: " << joyId;
 LOG(LogInfo) << "joy: " << joy;
 LOG(LogInfo) << "mJoysticks[joyId]: " << mJoysticks[joyId];
+
+	if(mJoysticks.count(joyId) > 0)
+		return; // already added
+
 	mJoysticks[joyId] = joy;
 
 	char guid[65];
