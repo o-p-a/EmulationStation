@@ -14,7 +14,8 @@ union SDL_Event;
 class InputManager
 {
 private:
-	InputManager();
+	InputManager() : mKeyboardInputConfig(NULL) {};
+	~InputManager() {};
 
 	static InputManager* mInstance;
 
@@ -36,8 +37,6 @@ private:
 	bool loadInputConfig(InputConfig* config); // returns true if successfully loaded, false if not (or didn't exist)
 
 public:
-	virtual ~InputManager();
-
 	static InputManager* getInstance();
 
 	void writeDeviceConfig(InputConfig* config);
