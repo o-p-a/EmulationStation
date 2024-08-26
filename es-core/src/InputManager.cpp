@@ -90,6 +90,9 @@ LOG(LogInfo) << "InputManager::init() end";
 void InputManager::addJoystickByDeviceIndex(int id)
 {
 LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() start " << id;
+LOG(LogInfo) << "mJoysticks.size() " << mJoysticks.size();
+LOG(LogInfo) << "mInputConfigs.size() " << mInputConfigs.size();
+LOG(LogInfo) << "mPrevAxisValues.size() " << mPrevAxisValues.size();
 	assert(id > -1);
 	assert(id < SDL_NumJoysticks());
 
@@ -132,11 +135,18 @@ LOG(LogInfo) << "mJoysticks[joyId]: empty";
 	int numAxes = SDL_JoystickNumAxes(joy);
 	mPrevAxisValues[joyId] = new int[numAxes];
 	std::fill(mPrevAxisValues[joyId], mPrevAxisValues[joyId] + numAxes, 0); //initialize array to 0
+LOG(LogInfo) << "mJoysticks.size() " << mJoysticks.size();
+LOG(LogInfo) << "mInputConfigs.size() " << mInputConfigs.size();
+LOG(LogInfo) << "mPrevAxisValues.size() " << mPrevAxisValues.size();
 LOG(LogInfo) << "InputManager::addJoystickByDeviceIndex() end";
 }
 
 void InputManager::removeJoystickByJoystickID(SDL_JoystickID joyId)
 {
+LOG(LogInfo) << "InputManager::removeJoystickByJoystickID() start " << joyId;
+LOG(LogInfo) << "mJoysticks.size() " << mJoysticks.size();
+LOG(LogInfo) << "mInputConfigs.size() " << mInputConfigs.size();
+LOG(LogInfo) << "mPrevAxisValues.size() " << mPrevAxisValues.size();
 	assert(joyId != -1);
 
 	// delete old prevAxisValues
@@ -154,6 +164,10 @@ void InputManager::removeJoystickByJoystickID(SDL_JoystickID joyId)
 	LOG(LogInfo) << "Removed joystick '" << SDL_JoystickName(joyIt->second) << "' (instance ID: " << joyId << ")";
 	SDL_JoystickClose(joyIt->second);
 	mJoysticks.erase(joyIt);
+LOG(LogInfo) << "mJoysticks.size() " << mJoysticks.size();
+LOG(LogInfo) << "mInputConfigs.size() " << mInputConfigs.size();
+LOG(LogInfo) << "mPrevAxisValues.size() " << mPrevAxisValues.size();
+LOG(LogInfo) << "InputManager::removeJoystickByJoystickID() end";
 }
 
 void InputManager::deinit()
