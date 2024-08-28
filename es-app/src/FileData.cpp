@@ -291,9 +291,9 @@ void FileData::launchGame(Window* window)
 	const std::string basename    = Utils::FileSystem::getStem(getPath());
 	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(getPath());
 	const std::string name        = getName();
-	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(getPath()));
-	const std::string cfg_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
-	const std::string install_dir = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath()));
+	const std::string rom_dir     = Utils::FileSystem::getEscapedPath(Utils::FileSystem::getParent(getPath()));
+	const std::string cfg_dir     = Utils::FileSystem::getEscapedPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
+	const std::string install_dir = Utils::FileSystem::getEscapedPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath()));
 
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
