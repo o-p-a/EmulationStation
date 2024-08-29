@@ -20,49 +20,19 @@ std::weak_ptr<VolumeControl> VolumeControl::sInstance;
 
 
 VolumeControl::VolumeControl()
-	: originalVolume(0), internalVolume(0)
 #if defined (__APPLE__)
 	#error TODO: Not implemented for MacOS yet!!!
 #elif defined(__linux__)
-	, mixerIndex(0), mixerHandle(nullptr), mixerElem(nullptr), mixerSelemId(nullptr)
+	: mixerIndex(0), mixerHandle(nullptr), mixerElem(nullptr), mixerSelemId(nullptr)
 #elif defined(WIN32) || defined(_WIN32)
-	, mixerHandle(nullptr), endpointVolume(nullptr)
+	: mixerHandle(nullptr), endpointVolume(nullptr)
 #endif
 {
 	init();
-
-	//get original volume levels for system
-	originalVolume = getVolume();
-}
-
-VolumeControl::VolumeControl(const VolumeControl & right):
-	originalVolume(0), internalVolume(0)
-#if defined (__APPLE__)
-	#error TODO: Not implemented for MacOS yet!!!
-#elif defined(__linux__)
-	, mixerIndex(0), mixerHandle(nullptr), mixerElem(nullptr), mixerSelemId(nullptr)
-#elif defined(WIN32) || defined(_WIN32)
-	, mixerHandle(nullptr), endpointVolume(nullptr)
-#endif
-{
-	(void)right;
-	sInstance = right.sInstance;
-}
-
-VolumeControl & VolumeControl::operator=(const VolumeControl & right)
-{
-	if (this != &right) {
-		sInstance = right.sInstance;
-	}
-
-	return *this;
 }
 
 VolumeControl::~VolumeControl()
 {
-	//set original volume levels for system
-	//setVolume(originalVolume);
-
 	deinit();
 }
 
@@ -347,8 +317,6 @@ void VolumeControl::setVolume(int volume)
 	{
 		volume = 100;
 	}
-	//store values in internal variables
-	internalVolume = volume;
 #if defined (__APPLE__)
 	#error TODO: Not implemented for MacOS yet!!!
 #elif defined(__linux__)
