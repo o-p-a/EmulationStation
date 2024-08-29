@@ -122,16 +122,18 @@ void VolumeControl::init()
 	}
 #elif defined(WIN32) || defined(_WIN32)
 	//get windows version information
-	OSVERSIONINFOEXA osVer = {sizeof(OSVERSIONINFO)};
-	::GetVersionExA(reinterpret_cast<LPOSVERSIONINFOA>(&osVer));
+	OSVERSIONINFO osVer = {sizeof(OSVERSIONINFO)};
+	GetVersionEx(&osVer);
 	//check windows version
 	if(osVer.dwMajorVersion < 6)
 	{
 		//Windows older than Vista. use mixer API. open default mixer
 		if (mixerHandle == nullptr)
 		{
+			LOG(LogDebug) << "VolumeControl::init() - Attempt to use mixer API";
 			if (mixerOpen(&mixerHandle, 0, NULL, 0, 0) == MMSYSERR_NOERROR)
 			{
+				LOG(LogDebug) << "VolumeControl::init() - Opened mixer API";
 				//retrieve info on the volume slider control for the "Speaker Out" line
 				MIXERLINECONTROLS mixerLineControls;
 				mixerLineControls.cbStruct = sizeof(MIXERLINECONTROLS);
@@ -141,7 +143,11 @@ void VolumeControl::init()
 				mixerLineControls.dwControlType = MIXERCONTROL_CONTROLTYPE_VOLUME; //Get volume control
 				mixerLineControls.pamxctrl = &mixerControl;
 				mixerLineControls.cbmxctrl = sizeof(MIXERCONTROL);
-				if (mixerGetLineControls((HMIXEROBJ)mixerHandle, &mixerLineControls, MIXER_GETLINECONTROLSF_ONEBYTYPE) != MMSYSERR_NOERROR)
+				if (mixerGetLineControls((HMIXEROBJ)mixerHandle, &mixerLineControls, MIXER_GETLINECONTROLSF_ONEBYTYPE) == MMSYSERR_NOERROR)
+				{
+					LOG(LogDebug) << "VolumeControl::init() - Mixer initialized";
+				}
+				else
 				{
 					LOG(LogError) << "VolumeControl::init() - Failed to get mixer volume control!";
 					mixerClose(mixerHandle);
@@ -159,19 +165,26 @@ void VolumeControl::init()
 		//Windows Vista or above. use EndpointVolume API. get device enumerator
 		if (endpointVolume == nullptr)
 		{
+			LOG(LogDebug) << "VolumeControl::init() - Attempt to use EndpointVolume API";
 			CoInitialize(nullptr);
 			IMMDeviceEnumerator * deviceEnumerator = nullptr;
 			CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
 			if (deviceEnumerator != nullptr)
 			{
+				LOG(LogDebug) << "VolumeControl::init() - MMDevice enumerate succeeded";
 				//get default endpoint
 				IMMDevice * defaultDevice = nullptr;
 				deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 				if (defaultDevice != nullptr)
 				{
+					LOG(LogDebug) << "VolumeControl::init() - Acquired default audio endpoint";
 					//retrieve endpoint volume
 					defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, nullptr, (LPVOID *)&endpointVolume);
-					if (endpointVolume == nullptr)
+					if (endpointVolume != nullptr)
+					{
+						LOG(LogDebug) << "VolumeControl::init() - Volume initialized";
+					}
+					else
 					{
 						LOG(LogError) << "VolumeControl::init() - Failed to get default audio endpoint volume!";
 					}
@@ -285,7 +298,7 @@ int VolumeControl::getVolume() const
 		if (endpointVolume->GetMasterVolumeLevelScalar(&floatVolume) == S_OK)
 		{
 			volume = (int)Math::round(floatVolume * 100.0f);
-			LOG(LogInfo) << " getting volume as " << volume << " ( from float " << floatVolume << ")";
+			LOG(LogDebug) << " getting volume as " << volume << " (from float " << floatVolume << ")";
 		}
 		else
 		{
