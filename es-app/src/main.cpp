@@ -18,6 +18,7 @@
 #include "SystemData.h"
 #include "SystemScreenSaver.h"
 #include "AudioManager.h"
+#include "VolumeControl.h"
 #include <SDL_events.h>
 #include <SDL_main.h>
 #include <SDL_timer.h>
@@ -396,6 +397,7 @@ int main(int argc, char* argv[])
 		window.renderLoadingScreen("Done.");
 
 	InputManager::getInstance()->init();
+	VolumeControl::getInstance()->init();
 	AudioManager::getInstance()->init();
 
 	//choose which GUI to open depending on if an input configuration already exists
@@ -470,6 +472,7 @@ int main(int argc, char* argv[])
 		delete window.peekGui();
 
 	AudioManager::getInstance()->deinit();
+	VolumeControl::getInstance()->deinit();
 	InputManager::getInstance()->deinit();
 	window.deinit();
 
