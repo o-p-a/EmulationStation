@@ -290,30 +290,33 @@ void FileData::launchGame(Window* window)
 	std::string command = mEnvData->mLaunchCommand;
 
 	std::string path = Utils::FileSystem::getPreferredPath(getPath());
-LOG(LogInfo) << "path " << path;
+LOG(LogInfo) << "path: " << path;
 	if(Utils::FileSystem::isDirectory(path))
 	{
 		const std::string path2 = Utils::FileSystem::resolveRelativePath(Utils::FileSystem::getFileName(path), path, false, true);
-LOG(LogInfo) << "path2 " << path2;
+LOG(LogInfo) << "path2: " << path2;
 		if(Utils::FileSystem::isRegularFile(path2))
 		{
 LOG(LogInfo) << "path2 isRegularFile";
-
-		}
-		if(Utils::FileSystem::isSymlink(path2))
-		{
-LOG(LogInfo) << "path2 isSymlink";
-
+			path = path2;
 		}
 	}
+LOG(LogInfo) << "final path: " << path;
 
-	const std::string rom         = Utils::FileSystem::getEscapedPath(getPath());
-	const std::string basename    = Utils::FileSystem::getStem(getPath());
-	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(getPath());
+	const std::string rom         = Utils::FileSystem::getEscapedPath(path);
+	const std::string basename    = Utils::FileSystem::getStem(path);
+	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(path);
 	const std::string name        = getName();
-	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(getPath()));
+	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(path));
 	const std::string cfg_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
 	const std::string install_dir = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath()));
+LOG(LogInfo) << "rom: " << rom;
+LOG(LogInfo) << "basename: " << basename;
+LOG(LogInfo) << "rom_raw: " << rom_raw;
+LOG(LogInfo) << "name: " << name;
+LOG(LogInfo) << "rom_dir: " << prom_dirath;
+LOG(LogInfo) << "cfg_dir: " << cfg_dir;
+LOG(LogInfo) << "install_dir: " << install_dir;
 
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
