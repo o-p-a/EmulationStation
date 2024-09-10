@@ -290,18 +290,12 @@ void FileData::launchGame(Window* window)
 	std::string command = mEnvData->mLaunchCommand;
 
 	std::string path = getPath();
-LOG(LogInfo) << "path: " << path;
 	if(Utils::FileSystem::isDirectory(path))
 	{
 		const std::string path2 = Utils::FileSystem::resolveRelativePath(Utils::FileSystem::getFileName(path), path, false, true);
-LOG(LogInfo) << "path2: " << path2;
 		if(Utils::FileSystem::isRegularFile(path2))
-		{
-LOG(LogInfo) << "path2 isRegularFile";
 			path = path2;
-		}
 	}
-LOG(LogInfo) << "final path: " << path;
 
 	const std::string rom         = Utils::FileSystem::getEscapedPath(path);
 	const std::string basename    = Utils::FileSystem::getStem(path);
@@ -310,13 +304,6 @@ LOG(LogInfo) << "final path: " << path;
 	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(path));
 	const std::string cfg_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
 	const std::string install_dir = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath()));
-LOG(LogInfo) << "rom: " << rom;
-LOG(LogInfo) << "basename: " << basename;
-LOG(LogInfo) << "rom_raw: " << rom_raw;
-LOG(LogInfo) << "name: " << name;
-LOG(LogInfo) << "rom_dir: " << rom_dir;
-LOG(LogInfo) << "cfg_dir: " << cfg_dir;
-LOG(LogInfo) << "install_dir: " << install_dir;
 
 	command = Utils::String::replace(command, "%ROM%", rom);
 	command = Utils::String::replace(command, "%BASENAME%", basename);
