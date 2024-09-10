@@ -314,7 +314,7 @@ LOG(LogInfo) << "rom: " << rom;
 LOG(LogInfo) << "basename: " << basename;
 LOG(LogInfo) << "rom_raw: " << rom_raw;
 LOG(LogInfo) << "name: " << name;
-LOG(LogInfo) << "rom_dir: " << prom_dirath;
+LOG(LogInfo) << "rom_dir: " << rom_dir;
 LOG(LogInfo) << "cfg_dir: " << cfg_dir;
 LOG(LogInfo) << "install_dir: " << install_dir;
 
