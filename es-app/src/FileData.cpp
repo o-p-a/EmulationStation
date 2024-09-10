@@ -289,6 +289,24 @@ void FileData::launchGame(Window* window)
 
 	std::string command = mEnvData->mLaunchCommand;
 
+	std::string path = Utils::FileSystem::getPreferredPath(getPath());
+LOG(LogInfo) << "path " << path;
+	if(Utils::FileSystem::isDirectory(path))
+	{
+		const std::string path2 = Utils::FileSystem::resolveRelativePath(Utils::FileSystem::getFileName(path), path, false, true);
+LOG(LogInfo) << "path2 " << path2;
+		if(Utils::FileSystem::isRegularFile(path2))
+		{
+LOG(LogInfo) << "path2 isRegularFile";
+
+		}
+		if(Utils::FileSystem::isSymlink(path2))
+		{
+LOG(LogInfo) << "path2 isSymlink";
+
+		}
+	}
+
 	const std::string rom         = Utils::FileSystem::getEscapedPath(getPath());
 	const std::string basename    = Utils::FileSystem::getStem(getPath());
 	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(getPath());
