@@ -289,7 +289,7 @@ void FileData::launchGame(Window* window)
 
 	std::string command = mEnvData->mLaunchCommand;
 
-	std::string path = Utils::FileSystem::getPreferredPath(getPath());
+	std::string path = getPath();
 LOG(LogInfo) << "path: " << path;
 	if(Utils::FileSystem::isDirectory(path))
 	{
