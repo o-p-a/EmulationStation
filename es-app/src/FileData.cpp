@@ -289,11 +289,19 @@ void FileData::launchGame(Window* window)
 
 	std::string command = mEnvData->mLaunchCommand;
 
-	const std::string rom         = Utils::FileSystem::getEscapedPath(getPath());
-	const std::string basename    = Utils::FileSystem::getStem(getPath());
-	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(getPath());
+	std::string path = getPath();
+	if(Utils::FileSystem::isDirectory(path))
+	{
+		const std::string path2 = Utils::FileSystem::resolveRelativePath(Utils::FileSystem::getFileName(path), path, false, true);
+		if(Utils::FileSystem::isRegularFile(path2))
+			path = path2;
+	}
+
+	const std::string rom         = Utils::FileSystem::getEscapedPath(path);
+	const std::string basename    = Utils::FileSystem::getStem(path);
+	const std::string rom_raw     = Utils::FileSystem::getPreferredPath(path);
 	const std::string name        = getName();
-	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(getPath()));
+	const std::string rom_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getParent(path));
 	const std::string cfg_dir     = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getHomePath() + "/.emulationstation"));
 	const std::string install_dir = Utils::FileSystem::getPreferredPath(Utils::FileSystem::getCanonicalPath(Utils::FileSystem::getExePath()));
 
